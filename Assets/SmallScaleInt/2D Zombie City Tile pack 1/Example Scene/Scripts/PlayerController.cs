@@ -94,7 +94,15 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
         void Update()
         {
-            // Existing movement and input code...
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                return;
+            }
+            if (zombieKillCount>30)
+            {
+                SceneManager.LoadScene("Example scene 2"); 
+            }
             if(isDead)
             {
                 return;
