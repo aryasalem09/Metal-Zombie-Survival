@@ -96,7 +96,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene("Level1");
                 return;
             }
             if (zombieKillCount>30)
