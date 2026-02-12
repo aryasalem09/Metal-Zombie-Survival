@@ -1,5 +1,5 @@
 using UnityEngine;
-using SmallScaleInc.TopDownPixelCharactersPack1; // Include the namespace
+using SmallScaleInc.TopDownPixelCharactersPack1;
 
 namespace SmallScaleInc.TopDownPixelCharactersPack1
 {
@@ -25,15 +25,16 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
         private void OpenChest()
         {
-            animator.SetTrigger("Open"); // Play animation when triggered
+            animator.SetTrigger("Open");
             isOpened = true;
 
             if (playerController != null)
             {
-                playerController.currentHealth = playerController.maxHealth; // Restore player's health
-                playerController.healthSlider.value = playerController.currentHealth;
-                playerController.FlashGreen(); // Trigger the green flash effect
-                // Debug.Log("Player health restored to max!");
+                playerController.currentHealth = playerController.maxHealth;
+                if (playerController.healthSlider != null)
+                    playerController.healthSlider.value = playerController.currentHealth;
+
+                playerController.FlashGreen();
             }
             else
             {
