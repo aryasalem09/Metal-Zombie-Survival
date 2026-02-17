@@ -11,14 +11,14 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - Projectile
+  - Obstacles
+  - RegionBounds
+  - Gate
+  - Interactable
+  - Stairs
   - 
   - 
   - 

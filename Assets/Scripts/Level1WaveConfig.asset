@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: deed399114ef5224fb64d7d959dcdddb, type: 3}
-  m_Name: DefaultWaveConfig
+  m_Name: Level1WaveConfig
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 5175559253248552603, guid: 190172a822a7a164d8c75220bd302b88, type: 3}
   offscreenSpawnMargin: 2
   minSpawnDistanceFromPlayer: 6
-  waveCount: 2
+  waveCount: 0
   zombiesPerWave: 8
   zombiesPerWaveIncrease: 3
   maxZombiesPerWave: 0
@@ -40,4 +40,4 @@ MonoBehaviour:
   tankHealthBonus: 2
   tankSpeedMultiplier: 0.75
   tankScaleMultiplier: 1.25
-  nextSceneName: Level2
+  nextSceneName: Level 2

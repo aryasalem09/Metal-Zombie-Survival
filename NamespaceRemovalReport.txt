@@ -1,0 +1,4891 @@
+Namespace Removal Report
+Generated: 2026-02-14 17:03:33
+
+Compile errors (unique): 68
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scenes\MenuButtons.cs:10:9 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scenes\MenuButtons.cs:16:9 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:57:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:58:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:59:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:60:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:105:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:106:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:107:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:108:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:119:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:120:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:121:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:122:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:133:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:134:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:135:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:136:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:148:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:149:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:150:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:151:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:169:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:170:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:185:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:190:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:202:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:203:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:204:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:261:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:262:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:270:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:277:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:278:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:287:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:296:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:313:9 CS0103 The name 'CleanVfxFactory' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:326:13 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:361:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\AnimationController.cs:368:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\EnergyPulseProjectile.cs:176:13 CS0103 The name 'CleanVfxFactory' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\EnergyPulseProjectile.cs:181:13 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\EnergyPulseProjectile.cs:185:13 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\PlayerController.cs:287:9 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\PlayerController.cs:564:13 CS0103 The name 'CleanVfxFactory' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\PlayerController.cs:567:9 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\PlayerController.cs:608:13 CS0103 The name 'CleanVfxFactory' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\PlayerController.cs:609:13 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\PlayerController.cs:637:9 CS0246 The type or namespace name 'GameFlowManager' could not be found (are you missing a using directive or an assembly reference?)
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\PlayerController.cs:637:49 CS0246 The type or namespace name 'GameFlowManager' could not be found (are you missing a using directive or an assembly reference?)
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\WaveManager.cs:22:30 CS0246 The type or namespace name 'RegionWaveManager' could not be found (are you missing a using directive or an assembly reference?)
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:263:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:265:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:369:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:372:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:385:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:386:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:424:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:425:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:426:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:439:9 CS0103 The name 'AudioManager' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:440:9 CS0103 The name 'CleanVfxFactory' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:558:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:566:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:583:9 CS0103 The name 'CleanVfxFactory' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:591:13 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:601:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+C:\Users\aryas\Downloads\Unity Stuff\Metal Zombie Survival\Assets\Scripts\ZombieAI.cs:608:9 CS0103 The name 'AnimatorParamAdapter' does not exist in the current context
+
+Edited files and full contents:
+
+===== Assets/Scenes/MenuButtons.cs =====
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+public class MenuButtons : MonoBehaviour
+{
+    [SerializeField] private string tutorialSceneName = "TutorialGame";
+
+    public void StartGame() {
+        AudioManager.Instance?.PlayUiClick();
+        SceneManager.LoadScene(tutorialSceneName);
+    }
+
+    public void QuitGame()
+    {
+        AudioManager.Instance?.PlayUiClick();
+        Application.Quit();
+    }
+}
+
+
+===== Assets/Scripts/AnimationController.cs =====
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AnimationController : MonoBehaviour
+{
+    private static readonly string[] DirectionParameters =
+    {
+        "isWest",
+        "isEast",
+        "isSouth",
+        "isSouthWest",
+        "isNorthEast",
+        "isSouthEast",
+        "isNorth",
+        "isNorthWest"
+    };
+
+    private Animator animator;
+    private PlayerController playerController;
+    private Coroutine attackResetCoroutine;
+    private Coroutine takeDamageResetCoroutine;
+
+    public Animator pulseEmitterAnimator;
+    public SpriteRenderer pulseFlashRenderer;
+
+    public string currentDirection = "isEast";
+    public bool isCurrentlyRunning;
+    public bool isCrouching;
+    public bool isDying;
+
+    [SerializeField] private List<GameObject> hitEffectPrefabs = new List<GameObject>();
+    [SerializeField] private List<GameObject> radiatedPrefabs = new List<GameObject>();
+    public bool isRadiated;
+    public float rollTime = 0.5f;
+
+    public bool isRunning;
+    public bool isRunningBackwards;
+    public bool isStrafingLeft;
+    public bool isStrafingRight;
+    public bool isAttacking;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>(true);
+        }
+
+        playerController = GetComponent<PlayerController>();
+    }
+
+    private void Start()
+    {
+        SetDirection("isEast");
+        AnimatorParamAdapter.SetBool(animator, "isWalking", false);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    private void Update()
+    {
+        if (!gameObject.activeInHierarchy || isDying || playerController == null)
+        {
+            return;
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+            if (animator == null)
+            {
+                animator = GetComponentInChildren<Animator>(true);
+            }
+
+            if (animator == null)
+            {
+                return;
+            }
+        }
+
+        Vector2 movement = playerController.MovementDirection;
+        Vector2 facing = playerController.LookDirection;
+        bool isMoving = movement.sqrMagnitude > 0.0001f;
+        bool running = playerController.IsRunning;
+
+        UpdateMovementAnimation(movement, facing, running, playerController.isCrouching);
+    }
+
+    public void UpdateMovementAnimation(Vector2 movement, Vector2 facing, bool running, bool crouching)
+    {
+        if (animator == null || isDying)
+        {
+            return;
+        }
+
+        Vector2 directionSource = facing.sqrMagnitude > 0.0001f ? facing : movement;
+        SetDirection(VectorToDirection(directionSource));
+
+        bool moving = movement.sqrMagnitude > 0.0001f;
+        isCurrentlyRunning = moving && running;
+
+        AnimatorParamAdapter.SetBool(animator, "isWalking", moving);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", moving && running && !crouching);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", moving && crouching);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", !moving && crouching);
+    }
+
+    public void PlayRunAnimation(float snappedAngle)
+    {
+        if (isDying)
+        {
+            return;
+        }
+
+        SetDirection(AngleToDirection(snappedAngle));
+        AnimatorParamAdapter.SetBool(animator, "isWalking", true);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", true);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    public void PlayIdleAnimation(float snappedAngle)
+    {
+        if (isDying)
+        {
+            return;
+        }
+
+        SetDirection(AngleToDirection(snappedAngle));
+        AnimatorParamAdapter.SetBool(animator, "isWalking", false);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    public void TriggerAttackAnimation()
+    {
+        if (isDying || animator == null)
+        {
+            return;
+        }
+
+        isAttacking = true;
+
+        AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", true);
+        AnimatorParamAdapter.SetBool(animator, "isAttacking", true);
+        AnimatorParamAdapter.SetTrigger(animator, "Attack");
+        AnimatorParamAdapter.SetTrigger(animator, "AttackAttack");
+        SetDirectionalBool("AttackAttack", true);
+
+        if (attackResetCoroutine != null)
+        {
+            StopCoroutine(attackResetCoroutine);
+        }
+
+        attackResetCoroutine = StartCoroutine(ResetAttackAfterDelay(0.12f));
+    }
+
+    public void TriggerTakeDamageAnimation()
+    {
+        if (isDying || animator == null)
+        {
+            return;
+        }
+
+        AnimatorParamAdapter.SetBool(animator, "isTakeDamage", true);
+        AnimatorParamAdapter.SetTrigger(animator, "TakeDamage");
+        SetDirectionalBool("takeDamage", true);
+        SetDirectionalBool("TakeDamage", true);
+        SpawnEffect();
+
+        if (takeDamageResetCoroutine != null)
+        {
+            StopCoroutine(takeDamageResetCoroutine);
+        }
+
+        takeDamageResetCoroutine = StartCoroutine(ResetTakeDamageAfterDelay(0.18f));
+    }
+
+    public void TriggerCrouchIdleAnimation()
+    {
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", true);
+    }
+
+    public void ResetCrouchIdleParameters()
+    {
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    public void TriggerDie()
+    {
+        if (animator == null || isDying)
+        {
+            return;
+        }
+
+        isDying = true;
+
+        AnimatorParamAdapter.SetTrigger(animator, "isDie");
+        AnimatorParamAdapter.SetTrigger(animator, "dieTrigger");
+        AnimatorParamAdapter.SetTrigger(animator, "Die");
+        SetDirectionalTrigger("die");
+    }
+
+    public void TriggerSpecialAbility1Animation()
+    {
+        TriggerSpecial("Special1", "isSpecialAbility1", "specialAbility1");
+    }
+
+    public void TriggerSpecialAbility2Animation()
+    {
+        TriggerSpecial("Special2", "isSpecialAbility2", "specialAbility2");
+    }
+
+    public void TriggerCastSpellAnimation()
+    {
+        TriggerSpecial("Cast", "isCastingSpell", "CastSpell");
+    }
+
+    public void TriggerKickAnimation()
+    {
+        TriggerSpecial("Kick", "isKicking", "Kick");
+    }
+
+    public void TriggerFlipAnimation()
+    {
+        TriggerSpecial("Flip", "isFlipping", "Flip");
+    }
+
+    public void TriggerRollAnimation()
+    {
+        TriggerSpecial("Roll", "isRolling", "Rolling");
+        StartCoroutine(ResetRoll());
+    }
+
+    public void TriggerSlideAnimation()
+    {
+        TriggerSpecial("Slide", "isSliding", "Sliding");
+    }
+
+    public void TriggerPummelAnimation()
+    {
+        TriggerSpecial("Pummel", "isPummeling", "Pummel");
+    }
+
+    public void TriggerAttackSpinAnimation()
+    {
+        TriggerSpecial("Spin", "isAttackSpinning", "AttackSpin");
+    }
+
+    private void TriggerSpecial(string triggerName, string stateBoolName, string directionalPrefix)
+    {
+        if (animator == null || isDying)
+        {
+            return;
+        }
+
+        AnimatorParamAdapter.SetTrigger(animator, triggerName);
+        AnimatorParamAdapter.SetBool(animator, stateBoolName, true);
+        SetDirectionalBool(directionalPrefix, true);
+        StartCoroutine(ResetTemporaryBool(stateBoolName, directionalPrefix, 0.2f));
+    }
+
+    private IEnumerator ResetTemporaryBool(string stateBoolName, string directionalPrefix, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, stateBoolName, false);
+        SetDirectionalBool(directionalPrefix, false);
+    }
+
+    private IEnumerator ResetAttackAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", false);
+        AnimatorParamAdapter.SetBool(animator, "isAttacking", false);
+        SetDirectionalBool("AttackAttack", false);
+        isAttacking = false;
+        attackResetCoroutine = null;
+    }
+
+    private IEnumerator ResetTakeDamageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, "isTakeDamage", false);
+        SetDirectionalBool("takeDamage", false);
+        SetDirectionalBool("TakeDamage", false);
+        takeDamageResetCoroutine = null;
+    }
+
+    private IEnumerator ResetRoll()
+    {
+        yield return new WaitForSeconds(rollTime);
+        AnimatorParamAdapter.SetBool(animator, "isRolling", false);
+        SetDirectionalBool("Rolling", false);
+    }
+
+    private void SpawnEffect()
+    {
+        List<GameObject> prefabsToUse = isRadiated ? radiatedPrefabs : hitEffectPrefabs;
+        if (prefabsToUse != null && prefabsToUse.Count > 0)
+        {
+            GameObject selectedPrefab = prefabsToUse[Random.Range(0, prefabsToUse.Count)];
+            if (selectedPrefab != null)
+            {
+                Instantiate(selectedPrefab, transform.position, Quaternion.identity);
+                return;
+            }
+        }
+
+        CleanVfxFactory.SpawnImpactSpark(transform.position);
+    }
+
+    private void SetDirection(string newDirection)
+    {
+        if (animator == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < DirectionParameters.Length; i++)
+        {
+            string direction = DirectionParameters[i];
+            AnimatorParamAdapter.SetBool(animator, direction, direction == newDirection);
+        }
+
+        currentDirection = newDirection;
+    }
+
+    private string VectorToDirection(Vector2 vector)
+    {
+        if (vector.sqrMagnitude <= 0.0001f)
+        {
+            return currentDirection;
+        }
+
+        float angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
+        return AngleToDirection(angle);
+    }
+
+    private static string AngleToDirection(float angle)
+    {
+        float normalizedAngle = (angle + 360f) % 360f;
+
+        if (normalizedAngle >= 337.5f || normalizedAngle < 22.5f) return "isEast";
+        if (normalizedAngle < 67.5f) return "isNorthEast";
+        if (normalizedAngle < 112.5f) return "isNorth";
+        if (normalizedAngle < 157.5f) return "isNorthWest";
+        if (normalizedAngle < 202.5f) return "isWest";
+        if (normalizedAngle < 247.5f) return "isSouthWest";
+        if (normalizedAngle < 292.5f) return "isSouth";
+        return "isSouthEast";
+    }
+
+    private void SetDirectionalBool(string prefix, bool value)
+    {
+        string suffix = DirectionSuffix(currentDirection);
+        string parameterName = prefix + suffix;
+        AnimatorParamAdapter.SetBool(animator, parameterName, value);
+    }
+
+    private void SetDirectionalTrigger(string prefix)
+    {
+        string suffix = DirectionSuffix(currentDirection);
+        string parameterName = prefix + suffix;
+        AnimatorParamAdapter.SetTrigger(animator, parameterName);
+    }
+
+    private static string DirectionSuffix(string directionBoolName)
+    {
+        if (string.IsNullOrEmpty(directionBoolName))
+        {
+            return "East";
+        }
+
+        return directionBoolName.StartsWith("is")
+            ? directionBoolName.Substring(2)
+            : directionBoolName;
+    }
+}
+
+===== Assets/Scripts/AnimatorParamAdapter.cs =====
+using System;
+using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
+
+public static class AnimatorParamAdapter
+{
+    public static bool HasBool(Animator animator, string parameterName)
+    {
+        return ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Bool) != null;
+    }
+
+    public static bool HasTrigger(Animator animator, string parameterName)
+    {
+        return ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Trigger) != null;
+    }
+
+    public static bool HasFloat(Animator animator, string parameterName)
+    {
+        return ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Float) != null;
+    }
+
+    public static bool SetBool(Animator animator, string parameterName, bool value)
+    {
+        string resolvedName = ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Bool);
+        if (resolvedName == null)
+        {
+            WarnMissing(animator, parameterName, AnimatorControllerParameterType.Bool);
+            return false;
+        }
+
+        animator.SetBool(resolvedName, value);
+        return true;
+    }
+
+    public static bool SetFloat(Animator animator, string parameterName, float value)
+    {
+        string resolvedName = ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Float);
+        if (resolvedName == null)
+        {
+            WarnMissing(animator, parameterName, AnimatorControllerParameterType.Float);
+            return false;
+        }
+
+        animator.SetFloat(resolvedName, value);
+        return true;
+    }
+
+    public static bool SetTrigger(Animator animator, string parameterName)
+    {
+        string triggerName = ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Trigger);
+        if (triggerName != null)
+        {
+            animator.SetTrigger(triggerName);
+            return true;
+        }
+
+        string boolName = ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Bool);
+        if (boolName != null)
+        {
+            animator.SetBool(boolName, true);
+            return true;
+        }
+
+        WarnMissing(animator, parameterName, AnimatorControllerParameterType.Trigger);
+        return false;
+    }
+
+    public static bool ResetTrigger(Animator animator, string parameterName)
+    {
+        string resolvedName = ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Trigger);
+        if (resolvedName == null)
+        {
+            WarnMissing(animator, parameterName, AnimatorControllerParameterType.Trigger);
+            return false;
+        }
+
+        animator.ResetTrigger(resolvedName);
+        return true;
+    }
+
+    private static readonly HashSet<string> MissingParameterWarnings = new HashSet<string>();
+    private static readonly Dictionary<string, string> ResolvedParameterCache = new Dictionary<string, string>();
+
+    private static string ResolveParameterName(
+        Animator animator,
+        string parameterName,
+        AnimatorControllerParameterType expectedType)
+    {
+        if (animator == null || string.IsNullOrWhiteSpace(parameterName))
+        {
+            return null;
+        }
+
+        string cacheKey = BuildCacheKey(animator, parameterName, expectedType);
+        if (ResolvedParameterCache.TryGetValue(cacheKey, out string cachedName))
+        {
+            return cachedName;
+        }
+
+        AnimatorControllerParameter[] parameters = animator.parameters;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            AnimatorControllerParameter parameter = parameters[i];
+            if (parameter.type == expectedType && parameter.name == parameterName)
+            {
+                ResolvedParameterCache[cacheKey] = parameter.name;
+                return parameter.name;
+            }
+        }
+
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            AnimatorControllerParameter parameter = parameters[i];
+            if (parameter.type == expectedType &&
+                string.Equals(parameter.name, parameterName, StringComparison.OrdinalIgnoreCase))
+            {
+                ResolvedParameterCache[cacheKey] = parameter.name;
+                return parameter.name;
+            }
+        }
+
+        string normalizedTarget = NormalizeParameterName(parameterName);
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            AnimatorControllerParameter parameter = parameters[i];
+            if (parameter.type != expectedType)
+            {
+                continue;
+            }
+
+            if (NormalizeParameterName(parameter.name) == normalizedTarget)
+            {
+                ResolvedParameterCache[cacheKey] = parameter.name;
+                return parameter.name;
+            }
+        }
+
+        string trimmedNumericTarget = NormalizeParameterName(TrimNumericSuffix(parameterName));
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            AnimatorControllerParameter parameter = parameters[i];
+            if (parameter.type != expectedType)
+            {
+                continue;
+            }
+
+            string candidate = NormalizeParameterName(TrimNumericSuffix(parameter.name));
+            if (candidate == trimmedNumericTarget)
+            {
+                ResolvedParameterCache[cacheKey] = parameter.name;
+                return parameter.name;
+            }
+        }
+
+        ResolvedParameterCache[cacheKey] = null;
+        return null;
+    }
+
+    private static void WarnMissing(
+        Animator animator,
+        string parameterName,
+        AnimatorControllerParameterType expectedType)
+    {
+        if (animator == null || string.IsNullOrWhiteSpace(parameterName))
+        {
+            return;
+        }
+
+        string key = BuildCacheKey(animator, parameterName, expectedType);
+        if (!MissingParameterWarnings.Add(key))
+        {
+            return;
+        }
+
+        Debug.LogWarning(
+            $"AnimatorParamAdapter: Missing {expectedType} parameter '{parameterName}' on '{animator.name}'.");
+    }
+
+    private static string BuildCacheKey(
+        Animator animator,
+        string parameterName,
+        AnimatorControllerParameterType expectedType)
+    {
+        int animatorId = animator != null ? animator.GetInstanceID() : 0;
+        return animatorId + "|" + expectedType + "|" + parameterName;
+    }
+
+    private static string NormalizeParameterName(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        StringBuilder builder = new StringBuilder(value.Length);
+        for (int i = 0; i < value.Length; i++)
+        {
+            char character = value[i];
+            if (char.IsLetterOrDigit(character))
+            {
+                builder.Append(char.ToLowerInvariant(character));
+            }
+        }
+
+        return builder.ToString();
+    }
+
+    private static string TrimNumericSuffix(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        int endIndex = value.Length - 1;
+        while (endIndex >= 0 && char.IsWhiteSpace(value[endIndex]))
+        {
+            endIndex--;
+        }
+
+        while (endIndex >= 0 && char.IsDigit(value[endIndex]))
+        {
+            endIndex--;
+        }
+
+        while (endIndex >= 0 && char.IsWhiteSpace(value[endIndex]))
+        {
+            endIndex--;
+        }
+
+        return endIndex >= 0 ? value.Substring(0, endIndex + 1) : string.Empty;
+    }
+}
+
+===== Assets/Scripts/AudioManager.cs =====
+using UnityEngine;
+
+public class AudioManager : MonoBehaviour
+{
+    public static AudioManager Instance { get; private set; }
+
+    [Header("Sources")]
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+
+    [Header("Music")]
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private bool playMusicOnStart = true;
+    [SerializeField] private bool persistAcrossScenes = true;
+
+    [Header("SFX")]
+    [SerializeField] private AudioClip attackSfx;
+    [SerializeField] private AudioClip hitSparkSfx;
+    [SerializeField] private AudioClip uiClickSfx;
+    [SerializeField] private AudioClip zombieDeathSfx;
+    [SerializeField] private AudioClip abilityBurstSfx;
+    [SerializeField] private AudioClip pickupSfx;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        if (persistAcrossScenes)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        EnsureSources();
+    }
+
+    private void Start()
+    {
+        if (playMusicOnStart && backgroundMusic != null)
+        {
+            PlayMusic(backgroundMusic);
+        }
+    }
+
+    public void PlayMusic(AudioClip clip, bool loop = true)
+    {
+        if (musicSource == null || clip == null)
+        {
+            return;
+        }
+
+        if (musicSource.clip == clip && musicSource.isPlaying)
+        {
+            return;
+        }
+
+        musicSource.clip = clip;
+        musicSource.loop = loop;
+        musicSource.Play();
+    }
+
+    public void PlayAttackSfx()
+    {
+        PlayOneShot(attackSfx);
+    }
+
+    public void PlayHitSparkSfx()
+    {
+        PlayOneShot(hitSparkSfx);
+    }
+
+    public void PlayUiClick()
+    {
+        PlayOneShot(uiClickSfx);
+    }
+
+    public void PlayZombieDeathSfx()
+    {
+        PlayOneShot(zombieDeathSfx);
+    }
+
+    public void PlayAbilityBurstSfx()
+    {
+        PlayOneShot(abilityBurstSfx);
+    }
+
+    public void PlayPickupSfx()
+    {
+        PlayOneShot(pickupSfx);
+    }
+
+    public void PlayCustomSfx(AudioClip clip)
+    {
+        PlayOneShot(clip);
+    }
+
+    private void PlayOneShot(AudioClip clip)
+    {
+        if (sfxSource == null || clip == null)
+        {
+            return;
+        }
+
+        sfxSource.PlayOneShot(clip);
+    }
+
+    private void EnsureSources()
+    {
+        if (musicSource == null)
+        {
+            musicSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (sfxSource == null)
+        {
+            sfxSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        musicSource.playOnAwake = false;
+        musicSource.loop = true;
+
+        sfxSource.playOnAwake = false;
+        sfxSource.loop = false;
+    }
+}
+
+===== Assets/Scripts/ChestInteraction.cs =====
+using UnityEngine;
+public class ChestInteraction : MonoBehaviour
+{
+    private Animator animator;
+    private bool isOpened = false;
+    private PlayerController playerController;
+
+    void Start()
+    {
+        playerController = FindObjectOfType<PlayerController>();
+        animator = GetComponent<Animator>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player") && !isOpened)
+        {
+            OpenChest();
+        }
+    }
+
+    private void OpenChest()
+    {
+        animator.SetTrigger("Open");
+        isOpened = true;
+
+        if (playerController != null)
+        {
+            playerController.currentHealth = playerController.maxHealth;
+            if (playerController.healthSlider != null)
+                playerController.healthSlider.value = playerController.currentHealth;
+
+            playerController.FlashGreen();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerController not found in the scene!");
+        }
+    }
+}
+
+===== Assets/Scripts/CleanVfxFactory.cs =====
+using UnityEngine;
+
+public static class CleanVfxFactory
+{
+    public static void SpawnImpactSpark(Vector3 position)
+    {
+        SpawnBurst(
+            name: "ImpactSparkVFX",
+            position: position,
+            startColor: new Color(1f, 0.88f, 0.35f, 1f),
+            startSize: 0.08f,
+            startSpeed: 2.25f,
+            lifetime: 0.25f,
+            particleCount: 16);
+    }
+
+    public static void SpawnAbilityBurstGlow(Vector3 position)
+    {
+        SpawnBurst(
+            name: "AbilityBurstGlowVFX",
+            position: position,
+            startColor: new Color(0.3f, 0.95f, 1f, 1f),
+            startSize: 0.2f,
+            startSpeed: 2.8f,
+            lifetime: 0.45f,
+            particleCount: 28);
+    }
+
+    public static void SpawnZombieDeathPoof(Vector3 position)
+    {
+        SpawnBurst(
+            name: "ZombieDeathPoofVFX",
+            position: position,
+            startColor: new Color(0.7f, 0.7f, 0.75f, 1f),
+            startSize: 0.14f,
+            startSpeed: 1.5f,
+            lifetime: 0.55f,
+            particleCount: 20);
+    }
+
+    private static void SpawnBurst(
+        string name,
+        Vector3 position,
+        Color startColor,
+        float startSize,
+        float startSpeed,
+        float lifetime,
+        int particleCount)
+    {
+        GameObject vfxObject = new GameObject(name);
+        vfxObject.transform.position = position;
+
+        ParticleSystem particles = vfxObject.AddComponent<ParticleSystem>();
+        ParticleSystem.MainModule main = particles.main;
+        main.startColor = startColor;
+        main.startSize = startSize;
+        main.startSpeed = startSpeed;
+        main.startLifetime = lifetime;
+        main.loop = false;
+        main.playOnAwake = false;
+        main.simulationSpace = ParticleSystemSimulationSpace.World;
+
+        ParticleSystem.EmissionModule emission = particles.emission;
+        emission.rateOverTime = 0f;
+        emission.SetBursts(new[]
+        {
+            new ParticleSystem.Burst(0f, (short)Mathf.Max(1, particleCount))
+        });
+
+        ParticleSystem.ShapeModule shape = particles.shape;
+        shape.shapeType = ParticleSystemShapeType.Circle;
+        shape.radius = 0.06f;
+
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime = particles.colorOverLifetime;
+        colorOverLifetime.enabled = true;
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new[]
+            {
+                new GradientColorKey(startColor, 0f),
+                new GradientColorKey(startColor * 0.7f, 1f)
+            },
+            new[]
+            {
+                new GradientAlphaKey(1f, 0f),
+                new GradientAlphaKey(0f, 1f)
+            });
+        colorOverLifetime.color = gradient;
+
+        ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
+        renderer.sortingOrder = 15;
+
+        particles.Play();
+        Object.Destroy(vfxObject, lifetime + 0.5f);
+    }
+}
+
+===== Assets/Scripts/CollectiblePickup.cs =====
+using UnityEngine;
+
+public class CollectiblePickup : MonoBehaviour
+{
+    [SerializeField] private int collectibleAmount = 1;
+    [SerializeField] private int scorePerCollectible = 25;
+    [SerializeField] private AudioClip pickupSfx;
+    [SerializeField] private GameObject pickupVfxPrefab;
+    [SerializeField] private bool destroyOnPickup = true;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        PlayerController player = other.GetComponent<PlayerController>();
+        if (player == null)
+        {
+            player = other.GetComponentInParent<PlayerController>();
+        }
+
+        if (player == null)
+        {
+            return;
+        }
+
+        player.AddCollectible(collectibleAmount, scorePerCollectible);
+
+        if (pickupVfxPrefab != null)
+        {
+            Instantiate(pickupVfxPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            CleanVfxFactory.SpawnImpactSpark(transform.position);
+        }
+
+        if (pickupSfx != null)
+        {
+            AudioManager.Instance?.PlayCustomSfx(pickupSfx);
+        }
+        else
+        {
+            AudioManager.Instance?.PlayPickupSfx();
+        }
+
+        if (destroyOnPickup)
+        {
+            Destroy(gameObject);
+        }
+    }
+}
+
+===== Assets/Scripts/CollisionLayerBootstrap.cs =====
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CollisionLayerBootstrap : MonoBehaviour
+{
+    [Header("Layer Names")]
+    public string playerLayer = "Player";
+    public string enemyLayer = "Enemy";
+    public string projectileLayer = "Projectile";
+    public string obstacleLayer = "Obstacles";
+    public string gateLayer = "Gate";
+    public string interactableLayer = "Interactable";
+    public string regionBoundsLayer = "RegionBounds";
+
+    private static readonly HashSet<string> MissingLayerWarnings = new HashSet<string>();
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void InitializeAtStartup()
+    {
+        ConfigureCollisionMatrix(
+            playerLayer: "Player",
+            enemyLayer: "Enemy",
+            projectileLayer: "Projectile",
+            obstacleLayer: "Obstacles",
+            gateLayer: "Gate",
+            interactableLayer: "Interactable",
+            regionBoundsLayer: "RegionBounds");
+    }
+
+    private void Awake()
+    {
+        ConfigureCollisionMatrix(
+            playerLayer,
+            enemyLayer,
+            projectileLayer,
+            obstacleLayer,
+            gateLayer,
+            interactableLayer,
+            regionBoundsLayer);
+    }
+
+    public static void ConfigureCollisionMatrix(
+        string playerLayer,
+        string enemyLayer,
+        string projectileLayer,
+        string obstacleLayer,
+        string gateLayer,
+        string interactableLayer,
+        string regionBoundsLayer)
+    {
+        SetLayerCollision(playerLayer, projectileLayer, false);
+        SetLayerCollision(projectileLayer, projectileLayer, false);
+        SetLayerCollision(enemyLayer, projectileLayer, true);
+        SetLayerCollision(projectileLayer, obstacleLayer, true);
+        SetLayerCollision(projectileLayer, gateLayer, true);
+        SetLayerCollision(projectileLayer, interactableLayer, false);
+        SetLayerCollision(projectileLayer, regionBoundsLayer, false);
+
+        SetLayerCollision(playerLayer, enemyLayer, true);
+        SetLayerCollision(playerLayer, obstacleLayer, true);
+        SetLayerCollision(enemyLayer, obstacleLayer, true);
+        SetLayerCollision(playerLayer, gateLayer, true);
+        SetLayerCollision(enemyLayer, gateLayer, true);
+        SetLayerCollision(playerLayer, interactableLayer, true);
+        SetLayerCollision(enemyLayer, interactableLayer, false);
+    }
+
+    private static void SetLayerCollision(string layerAName, string layerBName, bool shouldCollide)
+    {
+        int layerA = LayerMask.NameToLayer(layerAName);
+        int layerB = LayerMask.NameToLayer(layerBName);
+        if (layerA < 0 || layerB < 0)
+        {
+            WarnLayerMissing(layerAName);
+            WarnLayerMissing(layerBName);
+            return;
+        }
+
+        Physics2D.IgnoreLayerCollision(layerA, layerB, !shouldCollide);
+    }
+
+    private static void WarnLayerMissing(string layerName)
+    {
+        if (string.IsNullOrWhiteSpace(layerName) || !MissingLayerWarnings.Add(layerName))
+        {
+            return;
+        }
+
+        Debug.LogWarning(
+            $"CollisionLayerBootstrap: Layer '{layerName}' is missing. Add it in Project Settings > Tags and Layers.");
+    }
+}
+
+===== Assets/Scripts/DialoguePanelUI.cs =====
+using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class DialoguePanelUI : MonoBehaviour
+{
+    [SerializeField] private GameObject panelRoot;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private Button nextButton;
+    [SerializeField] private TextMeshProUGUI nextButtonText;
+    [SerializeField] private string defaultNextLabel = "Next";
+
+    public event Action NextPressed;
+
+    private void Awake()
+    {
+        BindButton();
+    }
+
+    public void Configure(
+        GameObject panelRootObject,
+        TextMeshProUGUI dialogueTextComponent,
+        Button nextButtonComponent,
+        TextMeshProUGUI nextButtonTextComponent)
+    {
+        panelRoot = panelRootObject;
+        dialogueText = dialogueTextComponent;
+        nextButton = nextButtonComponent;
+        nextButtonText = nextButtonTextComponent;
+
+        BindButton();
+        SetNextButtonLabel(defaultNextLabel);
+    }
+
+    private void BindButton()
+    {
+        if (nextButton != null)
+        {
+            nextButton.onClick.RemoveListener(HandleNextPressed);
+            nextButton.onClick.AddListener(HandleNextPressed);
+        }
+    }
+
+    public void ShowMessage(string message)
+    {
+        if (panelRoot != null)
+        {
+            panelRoot.SetActive(true);
+        }
+
+        if (dialogueText != null)
+        {
+            dialogueText.text = message;
+        }
+    }
+
+    public void Hide()
+    {
+        if (panelRoot != null)
+        {
+            panelRoot.SetActive(false);
+        }
+    }
+
+    public void SetNextInteractable(bool isInteractable)
+    {
+        if (nextButton != null)
+        {
+            nextButton.interactable = isInteractable;
+        }
+    }
+
+    public void SetNextButtonLabel(string label)
+    {
+        if (nextButtonText != null)
+        {
+            nextButtonText.text = string.IsNullOrWhiteSpace(label) ? defaultNextLabel : label;
+        }
+    }
+
+    private void HandleNextPressed()
+    {
+        AudioManager.Instance?.PlayUiClick();
+        NextPressed?.Invoke();
+    }
+}
+
+===== Assets/Scripts/EnergyPulseProjectile.cs =====
+using UnityEngine;
+using UnityEngine.Serialization;
+
+public class EnergyPulseProjectile : MonoBehaviour
+{
+    [Header("Runtime Stats")]
+    public float speed = 10f;
+    public int damage = 5;
+    public float lifetime = 1.5f;
+
+    [Header("Visual")]
+    public float visualScale = 1f;
+    public int sortingOrder = 50;
+    [FormerlySerializedAs("hitVfx")]
+    public GameObject impactVfxPrefab;
+    public AudioClip impactSfx;
+
+    [Header("Collision")]
+    public LayerMask obstacleLayers;
+    [SerializeField] private string projectileLayerName = "Projectile";
+    [SerializeField] private string obstacleLayerName = "Obstacles";
+    [SerializeField] private string gateLayerName = "Gate";
+
+    private Rigidbody2D rb;
+    private Collider2D projectileCollider;
+    private GameObject owner;
+    private bool launched;
+    private bool impacted;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        projectileCollider = GetComponent<Collider2D>();
+
+        if (rb != null)
+        {
+            rb.gravityScale = 0f;
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+
+        int projectileLayer = LayerMask.NameToLayer(projectileLayerName);
+        if (projectileLayer >= 0)
+        {
+            gameObject.layer = projectileLayer;
+        }
+
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        if (renderer != null)
+        {
+            renderer.sortingOrder = sortingOrder;
+        }
+
+        if (projectileCollider != null && !projectileCollider.isTrigger)
+        {
+            projectileCollider.isTrigger = true;
+        }
+
+        if (obstacleLayers.value == 0)
+        {
+            int obstacleLayer = LayerMask.NameToLayer(obstacleLayerName);
+            int gateLayer = LayerMask.NameToLayer(gateLayerName);
+            int mask = 0;
+            if (obstacleLayer >= 0) mask |= 1 << obstacleLayer;
+            if (gateLayer >= 0) mask |= 1 << gateLayer;
+            obstacleLayers = mask;
+        }
+    }
+
+    private void Start()
+    {
+        if (visualScale > 0f)
+        {
+            transform.localScale *= visualScale;
+        }
+
+        Destroy(gameObject, lifetime);
+    }
+
+    private void FixedUpdate()
+    {
+        if (impacted || rb == null)
+        {
+            return;
+        }
+
+        if (!launched && rb.velocity.sqrMagnitude < 0.01f)
+        {
+            rb.velocity = transform.right * speed;
+            launched = true;
+        }
+    }
+
+    public void Configure(GameObject owner, float speedValue, int damageValue, float lifetimeValue)
+    {
+        this.owner = owner;
+        speed = speedValue;
+        damage = damageValue;
+        lifetime = lifetimeValue;
+    }
+
+    public void Launch(Vector2 direction)
+    {
+        if (rb == null)
+        {
+            return;
+        }
+
+        Vector2 normalizedDirection = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+        rb.velocity = normalizedDirection * speed;
+        launched = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        TryHit(other);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        TryHit(collision.collider);
+    }
+
+    private void TryHit(Collider2D other)
+    {
+        if (impacted || other == null)
+        {
+            return;
+        }
+
+        if (owner != null && other.transform.root == owner.transform.root)
+        {
+            return;
+        }
+
+        ZombieAI zombie = other.GetComponent<ZombieAI>();
+        if (zombie == null)
+        {
+            zombie = other.GetComponentInParent<ZombieAI>();
+        }
+
+        if (zombie != null && !zombie.isDead)
+        {
+            zombie.TakeDamage(damage);
+            Impact();
+            return;
+        }
+
+        bool hitObstacleLayer =
+            obstacleLayers.value != 0 &&
+            (obstacleLayers.value & (1 << other.gameObject.layer)) != 0;
+
+        if (hitObstacleLayer)
+        {
+            Impact();
+            return;
+        }
+
+        if (!other.isTrigger)
+        {
+            Impact();
+        }
+    }
+
+    private void Impact()
+    {
+        impacted = true;
+
+        if (impactVfxPrefab != null)
+        {
+            Instantiate(impactVfxPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            CleanVfxFactory.SpawnImpactSpark(transform.position);
+        }
+
+        if (impactSfx != null)
+        {
+            AudioManager.Instance?.PlayCustomSfx(impactSfx);
+        }
+        else
+        {
+            AudioManager.Instance?.PlayHitSparkSfx();
+        }
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+
+        if (projectileCollider != null)
+        {
+            projectileCollider.enabled = false;
+        }
+
+        Destroy(gameObject);
+    }
+}
+
+===== Assets/Scripts/GameFlowManager.cs =====
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class GameFlowManager : MonoBehaviour
+{
+    public static GameFlowManager Instance { get; private set; }
+
+    [Header("Scene Flow")]
+    public string tutorialSceneName = "TutorialGame";
+    public string gameplaySceneName = "Level1";
+    public string mainMenuSceneName = "Tutorial";
+
+    [Header("Panels")]
+    public GameObject gameOverPanel;
+    public GameObject victoryPanel;
+    public Button retryButton;
+    public Button quitButton;
+    public Button victoryContinueButton;
+    public bool pauseGameplayOnPanelOpen = true;
+
+    [Header("Runtime")]
+    public PlayerController player;
+    public RegionWaveManager regionWaveManager;
+
+    private bool gameEnded;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnhookRuntimeReferences();
+    }
+
+    private void Start()
+    {
+        WireButtons();
+        HookRuntimeReferences();
+        HidePanels();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        gameEnded = false;
+        Time.timeScale = 1f;
+        HookRuntimeReferences();
+        HidePanels();
+    }
+
+    private void HookRuntimeReferences()
+    {
+        UnhookRuntimeReferences();
+
+        if (player == null || !player.HasInputAuthority)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (regionWaveManager == null)
+        {
+            regionWaveManager = FindObjectOfType<RegionWaveManager>();
+        }
+
+        if (player != null)
+        {
+            player.PlayerDied += HandlePlayerDefeated;
+        }
+
+        if (regionWaveManager != null)
+        {
+            regionWaveManager.AllRegionsCompleted += HandleGameplayVictory;
+        }
+    }
+
+    private void UnhookRuntimeReferences()
+    {
+        if (player != null)
+        {
+            player.PlayerDied -= HandlePlayerDefeated;
+        }
+
+        if (regionWaveManager != null)
+        {
+            regionWaveManager.AllRegionsCompleted -= HandleGameplayVictory;
+        }
+    }
+
+    private void WireButtons()
+    {
+        if (retryButton != null)
+        {
+            retryButton.onClick.RemoveListener(RetryCurrentScene);
+            retryButton.onClick.AddListener(RetryCurrentScene);
+        }
+
+        if (quitButton != null)
+        {
+            quitButton.onClick.RemoveListener(QuitToMainMenu);
+            quitButton.onClick.AddListener(QuitToMainMenu);
+        }
+
+        if (victoryContinueButton != null)
+        {
+            victoryContinueButton.onClick.RemoveListener(QuitToMainMenu);
+            victoryContinueButton.onClick.AddListener(QuitToMainMenu);
+        }
+    }
+
+    private void HidePanels()
+    {
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (victoryPanel != null) victoryPanel.SetActive(false);
+    }
+
+    public void CompleteTutorial()
+    {
+        LoadScene(gameplaySceneName);
+    }
+
+    public void LoadTutorial()
+    {
+        LoadScene(tutorialSceneName);
+    }
+
+    public void LoadGameplay()
+    {
+        LoadScene(gameplaySceneName);
+    }
+
+    public void RetryCurrentScene()
+    {
+        Time.timeScale = 1f;
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+
+    public void QuitToMainMenu()
+    {
+        Time.timeScale = 1f;
+        LoadScene(mainMenuSceneName);
+    }
+
+    public void HandlePlayerDefeated()
+    {
+        if (gameEnded)
+        {
+            return;
+        }
+
+        gameEnded = true;
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+
+        if (pauseGameplayOnPanelOpen)
+        {
+            Time.timeScale = 0f;
+        }
+    }
+
+    private void HandleGameplayVictory()
+    {
+        if (gameEnded)
+        {
+            return;
+        }
+
+        gameEnded = true;
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(true);
+        }
+
+        if (pauseGameplayOnPanelOpen)
+        {
+            Time.timeScale = 0f;
+        }
+    }
+
+    private static void LoadScene(string sceneName)
+    {
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            Debug.LogWarning("GameFlowManager tried to load an empty scene name.");
+            return;
+        }
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(sceneName);
+    }
+}
+
+===== Assets/Scripts/GameHudController.cs =====
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GameHudController : MonoBehaviour
+{
+    [Header("References")]
+    public PlayerController player;
+
+    [Header("HUD Widgets")]
+    public Slider healthSlider;
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI killsText;
+    public TextMeshProUGUI collectiblesText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI burstChargeText;
+    public TextMeshProUGUI burstUnlockText;
+
+    private void Start()
+    {
+        if (player == null || !player.HasInputAuthority)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        HookPlayer();
+        RefreshAll();
+    }
+
+    private void OnDestroy()
+    {
+        UnhookPlayer();
+    }
+
+    private void HookPlayer()
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        player.HealthChanged += OnHealthChanged;
+        player.KillCountChanged += OnKillCountChanged;
+        player.CollectibleChanged += OnCollectibleChanged;
+        player.ScoreChanged += OnScoreChanged;
+        player.BurstChargeChanged += OnBurstChargeChanged;
+    }
+
+    private void UnhookPlayer()
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        player.HealthChanged -= OnHealthChanged;
+        player.KillCountChanged -= OnKillCountChanged;
+        player.CollectibleChanged -= OnCollectibleChanged;
+        player.ScoreChanged -= OnScoreChanged;
+        player.BurstChargeChanged -= OnBurstChargeChanged;
+    }
+
+    private void RefreshAll()
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        OnHealthChanged(player.currentHealth, player.maxHealth);
+        OnKillCountChanged(player.zombieKillCount);
+        OnBurstChargeChanged(player.BurstCharges);
+    }
+
+    private void OnHealthChanged(int current, int max)
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = max;
+            healthSlider.value = current;
+        }
+
+        if (healthText != null)
+        {
+            healthText.text = current + " / " + max;
+        }
+    }
+
+    private void OnKillCountChanged(int kills)
+    {
+        if (killsText != null)
+        {
+            killsText.text = kills.ToString();
+        }
+
+        if (burstUnlockText != null && player != null)
+        {
+            burstUnlockText.text = "Next Burst In: " + player.KillsUntilNextBurst;
+        }
+    }
+
+    private void OnCollectibleChanged(int collectibles)
+    {
+        if (collectiblesText != null)
+        {
+            collectiblesText.text = collectibles.ToString();
+        }
+    }
+
+    private void OnScoreChanged(int currentScore)
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = currentScore.ToString();
+        }
+    }
+
+    private void OnBurstChargeChanged(int charges)
+    {
+        if (burstChargeText != null)
+        {
+            burstChargeText.text = charges.ToString();
+        }
+
+        if (burstUnlockText != null && player != null)
+        {
+            burstUnlockText.text = "Next Burst In: " + player.KillsUntilNextBurst;
+        }
+    }
+}
+
+===== Assets/Scripts/PlayerController.cs =====
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
+
+public class PlayerController : MonoBehaviour
+{
+    private static readonly List<PlayerController> Instances = new List<PlayerController>();
+    private static PlayerController primaryInstance;
+
+    [Header("References")]
+    public AnimationController animationController;
+
+    [Header("Movement")]
+    [FormerlySerializedAs("speed")]
+    public float moveSpeed = 1.0f;
+    [Range(0.3f, 1f)] public float crouchSpeedMultiplier = 0.6f;
+    [Range(1f, 2f)] public float runSpeedMultiplier = 1.25f;
+
+    [Header("Class Flags")]
+    public bool isActive = true;
+    public bool isRanged = true;
+    public bool isStealth;
+    public bool isShapeShifter;
+    public bool isSummoner;
+    public bool isMelee;
+
+    [Header("Projectile Attack")]
+    public GameObject projectilePrefab;
+    public float projectileSpeed = 10.0f;
+    [FormerlySerializedAs("shootDelay")]
+    public float projectileCooldown = 0.1f;
+    [Min(0.01f)] public float minProjectileCooldown = 0.02f;
+    [Min(0.01f)] public float maxRecommendedProjectileCooldown = 0.1f;
+    public bool clampLegacyProjectileCooldown = true;
+    public float projectileLifetime = 1.5f;
+    [Range(0.05f, 2f)] public float projectileScaleMultiplier = 0.25f;
+    public float projectileSpawnOffset = 0.35f;
+    public int projectileDamage = 1;
+    public bool allowRuntimeProjectileFallback = true;
+    public Sprite runtimeFallbackProjectileSprite;
+    public Color runtimeFallbackProjectileColor = new Color(0.35f, 0.95f, 1f, 0.95f);
+    [Range(0.03f, 0.3f)] public float runtimeFallbackProjectileRadius = 0.09f;
+
+    [Header("Special Energy Effects")]
+    [FormerlySerializedAs("AoEPrefab")] public GameObject areaPulsePrefab;
+    [FormerlySerializedAs("Special1Prefab")] public GameObject specialPulsePrefab;
+    [FormerlySerializedAs("HookPrefab")] public GameObject summonPulsePrefab;
+    [FormerlySerializedAs("ShapeShiftPrefab")] public GameObject shapeShiftPulsePrefab;
+    public float castDelaySeconds = 0.25f;
+    public GameObject meleePrefab;
+
+    [Header("Radial Burst")]
+    public KeyCode radialBurstKey = KeyCode.Q;
+    public int burstProjectileCount = 10;
+    public int killsPerBurstUnlock = 10;
+    [SerializeField] private int burstCharges;
+    [SerializeField] private int nextBurstUnlockAt = 10;
+    public GameObject burstEffectPrefab;
+
+    [Header("Health & UI")]
+    public int maxHealth = 100;
+    public int currentHealth;
+    public bool isDead;
+    public Slider healthSlider;
+    public GameObject gameOver;
+    public bool autoRestartOnDeath;
+    public float restartDelaySeconds = 3f;
+
+    [Header("Scoring UI")]
+    public int zombieKillCount;
+    public TextMeshProUGUI killCountText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI burstCounterText;
+    [SerializeField] private int collectibleCount;
+    [SerializeField] private int score;
+
+    [Header("Layer Names")]
+    [SerializeField] private string playerLayerName = "Player";
+    [SerializeField] private string projectileLayerName = "Projectile";
+
+    private Rigidbody2D rb;
+    private CircleCollider2D circleCollider;
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+
+    private bool isOnStairs;
+    private bool isRunning;
+    private float nextProjectileTime;
+    private Vector3 originalKillTextScale;
+    private Coroutine killPulseCoroutine;
+    private Vector2 movementDirection;
+    private Vector2 lookDirection = Vector2.right;
+    private float lookAngle;
+    private bool hasInputAuthority = true;
+    private static Sprite generatedFallbackProjectileSprite;
+
+    public bool isCrouching;
+
+    public event Action<int, int> HealthChanged;
+    public event Action<int> KillCountChanged;
+    public event Action<int> BurstChargeChanged;
+    public event Action<int> CollectibleChanged;
+    public event Action<int> ScoreChanged;
+    public event Action ProjectileAttackPerformed;
+    public event Action RadialBurstUsed;
+    public event Action PlayerMoved;
+    public event Action PlayerDied;
+
+    public Vector2 MovementDirection => movementDirection;
+    public Vector2 LookDirection => lookDirection;
+    public bool IsRunning => isRunning;
+    public int BurstCharges => burstCharges;
+    public int KillsUntilNextBurst => Mathf.Max(0, nextBurstUnlockAt - zombieKillCount);
+    public bool HasInputAuthority => hasInputAuthority;
+    public static PlayerController Primary => primaryInstance != null ? primaryInstance : FindPrimary();
+
+    private void OnEnable()
+    {
+        RegisterInstance(this);
+    }
+
+    private void OnDisable()
+    {
+        UnregisterInstance(this);
+    }
+
+    private void OnDestroy()
+    {
+        UnregisterInstance(this);
+    }
+
+    private void Start()
+    {
+        CacheComponents();
+        if (animationController == null) animationController = GetComponent<AnimationController>();
+
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
+
+        if (hasInputAuthority)
+        {
+            TryAssignLayer(gameObject, playerLayerName);
+        }
+
+        NormalizeLegacyCombatValues();
+        currentHealth = Mathf.Max(1, maxHealth);
+        UpdateHealthUi();
+
+        if (killCountText != null)
+        {
+            originalKillTextScale = killCountText.transform.localScale;
+            killCountText.text = zombieKillCount.ToString();
+        }
+
+        nextBurstUnlockAt = Mathf.Max(1, nextBurstUnlockAt);
+        if (nextBurstUnlockAt < killsPerBurstUnlock)
+        {
+            nextBurstUnlockAt = killsPerBurstUnlock;
+        }
+
+        UpdateScoreUi();
+        UpdateBurstUi();
+    }
+
+    private void Update()
+    {
+        if (isDead || !hasInputAuthority)
+        {
+            return;
+        }
+
+        if (Camera.main == null)
+        {
+            return;
+        }
+
+        UpdateLookDirectionFromMouse();
+        HandleMovementInput();
+        HandleAttackInput();
+        HandleSpecialInput();
+        HandleCrouchingToggle();
+        HandleRadialBurstInput();
+        UpdateAnimation();
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDead || !hasInputAuthority || rb == null)
+        {
+            return;
+        }
+
+        float speed = moveSpeed;
+        if (isCrouching)
+        {
+            speed *= crouchSpeedMultiplier;
+        }
+        else if (isRunning)
+        {
+            speed *= runSpeedMultiplier;
+        }
+
+        rb.MovePosition(rb.position + movementDirection * speed * Time.fixedDeltaTime);
+    }
+
+    private void UpdateLookDirectionFromMouse()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 toMouse = mousePosition - (Vector2)transform.position;
+        if (toMouse.sqrMagnitude < 0.0001f)
+        {
+            return;
+        }
+
+        lookAngle = Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg;
+        lookAngle = SnapAngleToEightDirections(lookAngle);
+        lookDirection = new Vector2(
+            Mathf.Cos(lookAngle * Mathf.Deg2Rad),
+            Mathf.Sin(lookAngle * Mathf.Deg2Rad));
+    }
+
+    private void HandleMovementInput()
+    {
+        movementDirection = Vector2.zero;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            movementDirection += lookDirection;
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            movementDirection -= lookDirection;
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            movementDirection += new Vector2(-lookDirection.y, lookDirection.x);
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            movementDirection += new Vector2(lookDirection.y, -lookDirection.x);
+        }
+
+        if (movementDirection.sqrMagnitude > 1f)
+        {
+            movementDirection.Normalize();
+        }
+
+        isRunning = !isCrouching && movementDirection.sqrMagnitude > 0.0001f && Input.GetKey(KeyCode.LeftShift);
+
+        if (movementDirection.sqrMagnitude > 0.0001f)
+        {
+            PlayerMoved?.Invoke();
+        }
+    }
+
+    private void HandleAttackInput()
+    {
+        if (!HasProjectileSource())
+        {
+            return;
+        }
+
+        if (!Input.GetMouseButton(1))
+        {
+            return;
+        }
+
+        if (Time.time < nextProjectileTime)
+        {
+            return;
+        }
+
+        nextProjectileTime = Time.time + GetEffectiveProjectileCooldown();
+        FireProjectile(lookDirection, projectileDamage);
+        ProjectileAttackPerformed?.Invoke();
+        animationController?.TriggerAttackAnimation();
+        AudioManager.Instance?.PlayAttackSfx();
+    }
+
+    private void HandleSpecialInput()
+    {
+        if (!isActive)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            StartCoroutine(SpawnPulseAfterDelay(specialPulsePrefab, castDelaySeconds));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            StartCoroutine(SpawnPulseAfterDelay(areaPulsePrefab, castDelaySeconds));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            StartCoroutine(SpawnPulseAfterDelay(summonPulsePrefab, castDelaySeconds));
+        }
+
+        if (Input.GetKeyDown(KeyCode.C) && isShapeShifter)
+        {
+            StartCoroutine(SpawnPulseAfterDelay(shapeShiftPulsePrefab, 0.05f));
+        }
+    }
+
+    private void HandleCrouchingToggle()
+    {
+        if (!Input.GetKeyDown(KeyCode.C))
+        {
+            return;
+        }
+
+        isCrouching = !isCrouching;
+        if (isStealth && spriteRenderer != null)
+        {
+            spriteRenderer.color = isCrouching
+                ? new Color(0.55f, 0.55f, 0.55f, 0.55f)
+                : originalColor;
+        }
+    }
+
+    private void HandleRadialBurstInput()
+    {
+        if (!Input.GetKeyDown(radialBurstKey))
+        {
+            return;
+        }
+
+        TryUseRadialBurst();
+    }
+
+    private void UpdateAnimation()
+    {
+        if (animationController == null)
+        {
+            return;
+        }
+
+        animationController.UpdateMovementAnimation(
+            movementDirection,
+            lookDirection,
+            isRunning,
+            isCrouching);
+    }
+
+    private void FireProjectile(Vector2 direction, int damageValue)
+    {
+        if (direction.sqrMagnitude <= 0.0001f)
+        {
+            direction = lookDirection.sqrMagnitude > 0.0001f ? lookDirection : Vector2.right;
+        }
+
+        Vector3 spawnPosition = transform.position + (Vector3)(direction.normalized * projectileSpawnOffset);
+        float rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        GameObject projectile;
+        if (projectilePrefab != null)
+        {
+            projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.Euler(0f, 0f, rotation));
+            projectile.transform.localScale *= projectileScaleMultiplier;
+        }
+        else
+        {
+            if (!allowRuntimeProjectileFallback)
+            {
+                return;
+            }
+
+            projectile = CreateRuntimeProjectile(spawnPosition, rotation);
+        }
+
+        TryAssignLayerRecursively(projectile, projectileLayerName);
+        IgnoreProjectileCollisionWithPlayer(projectile);
+
+        EnergyPulseProjectile pulse = projectile.GetComponent<EnergyPulseProjectile>();
+        if (pulse != null)
+        {
+            pulse.Configure(
+                owner: gameObject,
+                speedValue: projectileSpeed,
+                damageValue: damageValue,
+                lifetimeValue: projectileLifetime);
+            pulse.Launch(direction);
+            return;
+        }
+
+        Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
+        if (projectileRb != null)
+        {
+            projectileRb.velocity = direction.normalized * projectileSpeed;
+        }
+
+        Destroy(projectile, projectileLifetime);
+    }
+
+    private bool HasProjectileSource()
+    {
+        return projectilePrefab != null || allowRuntimeProjectileFallback;
+    }
+
+    private float GetEffectiveProjectileCooldown()
+    {
+        float minimum = Mathf.Max(0.01f, minProjectileCooldown);
+        return Mathf.Max(minimum, projectileCooldown);
+    }
+
+    private void NormalizeLegacyCombatValues()
+    {
+        minProjectileCooldown = Mathf.Max(0.01f, minProjectileCooldown);
+        maxRecommendedProjectileCooldown = Mathf.Max(minProjectileCooldown, maxRecommendedProjectileCooldown);
+
+        projectileCooldown = Mathf.Max(minProjectileCooldown, projectileCooldown);
+        if (clampLegacyProjectileCooldown && projectileCooldown > maxRecommendedProjectileCooldown)
+        {
+            projectileCooldown = maxRecommendedProjectileCooldown;
+        }
+
+        projectileSpeed = Mathf.Max(0.1f, projectileSpeed);
+        projectileLifetime = Mathf.Max(0.05f, projectileLifetime);
+        projectileScaleMultiplier = Mathf.Max(0.05f, projectileScaleMultiplier);
+    }
+
+    private GameObject CreateRuntimeProjectile(Vector3 spawnPosition, float rotation)
+    {
+        GameObject projectile = new GameObject("RuntimeEnergyPulse");
+        projectile.transform.position = spawnPosition;
+        projectile.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
+        projectile.transform.localScale = Vector3.one * Mathf.Max(0.05f, projectileScaleMultiplier);
+
+        SpriteRenderer renderer = projectile.AddComponent<SpriteRenderer>();
+        renderer.sprite = runtimeFallbackProjectileSprite != null
+            ? runtimeFallbackProjectileSprite
+            : GetGeneratedFallbackProjectileSprite();
+        renderer.color = runtimeFallbackProjectileColor;
+        renderer.sortingOrder = 50;
+
+        Rigidbody2D body = projectile.AddComponent<Rigidbody2D>();
+        body.gravityScale = 0f;
+        body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        body.interpolation = RigidbodyInterpolation2D.Interpolate;
+        body.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        CircleCollider2D circle = projectile.AddComponent<CircleCollider2D>();
+        circle.isTrigger = true;
+        circle.radius = runtimeFallbackProjectileRadius;
+
+        EnergyPulseProjectile energyProjectile = projectile.AddComponent<EnergyPulseProjectile>();
+        energyProjectile.visualScale = 1f;
+
+        return projectile;
+    }
+
+    private static Sprite GetGeneratedFallbackProjectileSprite()
+    {
+        if (generatedFallbackProjectileSprite != null)
+        {
+            return generatedFallbackProjectileSprite;
+        }
+
+        const int size = 16;
+        Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+        {
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Clamp
+        };
+
+        Vector2 center = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
+        float maxDistance = center.magnitude;
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float distance = Vector2.Distance(new Vector2(x, y), center);
+                float alpha = Mathf.Clamp01(1f - (distance / maxDistance));
+                texture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
+            }
+        }
+
+        texture.Apply(false, true);
+
+        generatedFallbackProjectileSprite = Sprite.Create(
+            texture,
+            new Rect(0f, 0f, size, size),
+            new Vector2(0.5f, 0.5f),
+            size);
+
+        generatedFallbackProjectileSprite.name = "GeneratedEnergyPulseSprite";
+        return generatedFallbackProjectileSprite;
+    }
+
+    private void IgnoreProjectileCollisionWithPlayer(GameObject projectile)
+    {
+        Collider2D projectileCollider = projectile.GetComponent<Collider2D>();
+        if (projectileCollider == null)
+        {
+            return;
+        }
+
+        Collider2D[] playerColliders = GetComponentsInChildren<Collider2D>();
+        for (int i = 0; i < playerColliders.Length; i++)
+        {
+            Collider2D playerCollider = playerColliders[i];
+            if (playerCollider != null)
+            {
+                Physics2D.IgnoreCollision(projectileCollider, playerCollider, true);
+            }
+        }
+    }
+
+    private IEnumerator SpawnPulseAfterDelay(GameObject pulsePrefab, float delaySeconds)
+    {
+        if (pulsePrefab == null)
+        {
+            yield break;
+        }
+
+        yield return new WaitForSeconds(delaySeconds);
+        Instantiate(pulsePrefab, transform.position, Quaternion.identity);
+    }
+
+    public bool TryUseRadialBurst()
+    {
+        if (!hasInputAuthority)
+        {
+            return false;
+        }
+
+        if (burstCharges <= 0 || !HasProjectileSource())
+        {
+            return false;
+        }
+
+        burstCharges--;
+        BurstChargeChanged?.Invoke(burstCharges);
+        UpdateBurstUi();
+
+        float step = 360f / Mathf.Max(1, burstProjectileCount);
+        for (int i = 0; i < burstProjectileCount; i++)
+        {
+            float angle = (step * i) * Mathf.Deg2Rad;
+            Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+            FireProjectile(direction, projectileDamage);
+        }
+
+        if (burstEffectPrefab != null)
+        {
+            Instantiate(burstEffectPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            CleanVfxFactory.SpawnAbilityBurstGlow(transform.position);
+        }
+
+        AudioManager.Instance?.PlayAbilityBurstSfx();
+        RadialBurstUsed?.Invoke();
+        return true;
+    }
+
+    public void GrantBurstCharges(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        burstCharges += amount;
+        BurstChargeChanged?.Invoke(burstCharges);
+        UpdateBurstUi();
+    }
+
+    public void TakeDamage(int damageAmount)
+    {
+        if (!hasInputAuthority && Primary != null && Primary != this)
+        {
+            Primary.TakeDamage(damageAmount);
+            return;
+        }
+
+        if (isDead)
+        {
+            return;
+        }
+
+        currentHealth -= Mathf.Max(0, damageAmount);
+        currentHealth = Mathf.Max(0, currentHealth);
+        UpdateHealthUi();
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            animationController?.TriggerTakeDamageAnimation();
+            CleanVfxFactory.SpawnImpactSpark(transform.position);
+            AudioManager.Instance?.PlayHitSparkSfx();
+        }
+    }
+
+    private void Die()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        isDead = true;
+
+        if (circleCollider != null)
+        {
+            circleCollider.enabled = false;
+        }
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        animationController?.TriggerDie();
+        if (gameOver != null) gameOver.SetActive(true);
+        PlayerDied?.Invoke();
+
+        GameFlowManager flow = FindObjectOfType<GameFlowManager>();
+        if (flow != null)
+        {
+            flow.HandlePlayerDefeated();
+        }
+
+        if (autoRestartOnDeath)
+        {
+            StartCoroutine(RestartSceneAfterDelay(restartDelaySeconds));
+        }
+    }
+
+    private IEnumerator RestartSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void IncrementZombieKillCount()
+    {
+        if (!hasInputAuthority && Primary != null && Primary != this)
+        {
+            Primary.IncrementZombieKillCount();
+            return;
+        }
+
+        zombieKillCount++;
+        AddScore(100);
+
+        if (killCountText != null)
+        {
+            killCountText.text = zombieKillCount.ToString();
+            if (killPulseCoroutine != null)
+            {
+                StopCoroutine(killPulseCoroutine);
+            }
+
+            killPulseCoroutine = StartCoroutine(PulseTextEffect(killCountText));
+        }
+
+        while (zombieKillCount >= nextBurstUnlockAt)
+        {
+            burstCharges++;
+            nextBurstUnlockAt += Mathf.Max(1, killsPerBurstUnlock);
+        }
+
+        KillCountChanged?.Invoke(zombieKillCount);
+        BurstChargeChanged?.Invoke(burstCharges);
+        UpdateBurstUi();
+    }
+
+    public void AddCollectible(int amount, int scorePerCollectible = 25)
+    {
+        if (!hasInputAuthority && Primary != null && Primary != this)
+        {
+            Primary.AddCollectible(amount, scorePerCollectible);
+            return;
+        }
+
+        collectibleCount += Mathf.Max(1, amount);
+        CollectibleChanged?.Invoke(collectibleCount);
+        AddScore(Mathf.Max(0, scorePerCollectible) * amount);
+    }
+
+    private void AddScore(int delta)
+    {
+        score += Mathf.Max(0, delta);
+        ScoreChanged?.Invoke(score);
+        UpdateScoreUi();
+    }
+
+    private IEnumerator PulseTextEffect(TextMeshProUGUI text)
+    {
+        float duration = 0.2f;
+        float maxScaleFactor = 1.5f;
+        float time = 0f;
+        Vector3 maxScale = originalKillTextScale * maxScaleFactor;
+
+        while (time < duration * 0.5f)
+        {
+            text.transform.localScale = Vector3.Lerp(text.transform.localScale, maxScale, time / (duration * 0.5f));
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        text.transform.localScale = maxScale;
+        time = 0f;
+
+        while (time < duration * 0.5f)
+        {
+            text.transform.localScale = Vector3.Lerp(text.transform.localScale, originalKillTextScale, time / (duration * 0.5f));
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        text.transform.localScale = originalKillTextScale;
+        killPulseCoroutine = null;
+    }
+
+    private void UpdateHealthUi()
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+
+        HealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    private void UpdateScoreUi()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = score.ToString();
+        }
+    }
+
+    private void UpdateBurstUi()
+    {
+        if (burstCounterText != null)
+        {
+            burstCounterText.text = "Burst: " + burstCharges;
+        }
+    }
+
+    public void FlashGreen()
+    {
+        StartCoroutine(FlashEffect());
+    }
+
+    private IEnumerator FlashEffect()
+    {
+        if (spriteRenderer == null)
+        {
+            yield break;
+        }
+
+        spriteRenderer.color = Color.green;
+        yield return new WaitForSeconds(0.35f);
+        spriteRenderer.color = originalColor;
+    }
+
+    public void SetArcherStatus(bool status)
+    {
+        isRanged = status;
+    }
+
+    public void SetActiveStatus(bool status)
+    {
+        isActive = status;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Stairs"))
+        {
+            isOnStairs = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Stairs"))
+        {
+            isOnStairs = false;
+        }
+    }
+
+    private float SnapAngleToEightDirections(float angle)
+    {
+        angle = (angle + 360f) % 360f;
+
+        if (isOnStairs)
+        {
+            if (angle < 30f || angle >= 330f) return 0f;
+            if (angle < 75f) return 60f;
+            if (angle < 105f) return 90f;
+            if (angle < 150f) return 120f;
+            if (angle < 210f) return 180f;
+            if (angle < 255f) return 240f;
+            if (angle < 285f) return 270f;
+            return 300f;
+        }
+
+        if (angle < 15f || angle >= 345f) return 0f;
+        if (angle < 75f) return 30f;
+        if (angle < 105f) return 90f;
+        if (angle < 165f) return 150f;
+        if (angle < 195f) return 180f;
+        if (angle < 255f) return 210f;
+        if (angle < 285f) return 270f;
+        return 330f;
+    }
+
+    public static PlayerController FindPrimary()
+    {
+        if (primaryInstance != null)
+        {
+            return primaryInstance;
+        }
+
+        RefreshPrimaryInstance();
+        if (primaryInstance != null)
+        {
+            return primaryInstance;
+        }
+
+        return FindObjectOfType<PlayerController>();
+    }
+
+    private static void RegisterInstance(PlayerController controller)
+    {
+        if (controller == null || Instances.Contains(controller))
+        {
+            return;
+        }
+
+        Instances.Add(controller);
+        RefreshPrimaryInstance();
+    }
+
+    private static void UnregisterInstance(PlayerController controller)
+    {
+        if (controller == null)
+        {
+            return;
+        }
+
+        Instances.Remove(controller);
+        if (primaryInstance == controller)
+        {
+            primaryInstance = null;
+        }
+
+        RefreshPrimaryInstance();
+    }
+
+    private static void RefreshPrimaryInstance()
+    {
+        for (int i = Instances.Count - 1; i >= 0; i--)
+        {
+            if (Instances[i] == null)
+            {
+                Instances.RemoveAt(i);
+            }
+        }
+
+        PlayerController best = null;
+        int bestScore = int.MinValue;
+        for (int i = 0; i < Instances.Count; i++)
+        {
+            PlayerController candidate = Instances[i];
+            if (candidate == null || !candidate.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+
+            int score = EvaluatePrimaryScore(candidate);
+            if (score > bestScore)
+            {
+                best = candidate;
+                bestScore = score;
+            }
+        }
+
+        primaryInstance = best;
+
+        for (int i = 0; i < Instances.Count; i++)
+        {
+            PlayerController controller = Instances[i];
+            if (controller != null)
+            {
+                controller.ApplyInputAuthority(controller == primaryInstance);
+            }
+        }
+    }
+
+    private static int EvaluatePrimaryScore(PlayerController candidate)
+    {
+        int score = 0;
+        if (candidate.projectilePrefab != null) score += 100;
+        if (candidate.animationController != null) score += 20;
+        if (!candidate.isDead) score += 20;
+        if (candidate.enabled) score += 10;
+        if (candidate.gameObject.CompareTag("Player")) score += 5;
+        return score;
+    }
+
+    private void ApplyInputAuthority(bool authority)
+    {
+        hasInputAuthority = authority;
+        CacheComponents();
+
+        if (authority)
+        {
+            if (rb != null)
+            {
+                rb.simulated = true;
+                rb.freezeRotation = true;
+            }
+
+            if (circleCollider != null)
+            {
+                circleCollider.enabled = true;
+            }
+
+            if (!CompareTag("Player"))
+            {
+                gameObject.tag = "Player";
+            }
+
+            SetVisualState(true);
+        }
+        else
+        {
+            movementDirection = Vector2.zero;
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                rb.simulated = false;
+            }
+
+            if (circleCollider != null)
+            {
+                circleCollider.enabled = false;
+            }
+
+            if (CompareTag("Player"))
+            {
+                gameObject.tag = "Untagged";
+            }
+
+            SetVisualState(false);
+        }
+    }
+
+    private void CacheComponents()
+    {
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
+
+        if (circleCollider == null)
+        {
+            circleCollider = GetComponent<CircleCollider2D>();
+        }
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+    }
+
+    private static void TryAssignLayer(GameObject target, string layerName)
+    {
+        if (target == null || string.IsNullOrWhiteSpace(layerName))
+        {
+            return;
+        }
+
+        int layer = LayerMask.NameToLayer(layerName);
+        if (layer >= 0)
+        {
+            target.layer = layer;
+        }
+    }
+
+    private static void TryAssignLayerRecursively(GameObject target, string layerName)
+    {
+        if (target == null || string.IsNullOrWhiteSpace(layerName))
+        {
+            return;
+        }
+
+        int layer = LayerMask.NameToLayer(layerName);
+        if (layer < 0)
+        {
+            return;
+        }
+
+        AssignLayerRecursively(target.transform, layer);
+    }
+
+    private static void AssignLayerRecursively(Transform root, int layer)
+    {
+        if (root == null)
+        {
+            return;
+        }
+
+        root.gameObject.layer = layer;
+        for (int i = 0; i < root.childCount; i++)
+        {
+            AssignLayerRecursively(root.GetChild(i), layer);
+        }
+    }
+
+    private void SetVisualState(bool enabled)
+    {
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] != null)
+            {
+                renderers[i].enabled = enabled;
+            }
+        }
+
+        Animator[] animators = GetComponentsInChildren<Animator>(true);
+        for (int i = 0; i < animators.Length; i++)
+        {
+            if (animators[i] != null)
+            {
+                animators[i].enabled = enabled;
+            }
+        }
+    }
+}
+
+===== Assets/Scripts/RegionGate.cs =====
+using UnityEngine;
+
+public class RegionGate : MonoBehaviour
+{
+    [SerializeField] private Collider2D primaryCollider;
+    [SerializeField] private Collider2D[] additionalColliders;
+    [SerializeField] private GameObject[] lockedVisuals;
+    [SerializeField] private GameObject[] unlockedVisuals;
+    [SerializeField] private bool lockedAtStart = true;
+
+    public bool IsLocked { get; private set; }
+
+    private void Awake()
+    {
+        if (primaryCollider == null)
+        {
+            primaryCollider = GetComponent<Collider2D>();
+        }
+
+        SetLocked(lockedAtStart);
+    }
+
+    public void SetLocked(bool locked)
+    {
+        IsLocked = locked;
+
+        if (primaryCollider != null)
+        {
+            primaryCollider.enabled = locked;
+        }
+
+        if (additionalColliders != null)
+        {
+            for (int i = 0; i < additionalColliders.Length; i++)
+            {
+                Collider2D extraCollider = additionalColliders[i];
+                if (extraCollider != null)
+                {
+                    extraCollider.enabled = locked;
+                }
+            }
+        }
+
+        ToggleVisuals(lockedVisuals, locked);
+        ToggleVisuals(unlockedVisuals, !locked);
+    }
+
+    private static void ToggleVisuals(GameObject[] visuals, bool state)
+    {
+        if (visuals == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < visuals.Length; i++)
+        {
+            if (visuals[i] != null)
+            {
+                visuals[i].SetActive(state);
+            }
+        }
+    }
+}
+
+===== Assets/Scripts/RegionWaveManager.cs =====
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Cinemachine;
+using UnityEngine;
+
+[Serializable]
+public class RegionWaveDefinition
+{
+    [Min(1)] public int enemyCount = 8;
+    [Min(0.1f)] public float spawnRate = 2f;
+    [Range(0f, 1f)] public float runnerChance = 0.15f;
+    [Range(0f, 1f)] public float tankChance = 0.08f;
+    [Range(0f, 1f)] public float spitterChance;
+    [Min(0.1f)] public float healthMultiplier = 1f;
+    [Min(0.1f)] public float speedMultiplier = 1f;
+    [Min(0.1f)] public float damageMultiplier = 1f;
+}
+
+[Serializable]
+public class RegionDefinition
+{
+    public string regionName = "Region";
+    public Collider2D regionBounds;
+    public Collider2D confinerBounds;
+    public Transform playerSpawnPoint;
+    public RegionGate[] gatesToLock;
+    public List<RegionWaveDefinition> waves = new List<RegionWaveDefinition>();
+    public bool isBossRegion;
+}
+
+public class RegionWaveManager : MonoBehaviour
+{
+    private enum MutantVariant
+    {
+        Normal,
+        Runner,
+        Tank,
+        Spitter,
+        Boss
+    }
+
+    [Header("References")]
+    public PlayerController player;
+    public ZombieAI zombiePrefab;
+    public Transform zombieContainer;
+
+    [Header("Region Sequence")]
+    public List<RegionDefinition> regions = new List<RegionDefinition>();
+    public bool autoStart = true;
+    public float regionTransitionDelay = 0.75f;
+    public float waveIntermissionSeconds = 1.0f;
+
+    [Header("Spawning")]
+    public int maxAliveAtOnce = 12;
+    public float minSpawnDistanceFromPlayer = 5.0f;
+    public float offscreenSpawnMargin = 1.5f;
+
+    [Header("Cinemachine")]
+    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineConfiner2D confiner2D;
+
+    [Header("Debug")]
+    [SerializeField] private int currentRegionIndex = -1;
+    [SerializeField] private int aliveEnemies;
+    [SerializeField] private int regionKillCount;
+    [SerializeField] private int regionTargetKillCount;
+    [SerializeField] private bool regionRunning;
+
+    public event Action<int, RegionDefinition> RegionStarted;
+    public event Action<int, RegionDefinition> RegionCompleted;
+    public event Action<int, int> RegionProgressUpdated;
+    public event Action AllRegionsCompleted;
+
+    private readonly List<ZombieAI> activeEnemies = new List<ZombieAI>();
+    private Coroutine regionRoutine;
+
+    public int CurrentRegionIndex => currentRegionIndex;
+    public bool IsRegionRunning => regionRunning;
+
+    private void Start()
+    {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (autoStart)
+        {
+            StartRegionSequence();
+        }
+    }
+
+    public void StartRegionSequence()
+    {
+        if (regionRoutine != null)
+        {
+            StopCoroutine(regionRoutine);
+        }
+
+        if (regions == null || regions.Count == 0)
+        {
+            Debug.LogWarning("RegionWaveManager has no regions configured.");
+            return;
+        }
+
+        regionRoutine = StartCoroutine(RunRegionSequence());
+    }
+
+    private IEnumerator RunRegionSequence()
+    {
+        CleanupActiveEnemies();
+
+        for (int regionIndex = 0; regionIndex < regions.Count; regionIndex++)
+        {
+            RegionDefinition region = regions[regionIndex];
+            currentRegionIndex = regionIndex;
+            regionRunning = true;
+            aliveEnemies = 0;
+            regionKillCount = 0;
+            regionTargetKillCount = CountRegionTargets(region);
+            RegionProgressUpdated?.Invoke(regionKillCount, regionTargetKillCount);
+
+            PrepareRegion(region);
+            RegionStarted?.Invoke(regionIndex, region);
+
+            yield return new WaitForSeconds(regionTransitionDelay);
+            yield return RunRegionWaves(region);
+
+            UnlockRegionGates(region);
+            regionRunning = false;
+            RegionCompleted?.Invoke(regionIndex, region);
+        }
+
+        currentRegionIndex = -1;
+        AllRegionsCompleted?.Invoke();
+        regionRoutine = null;
+    }
+
+    private IEnumerator RunRegionWaves(RegionDefinition region)
+    {
+        if (region.waves == null || region.waves.Count == 0)
+        {
+            region.waves = new List<RegionWaveDefinition> { new RegionWaveDefinition() };
+        }
+
+        for (int waveIndex = 0; waveIndex < region.waves.Count; waveIndex++)
+        {
+            RegionWaveDefinition wave = region.waves[waveIndex];
+            int totalToSpawn = Mathf.Max(1, wave.enemyCount);
+
+            for (int i = 0; i < totalToSpawn; i++)
+            {
+                while (maxAliveAtOnce > 0 && aliveEnemies >= maxAliveAtOnce)
+                {
+                    yield return null;
+                }
+
+                SpawnZombie(region, wave, waveIndex, i == totalToSpawn - 1 && region.isBossRegion);
+                yield return new WaitForSeconds(1f / Mathf.Max(0.1f, wave.spawnRate));
+            }
+
+            while (aliveEnemies > 0)
+            {
+                yield return null;
+            }
+
+            if (waveIndex < region.waves.Count - 1)
+            {
+                yield return new WaitForSeconds(waveIntermissionSeconds);
+            }
+        }
+    }
+
+    private void SpawnZombie(
+        RegionDefinition region,
+        RegionWaveDefinition wave,
+        int waveIndex,
+        bool forceBossVariant)
+    {
+        if (zombiePrefab == null)
+        {
+            Debug.LogWarning("RegionWaveManager cannot spawn because zombiePrefab is missing.");
+            return;
+        }
+
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        Vector2 spawnPosition = FindSpawnPosition(region);
+        ZombieAI zombie = Instantiate(
+            zombiePrefab,
+            spawnPosition,
+            Quaternion.identity,
+            zombieContainer != null ? zombieContainer : null);
+
+        zombie.player = player != null ? player.transform : null;
+        zombie.playerController = player;
+
+        MutantVariant variant = forceBossVariant
+            ? MutantVariant.Boss
+            : RollMutantVariant(wave, waveIndex);
+
+        ApplyWaveStats(zombie, wave, variant, region.isBossRegion && forceBossVariant);
+
+        zombie.Died -= OnZombieDied;
+        zombie.Died += OnZombieDied;
+
+        aliveEnemies++;
+        activeEnemies.Add(zombie);
+    }
+
+    private void ApplyWaveStats(
+        ZombieAI zombie,
+        RegionWaveDefinition wave,
+        MutantVariant variant,
+        bool isBoss)
+    {
+        float healthMultiplier = wave.healthMultiplier;
+        float speedMultiplier = wave.speedMultiplier;
+        float damageMultiplier = wave.damageMultiplier;
+        float scaleMultiplier = 1f;
+        Color tint = Color.white;
+        bool setRunner = false;
+
+        switch (variant)
+        {
+            case MutantVariant.Runner:
+                healthMultiplier *= 0.75f;
+                speedMultiplier *= 1.65f;
+                damageMultiplier *= 1.05f;
+                scaleMultiplier *= 0.9f;
+                tint = new Color(1f, 0.95f, 0.65f, 1f);
+                setRunner = true;
+                break;
+            case MutantVariant.Tank:
+                healthMultiplier *= 2.6f;
+                speedMultiplier *= 0.7f;
+                damageMultiplier *= 1.55f;
+                scaleMultiplier *= 1.35f;
+                tint = new Color(0.76f, 0.88f, 1f, 1f);
+                break;
+            case MutantVariant.Spitter:
+                healthMultiplier *= 1.2f;
+                speedMultiplier *= 0.8f;
+                damageMultiplier *= 1.15f;
+                scaleMultiplier *= 1.05f;
+                tint = new Color(0.68f, 1f, 0.8f, 1f);
+                zombie.attackRange *= 1.7f;
+                zombie.attackCooldown *= 1.25f;
+                zombie.detectionRadius *= 1.2f;
+                break;
+            case MutantVariant.Boss:
+                healthMultiplier *= 6f;
+                speedMultiplier *= 1.05f;
+                damageMultiplier *= 2.3f;
+                scaleMultiplier *= 1.7f;
+                tint = new Color(0.9f, 0.6f, 1f, 1f);
+                break;
+        }
+
+        if (isBoss)
+        {
+            healthMultiplier *= 1.35f;
+            damageMultiplier *= 1.15f;
+        }
+
+        zombie.ApplyMutantModifiers(
+            healthMultiplier: healthMultiplier,
+            speedMultiplier: speedMultiplier,
+            damageMultiplier: damageMultiplier,
+            scaleMultiplier: scaleMultiplier,
+            tint: tint,
+            runner: setRunner);
+    }
+
+    private MutantVariant RollMutantVariant(RegionWaveDefinition wave, int waveIndex)
+    {
+        float runnerChance = Mathf.Clamp01(wave.runnerChance + waveIndex * 0.03f);
+        float tankChance = Mathf.Clamp01(wave.tankChance + waveIndex * 0.02f);
+        float spitterChance = Mathf.Clamp01(wave.spitterChance + waveIndex * 0.015f);
+
+        float roll = UnityEngine.Random.value;
+        if (roll < runnerChance) return MutantVariant.Runner;
+        if (roll < runnerChance + tankChance) return MutantVariant.Tank;
+        if (roll < runnerChance + tankChance + spitterChance) return MutantVariant.Spitter;
+        return MutantVariant.Normal;
+    }
+
+    private Vector2 FindSpawnPosition(RegionDefinition region)
+    {
+        Camera cameraRef = Camera.main;
+        Bounds fallbackBounds = new Bounds(transform.position, new Vector3(30f, 20f, 1f));
+        Collider2D boundsCollider = region.regionBounds;
+        Bounds regionBounds = boundsCollider != null ? boundsCollider.bounds : fallbackBounds;
+
+        if (TryFindEdgeSpawnPosition(boundsCollider, regionBounds, cameraRef, out Vector2 edgeSpawn))
+        {
+            return edgeSpawn;
+        }
+
+        for (int attempt = 0; attempt < 80; attempt++)
+        {
+            Vector2 candidate = new Vector2(
+                UnityEngine.Random.Range(regionBounds.min.x, regionBounds.max.x),
+                UnityEngine.Random.Range(regionBounds.min.y, regionBounds.max.y));
+
+            if (boundsCollider != null && !boundsCollider.OverlapPoint(candidate))
+            {
+                continue;
+            }
+
+            if (player != null &&
+                Vector2.Distance(candidate, player.transform.position) < minSpawnDistanceFromPlayer)
+            {
+                continue;
+            }
+
+            if (cameraRef != null && IsInsideCamera(cameraRef, candidate, offscreenSpawnMargin))
+            {
+                continue;
+            }
+
+            return candidate;
+        }
+
+        Vector2 fallback = regionBounds.center;
+        if (player != null)
+        {
+            Vector2 awayFromPlayer =
+                ((Vector2)regionBounds.center - (Vector2)player.transform.position).normalized;
+            if (awayFromPlayer.sqrMagnitude < 0.0001f)
+            {
+                awayFromPlayer = UnityEngine.Random.insideUnitCircle.normalized;
+            }
+
+            fallback = (Vector2)regionBounds.center + awayFromPlayer * Mathf.Max(minSpawnDistanceFromPlayer, 4f);
+        }
+
+        return fallback;
+    }
+
+    private bool TryFindEdgeSpawnPosition(
+        Collider2D boundsCollider,
+        Bounds regionBounds,
+        Camera cameraRef,
+        out Vector2 spawnPoint)
+    {
+        for (int attempt = 0; attempt < 80; attempt++)
+        {
+            int side = UnityEngine.Random.Range(0, 4);
+            float t = UnityEngine.Random.Range(0f, 1f);
+            Vector2 candidate;
+
+            switch (side)
+            {
+                case 0:
+                    candidate = new Vector2(regionBounds.min.x + 0.1f, Mathf.Lerp(regionBounds.min.y, regionBounds.max.y, t));
+                    break;
+                case 1:
+                    candidate = new Vector2(regionBounds.max.x - 0.1f, Mathf.Lerp(regionBounds.min.y, regionBounds.max.y, t));
+                    break;
+                case 2:
+                    candidate = new Vector2(Mathf.Lerp(regionBounds.min.x, regionBounds.max.x, t), regionBounds.min.y + 0.1f);
+                    break;
+                default:
+                    candidate = new Vector2(Mathf.Lerp(regionBounds.min.x, regionBounds.max.x, t), regionBounds.max.y - 0.1f);
+                    break;
+            }
+
+            if (boundsCollider != null && !boundsCollider.OverlapPoint(candidate))
+            {
+                candidate = Vector2.Lerp(candidate, regionBounds.center, 0.07f);
+                if (!boundsCollider.OverlapPoint(candidate))
+                {
+                    continue;
+                }
+            }
+
+            if (player != null &&
+                Vector2.Distance(candidate, player.transform.position) < minSpawnDistanceFromPlayer)
+            {
+                continue;
+            }
+
+            if (cameraRef != null && IsInsideCamera(cameraRef, candidate, offscreenSpawnMargin))
+            {
+                continue;
+            }
+
+            spawnPoint = candidate;
+            return true;
+        }
+
+        spawnPoint = Vector2.zero;
+        return false;
+    }
+
+    private static bool IsInsideCamera(Camera cameraRef, Vector2 worldPosition, float margin)
+    {
+        Vector3 bottomLeft = cameraRef.ViewportToWorldPoint(new Vector3(0f, 0f, 0f));
+        Vector3 topRight = cameraRef.ViewportToWorldPoint(new Vector3(1f, 1f, 0f));
+
+        return worldPosition.x > bottomLeft.x + margin &&
+               worldPosition.x < topRight.x - margin &&
+               worldPosition.y > bottomLeft.y + margin &&
+               worldPosition.y < topRight.y - margin;
+    }
+
+    private void PrepareRegion(RegionDefinition region)
+    {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player != null && region.playerSpawnPoint != null)
+        {
+            Vector3 previousPlayerPosition = player.transform.position;
+            player.transform.position = region.playerSpawnPoint.position;
+
+            if (virtualCamera != null)
+            {
+                virtualCamera.Follow = player.transform;
+                virtualCamera.LookAt = player.transform;
+                virtualCamera.OnTargetObjectWarped(
+                    player.transform,
+                    player.transform.position - previousPlayerPosition);
+            }
+        }
+
+        if (confiner2D != null && region.confinerBounds != null)
+        {
+            confiner2D.m_BoundingShape2D = region.confinerBounds;
+            confiner2D.InvalidatePathCache();
+        }
+
+        LockRegionGates(region);
+    }
+
+    private static void LockRegionGates(RegionDefinition region)
+    {
+        if (region.gatesToLock == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < region.gatesToLock.Length; i++)
+        {
+            RegionGate gate = region.gatesToLock[i];
+            if (gate != null)
+            {
+                gate.SetLocked(true);
+            }
+        }
+    }
+
+    private static void UnlockRegionGates(RegionDefinition region)
+    {
+        if (region.gatesToLock == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < region.gatesToLock.Length; i++)
+        {
+            RegionGate gate = region.gatesToLock[i];
+            if (gate != null)
+            {
+                gate.SetLocked(false);
+            }
+        }
+    }
+
+    private static int CountRegionTargets(RegionDefinition region)
+    {
+        if (region.waves == null || region.waves.Count == 0)
+        {
+            return 1;
+        }
+
+        int count = 0;
+        for (int i = 0; i < region.waves.Count; i++)
+        {
+            count += Mathf.Max(1, region.waves[i].enemyCount);
+        }
+
+        return count;
+    }
+
+    private void OnZombieDied(ZombieAI zombie)
+    {
+        aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
+        regionKillCount++;
+        RegionProgressUpdated?.Invoke(regionKillCount, regionTargetKillCount);
+
+        if (zombie != null)
+        {
+            zombie.Died -= OnZombieDied;
+            activeEnemies.Remove(zombie);
+        }
+    }
+
+    private void CleanupActiveEnemies()
+    {
+        for (int i = activeEnemies.Count - 1; i >= 0; i--)
+        {
+            ZombieAI zombie = activeEnemies[i];
+            if (zombie != null)
+            {
+                zombie.Died -= OnZombieDied;
+                Destroy(zombie.gameObject);
+            }
+        }
+
+        activeEnemies.Clear();
+        aliveEnemies = 0;
+    }
+}
+
+===== Assets/Scripts/RoofVisibility.cs =====
+using UnityEngine;
+using UnityEngine.Tilemaps;
+using System.Collections;
+
+public class RoofVisibility : MonoBehaviour
+{
+    public TilemapRenderer roofRenderer; // Assign the Roof TilemapRenderer in the Inspector
+    public TilemapRenderer roofDetailsRenderer; // Assign the RoofDetails TilemapRenderer in the Inspector
+    private int roofCounter = 0; // Tracks how many roof tiles the player is under
+
+    [Header("Fade Settings")]
+    public float fadeDuration = 0.5f;   // Duration for fading in/out
+    private Coroutine currentFadeCoroutine = null;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.GetComponent<TilemapCollider2D>() != null)
+        {
+            TilemapRenderer tilemapRenderer = other.GetComponent<TilemapRenderer>();
+            if (tilemapRenderer == roofRenderer || tilemapRenderer == roofDetailsRenderer)
+            {
+                roofCounter++;
+                if (roofCounter == 1) // Only trigger fade when first entering a roof area
+                {
+                    FadeRoof(false); // Fade out (make transparent)
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.GetComponent<TilemapCollider2D>() != null)
+        {
+            TilemapRenderer tilemapRenderer = other.GetComponent<TilemapRenderer>();
+            if (tilemapRenderer == roofRenderer || tilemapRenderer == roofDetailsRenderer)
+            {
+                roofCounter--;
+                if (roofCounter <= 0) // Only fade back in when completely outside a roof area
+                {
+                    roofCounter = 0;
+                    FadeRoof(true); // Fade in (make opaque)
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Initiates a fade coroutine to smoothly transition the roof and roof details alpha.
+    /// </summary>
+    private void FadeRoof(bool fadeIn)
+    {
+        float startAlpha = fadeIn ? 0f : 1f;
+        float endAlpha = fadeIn ? 1f : 0f;
+
+        if (currentFadeCoroutine != null)
+        {
+            StopCoroutine(currentFadeCoroutine);
+        }
+        currentFadeCoroutine = StartCoroutine(FadeRoofCoroutine(startAlpha, endAlpha));
+    }
+
+    /// <summary>
+    /// Gradually interpolates the roof and roof details tilemap's alpha from startAlpha to endAlpha over fadeDuration.
+    /// </summary>
+    private IEnumerator FadeRoofCoroutine(float startAlpha, float endAlpha)
+    {
+        float elapsedTime = 0f;
+
+        // Get the Tilemap components
+        Tilemap roofTilemap = roofRenderer.GetComponent<Tilemap>();
+        Tilemap roofDetailsTilemap = roofDetailsRenderer.GetComponent<Tilemap>();
+
+        // Ensure both tilemaps start at the specified startAlpha
+        Color initialRoofColor = roofTilemap.color;
+        initialRoofColor.a = startAlpha;
+        roofTilemap.color = initialRoofColor;
+
+        Color initialRoofDetailsColor = roofDetailsTilemap.color;
+        initialRoofDetailsColor.a = startAlpha;
+        roofDetailsTilemap.color = initialRoofDetailsColor;
+
+        while (elapsedTime < fadeDuration)
+        {
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / fadeDuration);
+
+            Color newRoofColor = roofTilemap.color;
+            newRoofColor.a = newAlpha;
+            roofTilemap.color = newRoofColor;
+
+            Color newRoofDetailsColor = roofDetailsTilemap.color;
+            newRoofDetailsColor.a = newAlpha;
+            roofDetailsTilemap.color = newRoofDetailsColor;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Guarantee final alpha is set
+        Color finalRoofColor = roofTilemap.color;
+        finalRoofColor.a = endAlpha;
+        roofTilemap.color = finalRoofColor;
+
+        Color finalRoofDetailsColor = roofDetailsTilemap.color;
+        finalRoofDetailsColor.a = endAlpha;
+        roofDetailsTilemap.color = finalRoofDetailsColor;
+    }
+}
+
+===== Assets/Scripts/SmoothCameraFollow.cs =====
+using UnityEngine;
+
+public class SmoothCameraFollow : MonoBehaviour
+{
+    [Header("Target & Offset")]
+    public Transform target;          // The target the camera should follow
+    public Vector3 offset;            // The offset from the target's position
+
+    [Header("Smooth Movement")]
+    [Tooltip("Time it takes for the camera to reach the target position")]
+    public float smoothTime = 0.3f;     // Smoothing time for the camera movement
+    private Vector3 velocity = Vector3.zero;  // Used by SmoothDamp for velocity tracking
+
+    [Header("Look-Ahead Settings")]
+    [Tooltip("Enable to allow the camera to look ahead in the player's movement direction")]
+    public bool enableLookAhead = true;
+    [Tooltip("How far ahead of the target to look based on movement direction")]
+    public float lookAheadDistance = 2f;
+    [Tooltip("Speed at which the camera's look-ahead offset adjusts")]
+    public float lookAheadSpeed = 5f;
+    private Vector3 currentLookAhead = Vector3.zero;  // Current look-ahead offset
+    private Vector3 lastTargetPosition;               // Stores the target's last frame position
+
+    void Start()
+    {
+        if (target != null)
+        {
+            lastTargetPosition = target.position;
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        // Determine how much the target has moved since the last frame
+        Vector3 targetDelta = target.position - lastTargetPosition;
+        lastTargetPosition = target.position;
+
+        // Calculate look-ahead offset if enabled
+        if (enableLookAhead)
+        {
+            // Desired look-ahead is in the direction of target movement, scaled by lookAheadDistance.
+            Vector3 desiredLookAhead = targetDelta.normalized * lookAheadDistance;
+            // Smoothly interpolate from the current look-ahead to the desired value.
+            currentLookAhead = Vector3.Lerp(currentLookAhead, desiredLookAhead, Time.deltaTime * lookAheadSpeed);
+        }
+        else
+        {
+            currentLookAhead = Vector3.zero;
+        }
+
+        // Compute the desired camera position with offset and look-ahead
+        Vector3 desiredPosition = target.position + offset + currentLookAhead;
+        // Keep the camera's z-coordinate (useful for 2D games)
+        desiredPosition.z = transform.position.z;
+
+        // Smoothly move the camera toward the desired position
+        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
+    }
+}
+
+===== Assets/Scripts/TutorialFlowController.cs =====
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class TutorialFlowController : MonoBehaviour
+{
+    private static readonly string[] TutorialSceneNames =
+    {
+        "Tutorial",
+        "TutorialGame"
+    };
+
+    public enum TutorialObjective
+    {
+        None,
+        Move,
+        Attack,
+        RadialBurst
+    }
+
+    [Serializable]
+    public class TutorialStep
+    {
+        [TextArea(2, 5)] public string text;
+        public TutorialObjective objective = TutorialObjective.None;
+    }
+
+    [Header("References")]
+    public DialoguePanelUI dialoguePanel;
+    public PlayerController player;
+    public GameFlowManager gameFlowManager;
+
+    [Header("Scene Flow")]
+    public string gameplaySceneName = "Level1";
+    public bool autoLoadGameplayOnComplete = true;
+
+    [Header("Tutorial Steps")]
+    public List<TutorialStep> steps = new List<TutorialStep>();
+    public bool grantBurstChargeForTutorial = true;
+    public bool pauseEnemiesUntilTutorialComplete = true;
+
+    private int currentStepIndex;
+    private bool attackObjectiveCompleted;
+    private bool burstObjectiveCompleted;
+    private PlayerController subscribedPlayer;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void AutoBootstrapTutorialFlow()
+    {
+        Scene activeScene = SceneManager.GetActiveScene();
+        if (!activeScene.IsValid() || !IsTutorialScene(activeScene.name))
+        {
+            return;
+        }
+
+        if (FindObjectOfType<TutorialFlowController>() != null)
+        {
+            return;
+        }
+
+        PlayerController primaryPlayer = PlayerController.FindPrimary();
+        if (primaryPlayer == null)
+        {
+            return;
+        }
+
+        GameObject runtimeObject = new GameObject("TutorialFlowRuntime");
+        TutorialFlowController flow = runtimeObject.AddComponent<TutorialFlowController>();
+        flow.player = primaryPlayer;
+        flow.gameFlowManager = FindObjectOfType<GameFlowManager>();
+        flow.dialoguePanel = FindObjectOfType<DialoguePanelUI>() ?? CreateRuntimeDialoguePanel();
+    }
+
+    private void Start()
+    {
+        if (dialoguePanel == null)
+        {
+            dialoguePanel = FindObjectOfType<DialoguePanelUI>();
+            if (dialoguePanel == null)
+            {
+                dialoguePanel = CreateRuntimeDialoguePanel();
+            }
+        }
+
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (gameFlowManager == null)
+        {
+            gameFlowManager = FindObjectOfType<GameFlowManager>();
+        }
+
+        if (steps == null || steps.Count == 0)
+        {
+            BuildDefaultSteps();
+        }
+
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.NextPressed += HandleNextPressed;
+        }
+
+        BindPlayerEvents(player);
+        SetEnemyState(false);
+
+        currentStepIndex = 0;
+        ShowCurrentStep();
+    }
+
+    private void OnDestroy()
+    {
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.NextPressed -= HandleNextPressed;
+        }
+
+        BindPlayerEvents(null);
+    }
+
+    private void Update()
+    {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player != subscribedPlayer)
+        {
+            BindPlayerEvents(player);
+        }
+
+        if (dialoguePanel == null || player == null || currentStepIndex >= steps.Count)
+        {
+            return;
+        }
+
+        TutorialObjective objective = steps[currentStepIndex].objective;
+        switch (objective)
+        {
+            case TutorialObjective.Move:
+                if (player.MovementDirection.sqrMagnitude > 0.01f)
+                {
+                    dialoguePanel.SetNextInteractable(true);
+                }
+                break;
+            case TutorialObjective.Attack:
+                if (attackObjectiveCompleted)
+                {
+                    dialoguePanel.SetNextInteractable(true);
+                }
+                break;
+            case TutorialObjective.RadialBurst:
+                if (burstObjectiveCompleted)
+                {
+                    dialoguePanel.SetNextInteractable(true);
+                }
+                break;
+        }
+    }
+
+    private void HandlePlayerAttack()
+    {
+        attackObjectiveCompleted = true;
+    }
+
+    private void HandleRadialBurst()
+    {
+        burstObjectiveCompleted = true;
+    }
+
+    private void ShowCurrentStep()
+    {
+        if (dialoguePanel == null)
+        {
+            return;
+        }
+
+        if (currentStepIndex >= steps.Count)
+        {
+            CompleteTutorial();
+            return;
+        }
+
+        TutorialStep step = steps[currentStepIndex];
+        dialoguePanel.ShowMessage(step.text);
+        dialoguePanel.SetNextButtonLabel(currentStepIndex == steps.Count - 1 ? "Start Mission" : "Next");
+        dialoguePanel.SetNextInteractable(step.objective == TutorialObjective.None);
+
+        if (step.objective == TutorialObjective.RadialBurst &&
+            grantBurstChargeForTutorial &&
+            player != null &&
+            player.BurstCharges <= 0)
+        {
+            player.GrantBurstCharges(1);
+        }
+    }
+
+    private void HandleNextPressed()
+    {
+        currentStepIndex++;
+        ShowCurrentStep();
+    }
+
+    private void CompleteTutorial()
+    {
+        SetEnemyState(true);
+
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.Hide();
+        }
+
+        if (!autoLoadGameplayOnComplete)
+        {
+            return;
+        }
+
+        if (gameFlowManager != null)
+        {
+            gameFlowManager.CompleteTutorial();
+            return;
+        }
+
+        SceneManager.LoadScene(gameplaySceneName);
+    }
+
+    private void BuildDefaultSteps()
+    {
+        steps = new List<TutorialStep>
+        {
+            new TutorialStep
+            {
+                text = "Welcome to Metal Zombie Survival. Use WASD to move through the arena.",
+                objective = TutorialObjective.Move
+            },
+            new TutorialStep
+            {
+                text = "Hold Right Mouse Button to release energy pulses.",
+                objective = TutorialObjective.Attack
+            },
+            new TutorialStep
+            {
+                text = "Every 10 kills grants a Radial Burst charge. Press Q to fire 10 pulses around you.",
+                objective = TutorialObjective.RadialBurst
+            },
+            new TutorialStep
+            {
+                text = "Region gates lock during waves and open after objectives complete. Stay alive.",
+                objective = TutorialObjective.None
+            },
+            new TutorialStep
+            {
+                text = "Good luck.",
+                objective = TutorialObjective.None
+            }
+        };
+    }
+
+    private void BindPlayerEvents(PlayerController targetPlayer)
+    {
+        if (subscribedPlayer != null)
+        {
+            subscribedPlayer.ProjectileAttackPerformed -= HandlePlayerAttack;
+            subscribedPlayer.RadialBurstUsed -= HandleRadialBurst;
+        }
+
+        subscribedPlayer = targetPlayer;
+        if (subscribedPlayer == null)
+        {
+            return;
+        }
+
+        subscribedPlayer.ProjectileAttackPerformed += HandlePlayerAttack;
+        subscribedPlayer.RadialBurstUsed += HandleRadialBurst;
+    }
+
+    private void SetEnemyState(bool enabled)
+    {
+        if (!pauseEnemiesUntilTutorialComplete)
+        {
+            return;
+        }
+
+        ZombieAI[] zombies = FindObjectsOfType<ZombieAI>();
+        for (int i = 0; i < zombies.Length; i++)
+        {
+            ZombieAI zombie = zombies[i];
+            if (zombie != null)
+            {
+                zombie.enabled = enabled;
+            }
+        }
+    }
+
+    private static bool IsTutorialScene(string sceneName)
+    {
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            return false;
+        }
+
+        for (int i = 0; i < TutorialSceneNames.Length; i++)
+        {
+            if (string.Equals(sceneName, TutorialSceneNames[i], StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static DialoguePanelUI CreateRuntimeDialoguePanel()
+    {
+        EnsureEventSystemExists();
+
+        GameObject canvasObject = new GameObject("TutorialDialogueCanvas");
+        Canvas canvas = canvasObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 500;
+
+        CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        scaler.matchWidthOrHeight = 0.5f;
+
+        canvasObject.AddComponent<GraphicRaycaster>();
+
+        GameObject panelObject = CreateUiElement("DialoguePanel", canvasObject.transform);
+        Image panelImage = panelObject.AddComponent<Image>();
+        panelImage.color = new Color(0.05f, 0.08f, 0.12f, 0.88f);
+        RectTransform panelRect = panelObject.GetComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(0.08f, 0.03f);
+        panelRect.anchorMax = new Vector2(0.92f, 0.28f);
+        panelRect.offsetMin = Vector2.zero;
+        panelRect.offsetMax = Vector2.zero;
+
+        TMP_FontAsset defaultFont = TMP_Settings.defaultFontAsset;
+
+        GameObject messageObject = CreateUiElement("Message", panelObject.transform);
+        TextMeshProUGUI messageText = messageObject.AddComponent<TextMeshProUGUI>();
+        messageText.text = string.Empty;
+        messageText.fontSize = 28f;
+        messageText.enableWordWrapping = true;
+        messageText.color = new Color(0.95f, 0.98f, 1f, 1f);
+        messageText.alignment = TextAlignmentOptions.MidlineLeft;
+        if (defaultFont != null)
+        {
+            messageText.font = defaultFont;
+        }
+
+        RectTransform messageRect = messageObject.GetComponent<RectTransform>();
+        messageRect.anchorMin = new Vector2(0.03f, 0.22f);
+        messageRect.anchorMax = new Vector2(0.77f, 0.95f);
+        messageRect.offsetMin = Vector2.zero;
+        messageRect.offsetMax = Vector2.zero;
+
+        GameObject buttonObject = CreateUiElement("NextButton", panelObject.transform);
+        Image buttonImage = buttonObject.AddComponent<Image>();
+        buttonImage.color = new Color(0.2f, 0.65f, 0.9f, 1f);
+        Button nextButton = buttonObject.AddComponent<Button>();
+
+        ColorBlock buttonColors = nextButton.colors;
+        buttonColors.normalColor = new Color(0.2f, 0.65f, 0.9f, 1f);
+        buttonColors.highlightedColor = new Color(0.3f, 0.75f, 1f, 1f);
+        buttonColors.pressedColor = new Color(0.14f, 0.52f, 0.75f, 1f);
+        buttonColors.selectedColor = buttonColors.highlightedColor;
+        nextButton.colors = buttonColors;
+
+        RectTransform buttonRect = buttonObject.GetComponent<RectTransform>();
+        buttonRect.anchorMin = new Vector2(0.8f, 0.18f);
+        buttonRect.anchorMax = new Vector2(0.97f, 0.58f);
+        buttonRect.offsetMin = Vector2.zero;
+        buttonRect.offsetMax = Vector2.zero;
+
+        GameObject buttonTextObject = CreateUiElement("Label", buttonObject.transform);
+        TextMeshProUGUI nextButtonLabel = buttonTextObject.AddComponent<TextMeshProUGUI>();
+        nextButtonLabel.text = "Next";
+        nextButtonLabel.fontSize = 26f;
+        nextButtonLabel.alignment = TextAlignmentOptions.Center;
+        nextButtonLabel.color = Color.white;
+        if (defaultFont != null)
+        {
+            nextButtonLabel.font = defaultFont;
+        }
+
+        RectTransform labelRect = buttonTextObject.GetComponent<RectTransform>();
+        labelRect.anchorMin = Vector2.zero;
+        labelRect.anchorMax = Vector2.one;
+        labelRect.offsetMin = Vector2.zero;
+        labelRect.offsetMax = Vector2.zero;
+
+        DialoguePanelUI panelUi = canvasObject.AddComponent<DialoguePanelUI>();
+        panelUi.Configure(panelObject, messageText, nextButton, nextButtonLabel);
+        panelUi.Hide();
+        return panelUi;
+    }
+
+    private static GameObject CreateUiElement(string name, Transform parent)
+    {
+        GameObject element = new GameObject(name, typeof(RectTransform));
+        element.transform.SetParent(parent, false);
+        return element;
+    }
+
+    private static void EnsureEventSystemExists()
+    {
+        if (FindObjectOfType<EventSystem>() != null)
+        {
+            return;
+        }
+
+        GameObject eventSystemObject = new GameObject(
+            "EventSystem",
+            typeof(EventSystem),
+            typeof(StandaloneInputModule));
+
+        eventSystemObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+    }
+}
+
+===== Assets/Scripts/WaveManager.cs =====
+using System.Collections;
+using UnityEngine;
+
+public class WaveManager : MonoBehaviour
+{
+    [Header("config")]
+    public WaveConfig config;
+
+    [Header("spawn points (optional)")]
+    [Tooltip("Optional. If empty, zombies will spawn just outside the camera view instead.")]
+    public Transform[] spawnPoints;
+
+    [Header("runtime (read-only)")]
+    [SerializeField] private int currentWave = 0;
+    [SerializeField] private int aliveZombies = 0;
+    [SerializeField] private bool isSpawning = false;
+
+    private PlayerController player;
+
+    private void Start()
+    {
+        if (FindObjectOfType<RegionWaveManager>() != null)
+        {
+            enabled = false;
+            return;
+        }
+
+        player = PlayerController.FindPrimary();
+
+        if (config == null)
+        {
+            Debug.LogError("WaveManager: no WaveConfig assigned.");
+            enabled = false;
+            return;
+        }
+
+        StartCoroutine(RunWaves());
+    }
+
+    private IEnumerator RunWaves()
+    {
+        yield return new WaitForSeconds(config.timeBeforeFirstWave);
+
+        while (true)
+        {
+            currentWave++;
+
+            // if config is finite and we finished, move to next scene or stop
+            if (config.waveCount > 0 && currentWave > config.waveCount)
+            {
+                if (!string.IsNullOrWhiteSpace(config.nextSceneName))
+                    SceneTransitionTo(config.nextSceneName);
+                yield break;
+            }
+
+            int zombiesThisWave = config.zombiesPerWave + (currentWave - 1) * config.zombiesPerWaveIncrease;
+            if (config.maxZombiesPerWave > 0) zombiesThisWave = Mathf.Min(zombiesThisWave, config.maxZombiesPerWave);
+
+            isSpawning = true;
+
+            for (int i = 0; i < zombiesThisWave; i++)
+            {
+                // don't flood the scene: cap how many can exist at once
+                while (config.maxAliveAtOnce > 0 && aliveZombies >= config.maxAliveAtOnce)
+                    yield return null;
+
+                SpawnOneZombie(currentWave);
+                yield return new WaitForSeconds(config.timeBetweenSpawns);
+            }
+
+            isSpawning = false;
+
+            // wait until everything from this wave is dead
+            while (aliveZombies > 0)
+                yield return null;
+
+            yield return new WaitForSeconds(config.timeBetweenWaves);
+        }
+    }
+
+    private void SceneTransitionTo(string sceneName)
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+    }
+
+    private void SpawnOneZombie(int waveIndex)
+    {
+        if (config.zombiePrefab == null) return;
+
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        Vector3 pos = GetSpawnPosition();
+        GameObject zObj = Instantiate(config.zombiePrefab, pos, Quaternion.identity);
+
+        var z = zObj.GetComponent<ZombieAI>();
+        if (z == null)
+        {
+            Debug.LogWarning("WaveManager: spawned prefab has no ZombieAI.");
+            return;
+        }
+
+        aliveZombies++;
+
+        z.Died -= OnZombieDied;
+        z.Died += OnZombieDied;
+
+        if (player != null)
+        {
+            z.player = player.transform;
+            z.playerController = player;
+        }
+
+        // scaling: health + speed ramp
+        float hpMult = Mathf.Pow(config.healthMultiplierPerWave, Mathf.Max(0, waveIndex - 1));
+        float spdMult = Mathf.Pow(config.speedMultiplierPerWave, Mathf.Max(0, waveIndex - 1));
+
+        z.maxHealth = Mathf.Max(1, Mathf.RoundToInt(z.maxHealth * hpMult));
+        z.currentHealth = z.maxHealth;
+        z.moveSpeed = z.moveSpeed * spdMult;
+
+        // runners become more common later
+        float runnerChance = config.runnerChanceStart + (waveIndex - 1) * config.runnerChanceIncreasePerWave;
+        runnerChance = Mathf.Clamp01(runnerChance);
+
+        z.isRunner = Random.value < runnerChance;
+        if (z.isRunner)
+        {
+            z.moveSpeed *= config.runnerSpeedBonus;
+            z.detectionRadius *= config.runnerDetectionBonus;
+        }
+
+        // mutations
+        ApplyMutations(z, waveIndex);
+    }
+
+    private Vector3 GetSpawnPosition()
+    {
+        // if designer provided spawn points, use them
+        if (spawnPoints != null && spawnPoints.Length > 0)
+        {
+            Transform sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            if (sp != null) return sp.position;
+        }
+
+        // otherwise: spawn just outside camera view
+        Camera cam = Camera.main;
+        if (cam == null)
+            return transform.position + (Vector3)(Random.insideUnitCircle.normalized * 10f);
+
+        float margin = Mathf.Max(0.1f, config != null ? config.offscreenSpawnMargin : 2f);
+
+        Vector3 bl = cam.ViewportToWorldPoint(new Vector3(0f, 0f, 0f));
+        Vector3 tr = cam.ViewportToWorldPoint(new Vector3(1f, 1f, 0f));
+
+        float left = bl.x - margin;
+        float right = tr.x + margin;
+        float bottom = bl.y - margin;
+        float top = tr.y + margin;
+
+        int side = Random.Range(0, 4);
+        Vector3 p;
+        if (side == 0) p = new Vector3(left, Random.Range(bottom, top), 0f);
+        else if (side == 1) p = new Vector3(right, Random.Range(bottom, top), 0f);
+        else if (side == 2) p = new Vector3(Random.Range(left, right), bottom, 0f);
+        else p = new Vector3(Random.Range(left, right), top, 0f);
+
+        // avoid spawning right on top of player
+        if (player != null && config != null && config.minSpawnDistanceFromPlayer > 0f)
+        {
+            int guard = 0;
+            while (Vector2.Distance(p, player.transform.position) < config.minSpawnDistanceFromPlayer && guard < 20)
+            {
+                side = Random.Range(0, 4);
+                if (side == 0) p = new Vector3(left, Random.Range(bottom, top), 0f);
+                else if (side == 1) p = new Vector3(right, Random.Range(bottom, top), 0f);
+                else if (side == 2) p = new Vector3(Random.Range(left, right), bottom, 0f);
+                else p = new Vector3(Random.Range(left, right), top, 0f);
+                guard++;
+            }
+        }
+
+        return p;
+    }
+
+    private void ApplyMutations(ZombieAI z, int waveIndex)
+    {
+        if (z == null || config == null) return;
+
+        // radiated
+        if (waveIndex >= config.radiatedWaveStart)
+        {
+            float c = config.radiatedChanceStart + (waveIndex - config.radiatedWaveStart) * config.radiatedChanceIncreasePerWave;
+            c = Mathf.Clamp01(c);
+            if (Random.value < c)
+            {
+                z.isRadiated = true;
+                z.maxHealth = Mathf.Max(1, Mathf.RoundToInt(z.maxHealth * config.radiatedHealthBonus));
+                z.currentHealth = z.maxHealth;
+                z.moveSpeed = z.moveSpeed * config.radiatedSpeedBonus;
+
+                if (z.spriteRenderer != null)
+                    z.spriteRenderer.color = new Color(0.7f, 1f, 0.7f, 1f);
+            }
+        }
+
+        // tank
+        if (waveIndex >= config.tankWaveStart)
+        {
+            float c = config.tankChanceStart + (waveIndex - config.tankWaveStart) * config.tankChanceIncreasePerWave;
+            c = Mathf.Clamp01(c);
+            if (Random.value < c)
+            {
+                z.maxHealth = Mathf.Max(1, Mathf.RoundToInt(z.maxHealth * config.tankHealthBonus));
+                z.currentHealth = z.maxHealth;
+                z.moveSpeed = z.moveSpeed * config.tankSpeedMultiplier;
+                z.transform.localScale = z.transform.localScale * config.tankScaleMultiplier;
+
+                if (z.spriteRenderer != null)
+                    z.spriteRenderer.color = new Color(0.85f, 0.85f, 1f, 1f);
+            }
+        }
+    }
+
+    private void OnZombieDied(ZombieAI z)
+    {
+        aliveZombies = Mathf.Max(0, aliveZombies - 1);
+
+        if (z != null)
+            z.Died -= OnZombieDied;
+    }
+}
+
+===== Assets/Scripts/ZombieAI.cs =====
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ZombieAI : MonoBehaviour
+{
+    public event Action<ZombieAI> Died;
+
+    [Header("References")]
+    public Transform player;
+    public PlayerController playerController;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
+
+    [Header("Movement")]
+    public float detectionRadius = 12f;
+    public float moveSpeed = 1.8f;
+    public float movementSmoothing = 14f;
+    public bool isRunner;
+
+    [Header("Line Of Sight")]
+    public LayerMask obstacleMask;
+    public float lineOfSightCheckInterval = 0.15f;
+    public float blockedPauseSeconds = 0.3f;
+
+    [Header("Attack")]
+    public float attackRange = 0.8f;
+    public float attackCooldown = 1.0f;
+    public int zombieDamage = 1;
+
+    [Header("Damage Reaction")]
+    public float hurtDuration = 0.15f;
+    public float knockbackImpulse = 1.15f;
+    public float alertedDetectionRadius = 16f;
+    public float alertDuration = 2.5f;
+
+    [Header("Health")]
+    public int maxHealth = 10;
+    public int currentHealth;
+    public bool isDead;
+
+    [Header("Visual Effects")]
+    [SerializeField] private List<GameObject> hitEffectPrefabs = new List<GameObject>();
+    [SerializeField] private List<GameObject> radiatedPrefabs = new List<GameObject>();
+    public bool isRadiated;
+
+    [Header("Cleanup")]
+    public float destroyAfterDeathSeconds = 3f;
+
+    private static readonly string[] DirectionParameters =
+    {
+        "isWest",
+        "isEast",
+        "isSouth",
+        "isSouthWest",
+        "isNorthEast",
+        "isSouthEast",
+        "isNorth",
+        "isNorthWest"
+    };
+
+    private Rigidbody2D rb;
+    private Collider2D[] colliders;
+    private Coroutine detectionResetCoroutine;
+    private Coroutine hurtRecoveryCoroutine;
+
+    private Vector2 desiredVelocity;
+    private Vector2 lastKnownPlayerPosition;
+    private Vector2 facingDirection = Vector2.right;
+
+    private float nextLineOfSightCheckTime;
+    private float nextAttackTime;
+    private float hurtUntilTime;
+    private float pauseMovementUntilTime;
+    private float baseDetectionRadius;
+    private bool temporarilyHurt;
+    private bool hasLineOfSight = true;
+    private bool lineOfSightBlocked;
+    private string currentDirection = "isEast";
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        colliders = GetComponents<Collider2D>();
+
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        if (animator == null) animator = GetComponent<Animator>();
+        if (spriteRenderer == null) spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);
+        if (animator == null) animator = GetComponentInChildren<Animator>(true);
+
+        if (rb != null)
+        {
+            rb.gravityScale = 0f;
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        }
+
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        if (enemyLayer >= 0)
+        {
+            gameObject.layer = enemyLayer;
+        }
+
+        if (obstacleMask.value == 0)
+        {
+            int obstacleLayer = LayerMask.NameToLayer("Obstacles");
+            if (obstacleLayer >= 0)
+            {
+                obstacleMask = 1 << obstacleLayer;
+            }
+        }
+
+        currentHealth = Mathf.Max(1, maxHealth);
+        baseDetectionRadius = Mathf.Max(3f, detectionRadius);
+
+        AcquirePlayer();
+    }
+
+    private void Update()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        if (player == null)
+        {
+            AcquirePlayer();
+        }
+
+        if (player == null)
+        {
+            desiredVelocity = Vector2.zero;
+            UpdateMovementAnimation(Vector2.zero);
+            return;
+        }
+
+        Vector2 toPlayer = (Vector2)player.position - (Vector2)transform.position;
+        float distanceToPlayer = toPlayer.magnitude;
+
+        if (distanceToPlayer <= detectionRadius && Time.time >= nextLineOfSightCheckTime)
+        {
+            bool clearLineOfSight = HasClearLineOfSightToPlayer();
+            nextLineOfSightCheckTime = Time.time + Mathf.Max(0.05f, lineOfSightCheckInterval);
+
+            if (clearLineOfSight)
+            {
+                hasLineOfSight = true;
+                lineOfSightBlocked = false;
+                lastKnownPlayerPosition = player.position;
+            }
+            else
+            {
+                hasLineOfSight = false;
+                if (!lineOfSightBlocked)
+                {
+                    pauseMovementUntilTime = Time.time + Mathf.Max(0f, blockedPauseSeconds);
+                }
+
+                lineOfSightBlocked = true;
+            }
+        }
+
+        if (Time.time < hurtUntilTime)
+        {
+            desiredVelocity = Vector2.zero;
+            UpdateMovementAnimation(Vector2.zero);
+            return;
+        }
+
+        if (temporarilyHurt)
+        {
+            desiredVelocity = Vector2.zero;
+            UpdateMovementAnimation(Vector2.zero);
+            return;
+        }
+
+        if (distanceToPlayer <= attackRange && hasLineOfSight)
+        {
+            desiredVelocity = Vector2.zero;
+            TryAttack();
+            UpdateMovementAnimation(Vector2.zero);
+            return;
+        }
+
+        bool shouldChase =
+            distanceToPlayer <= detectionRadius ||
+            Vector2.Distance(transform.position, lastKnownPlayerPosition) > 0.2f;
+
+        if (shouldChase)
+        {
+            if (Time.time < pauseMovementUntilTime)
+            {
+                desiredVelocity = Vector2.zero;
+            }
+            else
+            {
+                Vector2 target = hasLineOfSight
+                    ? (Vector2)player.position
+                    : lastKnownPlayerPosition;
+
+                MoveTowards(target);
+            }
+        }
+        else
+        {
+            desiredVelocity = Vector2.zero;
+        }
+
+        UpdateMovementAnimation(desiredVelocity);
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        EnsureMovableBody();
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.Lerp(
+                rb.velocity,
+                desiredVelocity,
+                Time.fixedDeltaTime * movementSmoothing);
+        }
+        else
+        {
+            transform.position += (Vector3)(desiredVelocity * Time.fixedDeltaTime);
+        }
+    }
+
+    private void MoveTowards(Vector2 targetPosition)
+    {
+        Vector2 delta = targetPosition - (Vector2)transform.position;
+        if (delta.sqrMagnitude < 0.0001f)
+        {
+            desiredVelocity = Vector2.zero;
+            return;
+        }
+
+        Vector2 direction = delta.normalized;
+        facingDirection = direction;
+
+        float effectiveSpeed = isRunner ? moveSpeed * 1.35f : moveSpeed;
+        desiredVelocity = direction * Mathf.Max(0f, effectiveSpeed);
+    }
+
+    private void TryAttack()
+    {
+        if (Time.time < nextAttackTime)
+        {
+            return;
+        }
+
+        nextAttackTime = Time.time + Mathf.Max(0.05f, attackCooldown);
+        facingDirection = ((Vector2)player.position - (Vector2)transform.position).normalized;
+
+        AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", true);
+        SetDirectionalBool("AttackAttack", true);
+        AnimatorParamAdapter.SetTrigger(animator, "Attack");
+
+        StartCoroutine(ResetAttackAnimationAfterDelay(0.16f));
+
+        if (playerController == null && player != null)
+        {
+            playerController = player.GetComponent<PlayerController>();
+        }
+
+        if (playerController != null)
+        {
+            playerController.TakeDamage(zombieDamage);
+        }
+    }
+
+    public void TakeDamage(int damageAmount)
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        currentHealth -= Mathf.Max(0, damageAmount);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+            return;
+        }
+
+        if (detectionResetCoroutine != null)
+        {
+            StopCoroutine(detectionResetCoroutine);
+        }
+
+        detectionRadius = Mathf.Max(baseDetectionRadius, alertedDetectionRadius);
+        detectionResetCoroutine = StartCoroutine(ResetDetectionRadiusAfterDelay(alertDuration));
+
+        hurtUntilTime = Time.time + Mathf.Max(0.05f, hurtDuration);
+        pauseMovementUntilTime = Time.time + Mathf.Min(0.08f, blockedPauseSeconds);
+        temporarilyHurt = true;
+        if (hurtRecoveryCoroutine != null)
+        {
+            StopCoroutine(hurtRecoveryCoroutine);
+        }
+
+        hurtRecoveryCoroutine = StartCoroutine(RecoverFromHitAfterDelay(hurtDuration));
+
+        EnsureMovableBody();
+        ApplyKnockbackFromPlayer();
+        TriggerTakeDamageAnimation();
+        SpawnHitEffect();
+    }
+
+    public void ApplyMutantModifiers(
+        float healthMultiplier,
+        float speedMultiplier,
+        float damageMultiplier,
+        float scaleMultiplier,
+        Color tint,
+        bool runner)
+    {
+        maxHealth = Mathf.Max(1, Mathf.RoundToInt(maxHealth * healthMultiplier));
+        currentHealth = maxHealth;
+        moveSpeed *= speedMultiplier;
+        zombieDamage = Mathf.Max(1, Mathf.RoundToInt(zombieDamage * damageMultiplier));
+        transform.localScale *= Mathf.Max(0.2f, scaleMultiplier);
+        isRunner = runner || isRunner;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = tint;
+        }
+    }
+
+    private void ApplyKnockbackFromPlayer()
+    {
+        if (rb == null)
+        {
+            return;
+        }
+
+        rb.WakeUp();
+
+        Transform playerTransform = player != null
+            ? player
+            : playerController != null ? playerController.transform : null;
+
+        if (playerTransform == null)
+        {
+            return;
+        }
+
+        Vector2 away = ((Vector2)transform.position - (Vector2)playerTransform.position).normalized;
+        if (away.sqrMagnitude < 0.0001f)
+        {
+            away = UnityEngine.Random.insideUnitCircle.normalized;
+        }
+
+        rb.AddForce(away * Mathf.Max(0f, knockbackImpulse), ForceMode2D.Impulse);
+    }
+
+    private void TriggerTakeDamageAnimation()
+    {
+        AnimatorParamAdapter.SetBool(animator, "isTakeDamage", true);
+        SetDirectionalBool("TakeDamage", true);
+        SetDirectionalBool("takeDamage", true);
+        AnimatorParamAdapter.SetTrigger(animator, "TakeDamage");
+        StartCoroutine(ResetTakeDamageAnimationAfterDelay(0.18f));
+    }
+
+    private void UpdateMovementAnimation(Vector2 velocity)
+    {
+        bool isMoving = velocity.sqrMagnitude > 0.01f;
+        Vector2 directionForAnimation = isMoving ? velocity.normalized : facingDirection;
+        if (directionForAnimation.sqrMagnitude > 0.0001f)
+        {
+            SetDirection(VectorToDirection(directionForAnimation));
+        }
+
+        AnimatorParamAdapter.SetBool(animator, "isWalking", isMoving);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", false);
+    }
+
+    private void Die()
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        isDead = true;
+        desiredVelocity = Vector2.zero;
+        temporarilyHurt = false;
+        hurtUntilTime = 0f;
+
+        if (hurtRecoveryCoroutine != null)
+        {
+            StopCoroutine(hurtRecoveryCoroutine);
+            hurtRecoveryCoroutine = null;
+        }
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (colliders != null)
+        {
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i] != null)
+                {
+                    colliders[i].enabled = false;
+                }
+            }
+        }
+
+        AnimatorParamAdapter.SetTrigger(animator, "isDie");
+        AnimatorParamAdapter.SetTrigger(animator, "dieTrigger");
+        AnimatorParamAdapter.SetTrigger(animator, "Die");
+        SetDirectionalTrigger("die");
+
+        if (playerController == null && player != null)
+        {
+            playerController = player.GetComponent<PlayerController>();
+        }
+
+        if (playerController != null)
+        {
+            playerController.IncrementZombieKillCount();
+        }
+
+        AudioManager.Instance?.PlayZombieDeathSfx();
+        CleanVfxFactory.SpawnZombieDeathPoof(transform.position);
+
+        Died?.Invoke(this);
+        Destroy(gameObject, destroyAfterDeathSeconds);
+    }
+
+    private bool HasClearLineOfSightToPlayer()
+    {
+        if (player == null)
+        {
+            return false;
+        }
+
+        Vector2 origin = transform.position;
+        Vector2 destination = player.position;
+        Vector2 direction = destination - origin;
+        float distance = direction.magnitude;
+        if (distance <= 0.01f)
+        {
+            return true;
+        }
+
+        RaycastHit2D hit = Physics2D.Raycast(
+            origin,
+            direction.normalized,
+            distance,
+            obstacleMask);
+
+        return hit.collider == null;
+    }
+
+    private void AcquirePlayer()
+    {
+        if (playerController == null)
+        {
+            playerController = PlayerController.FindPrimary();
+        }
+
+        if (playerController != null)
+        {
+            player = playerController.transform;
+            lastKnownPlayerPosition = player.position;
+            return;
+        }
+
+        if (player == null)
+        {
+            GameObject taggedPlayer = GameObject.FindGameObjectWithTag("Player");
+            if (taggedPlayer != null)
+            {
+                player = taggedPlayer.transform;
+            }
+        }
+
+        if (playerController == null)
+        {
+            if (player != null)
+            {
+                playerController = player.GetComponent<PlayerController>();
+            }
+
+            if (playerController == null)
+            {
+                playerController = PlayerController.FindPrimary();
+                if (playerController != null)
+                {
+                    player = playerController.transform;
+                }
+            }
+        }
+
+        if (player != null)
+        {
+            lastKnownPlayerPosition = player.position;
+        }
+    }
+
+    private void EnsureMovableBody()
+    {
+        if (rb == null || isDead)
+        {
+            return;
+        }
+
+        if (rb.bodyType != RigidbodyType2D.Dynamic)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
+
+        if (!rb.simulated)
+        {
+            rb.simulated = true;
+        }
+
+        if ((rb.constraints & RigidbodyConstraints2D.FreezeRotation) == 0)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+    }
+
+    private IEnumerator RecoverFromHitAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(Mathf.Max(0.05f, delay));
+        temporarilyHurt = false;
+        hurtUntilTime = 0f;
+        hurtRecoveryCoroutine = null;
+    }
+
+    private IEnumerator ResetDetectionRadiusAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(Mathf.Max(0.1f, delay));
+        detectionRadius = baseDetectionRadius;
+        detectionResetCoroutine = null;
+    }
+
+    private IEnumerator ResetTakeDamageAnimationAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, "isTakeDamage", false);
+        SetDirectionalBool("TakeDamage", false);
+        SetDirectionalBool("takeDamage", false);
+    }
+
+    private IEnumerator ResetAttackAnimationAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", false);
+        SetDirectionalBool("AttackAttack", false);
+    }
+
+    private void SpawnHitEffect()
+    {
+        List<GameObject> effectPool = isRadiated ? radiatedPrefabs : hitEffectPrefabs;
+        if (effectPool != null && effectPool.Count > 0)
+        {
+            GameObject prefab = effectPool[UnityEngine.Random.Range(0, effectPool.Count)];
+            if (prefab != null)
+            {
+                Instantiate(prefab, transform.position, Quaternion.identity);
+                return;
+            }
+        }
+
+        CleanVfxFactory.SpawnImpactSpark(transform.position);
+    }
+
+    private void SetDirection(string direction)
+    {
+        for (int i = 0; i < DirectionParameters.Length; i++)
+        {
+            string parameter = DirectionParameters[i];
+            AnimatorParamAdapter.SetBool(animator, parameter, parameter == direction);
+        }
+
+        currentDirection = direction;
+    }
+
+    private void SetDirectionalBool(string prefix, bool value)
+    {
+        string suffix = DirectionSuffix(currentDirection);
+        string parameterName = prefix + suffix;
+        AnimatorParamAdapter.SetBool(animator, parameterName, value);
+    }
+
+    private void SetDirectionalTrigger(string prefix)
+    {
+        string suffix = DirectionSuffix(currentDirection);
+        string parameterName = prefix + suffix;
+        AnimatorParamAdapter.SetTrigger(animator, parameterName);
+    }
+
+    private static string VectorToDirection(Vector2 vector)
+    {
+        float angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
+        angle = (angle + 360f) % 360f;
+
+        if (angle >= 337.5f || angle < 22.5f) return "isEast";
+        if (angle < 67.5f) return "isNorthEast";
+        if (angle < 112.5f) return "isNorth";
+        if (angle < 157.5f) return "isNorthWest";
+        if (angle < 202.5f) return "isWest";
+        if (angle < 247.5f) return "isSouthWest";
+        if (angle < 292.5f) return "isSouth";
+        return "isSouthEast";
+    }
+
+    private static string DirectionSuffix(string directionBoolName)
+    {
+        if (string.IsNullOrEmpty(directionBoolName))
+        {
+            return "East";
+        }
+
+        return directionBoolName.StartsWith("is")
+            ? directionBoolName.Substring(2)
+            : directionBoolName;
+    }
+}
+

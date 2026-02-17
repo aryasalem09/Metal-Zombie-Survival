@@ -1,251 +1,462 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace SmallScaleInc.TopDownPixelCharactersPack1
+public class AnimationController : MonoBehaviour
 {
-    public class AnimationController : MonoBehaviour
+    private static readonly string[] DirectionParameters =
     {
-        private Animator animator;
-        public Animator muzzleAnimator;
-        public SpriteRenderer muzzleFlashRenderer;
+        "isWest",
+        "isEast",
+        "isSouth",
+        "isSouthWest",
+        "isNorthEast",
+        "isSouthEast",
+        "isNorth",
+        "isNorthWest"
+    };
 
-        public string currentDirection = "isEast";
-        public bool isCurrentlyRunning;
-        public bool isCrouching = false;
-        public bool isDying = false;
-        private PlayerController playerController;
+    private Animator animator;
+    private PlayerController playerController;
+    private Rigidbody2D playerBody;
+    private Coroutine attackResetCoroutine;
+    private Coroutine takeDamageResetCoroutine;
 
-        // no blood: these are just hit effects now (sparks/poofs)
-        [SerializeField] private List<GameObject> hitEffectPrefabs = new List<GameObject>();
-        [SerializeField] private List<GameObject> radiatedPrefabs = new List<GameObject>();
-        public bool isRadiated = false;
+    [FormerlySerializedAs("muzzleAnimator")]
+    public Animator pulseEmitterAnimator;
+    [FormerlySerializedAs("muzzleFlashRenderer")]
+    public SpriteRenderer pulseFlashRenderer;
 
-        public float rollTime = 0.5f;
+    public string currentDirection = "isEast";
+    public bool isCurrentlyRunning;
+    public bool isCrouching;
+    public bool isDying;
 
-        void Start()
+    [FormerlySerializedAs("bloodPrefabs")]
+    [SerializeField] private List<GameObject> hitEffectPrefabs = new List<GameObject>();
+    [SerializeField] private List<GameObject> radiatedPrefabs = new List<GameObject>();
+    public bool isRadiated;
+    public float rollTime = 0.5f;
+
+    public bool isRunning;
+    public bool isRunningBackwards;
+    public bool isStrafingLeft;
+    public bool isStrafingRight;
+    public bool isAttacking;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        if (animator == null)
         {
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>(true);
+        }
+
+        playerController = GetComponent<PlayerController>();
+        playerBody = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        SetDirection("isEast");
+        AnimatorParamAdapter.SetBool(animator, "isWalking", false);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    private void Update()
+    {
+        if (!gameObject.activeInHierarchy || isDying)
+        {
+            return;
+        }
+
+        if (playerController == null)
+        {
             playerController = GetComponent<PlayerController>();
+            if (playerController == null)
+            {
+                playerController = GetComponentInParent<PlayerController>();
+            }
 
             if (playerController == null)
             {
-                Debug.LogError("PlayerController script not found on the same GameObject!");
+                return;
             }
-
-            animator.SetBool("isEast", true);
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isCrouchRunning", false);
-            animator.SetBool("isCrouchIdling", false);
         }
 
-        void Update()
+        if (animator == null)
         {
-            if (!gameObject.activeInHierarchy) return;
-            if (isDying) return;
-
-            HandleAttackAttack();
-            HandleMovement();
-
-            // misc input tests left as-is
-            if (Input.GetKeyDown(KeyCode.C))
+            animator = GetComponent<Animator>();
+            if (animator == null)
             {
-                if (!isCrouching)
-                {
-                    TriggerCrouchIdleAnimation();
-                    isCrouching = true;
-                }
-                else
-                {
-                    isCrouching = false;
-                    ResetCrouchIdleParameters();
-                }
+                animator = GetComponentInChildren<Animator>(true);
             }
-            else if (Input.GetKey(KeyCode.Alpha1)) TriggerTakeDamageAnimation();
-            else if (Input.GetKey(KeyCode.Alpha2)) TriggerSpecialAbility2Animation();
-            else if (Input.GetKey(KeyCode.Alpha3)) TriggerCastSpellAnimation();
-            else if (Input.GetKey(KeyCode.Alpha4)) TriggerKickAnimation();
-            else if (Input.GetKey(KeyCode.Alpha5)) TriggerPummelAnimation();
-            else if (Input.GetKey(KeyCode.Alpha6)) TriggerAttackSpinAnimation();
-            else if (Input.GetKey(KeyCode.Alpha7)) TriggerDie();
-            else if (Input.GetKey(KeyCode.LeftShift) && isCurrentlyRunning) TriggerFlipAnimation();
-            else if (Input.GetKey(KeyCode.LeftControl) && isCurrentlyRunning) TriggerRollAnimation();
-            else if (Input.GetKey(KeyCode.LeftAlt) && isCurrentlyRunning) TriggerSlideAnimation();
-        }
 
-        // ----------------------------
-        // added: methods PlayerController expects
-        // ----------------------------
-        public void PlayRunAnimation(float snappedAngle)
-        {
-            if (animator == null) return;
-
-            string dir = AngleToDir(snappedAngle);
-            UpdateDirection(dir);
-
-            animator.SetBool("isWalking", true);
-            animator.SetBool("isRunning", true);
-            animator.SetBool("isCrouchRunning", false);
-            animator.SetBool("isCrouchIdling", false);
-        }
-
-        public void PlayIdleAnimation(float snappedAngle)
-        {
-            if (animator == null) return;
-
-            string dir = AngleToDir(snappedAngle);
-            UpdateDirection(dir);
-
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isCrouchRunning", false);
-            animator.SetBool("isCrouchIdling", false);
-        }
-
-        private string AngleToDir(float a)
-        {
-            a = (a + 360f) % 360f;
-
-            if (a >= 337.5f || a < 22.5f) return "isEast";
-            if (a >= 22.5f && a < 67.5f) return "isNorthEast";
-            if (a >= 67.5f && a < 112.5f) return "isNorth";
-            if (a >= 112.5f && a < 157.5f) return "isNorthWest";
-            if (a >= 157.5f && a < 202.5f) return "isWest";
-            if (a >= 202.5f && a < 247.5f) return "isSouthWest";
-            if (a >= 247.5f && a < 292.5f) return "isSouth";
-            return "isSouthEast";
-        }
-
-        // ----------------------------
-        // original logic below (unchanged except effect list + Random)
-        // ----------------------------
-        void UpdateDirection(string newDirection)
-        {
-            string[] directions = { "isWest", "isEast", "isSouth", "isSouthWest", "isNorthEast", "isSouthEast", "isNorth", "isNorthWest" };
-
-            foreach (string direction in directions)
+            if (animator == null)
             {
-                animator.SetBool(direction, direction == newDirection);
+                return;
             }
+        }
 
-            if (currentDirection != newDirection)
+        Vector2 movement = playerController.MovementDirection;
+        if (movement.sqrMagnitude <= 0.0001f && playerBody != null && playerBody.velocity.sqrMagnitude > 0.0004f)
+        {
+            movement = playerBody.velocity;
+        }
+
+        Vector2 facing = playerController.LookDirection;
+        bool isMoving = movement.sqrMagnitude > 0.0001f;
+        bool running = playerController.IsRunning;
+
+        UpdateMovementAnimation(movement, facing, running, playerController.isCrouching);
+    }
+
+    public void UpdateMovementAnimation(Vector2 movement, Vector2 facing, bool running, bool crouching)
+    {
+        if (animator == null || isDying)
+        {
+            return;
+        }
+
+        bool moving = movement.sqrMagnitude > 0.0001f;
+
+        // Use movement direction for locomotion states so walk/run/crouch
+        // always match world motion, then fall back to facing while idle.
+        Vector2 directionSource = moving
+            ? movement.normalized
+            : (facing.sqrMagnitude > 0.0001f ? facing.normalized : Vector2.right);
+
+        SetDirection(VectorToDirection(directionSource));
+
+        isCurrentlyRunning = moving && running;
+        isCrouching = crouching;
+
+        // Keep locomotion deterministic for this controller; avoid toggling
+        // complex strafe/backward branches that can block base movement states.
+        isRunningBackwards = false;
+        isStrafingLeft = false;
+        isStrafingRight = false;
+
+        bool isCrouchRunning = moving && crouching;
+        bool isRunMoving = moving && running && !crouching;
+
+        // The controller expects "isWalking" for many movement transitions,
+        // including paths that then branch to run/crouch directional states.
+        AnimatorParamAdapter.SetBool(animator, "isWalking", moving);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", isRunMoving);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", isCrouchRunning);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", !moving && crouching);
+        AnimatorParamAdapter.SetBool(animator, "isRunningBackwards", isRunningBackwards);
+        AnimatorParamAdapter.SetBool(animator, "isStrafingLeft", isStrafingLeft);
+        AnimatorParamAdapter.SetBool(animator, "isStrafingRight", isStrafingRight);
+
+        // Feed directional variants used by this specific controller.
+        SetDirectionalBool("Run", isRunMoving && !isRunningBackwards && !isStrafingLeft && !isStrafingRight);
+        SetDirectionalBool("CrouchRun", isCrouchRunning);
+        SetDirectionalBool("CrouchIdle", !moving && crouching);
+        SetDirectionalBool("RunBackwards", isRunningBackwards);
+        SetDirectionalBool("StrafeLeft", isStrafingLeft);
+        SetDirectionalBool("StrafeRight", isStrafingRight);
+    }
+
+    public void UpdateFacingDirection(Vector2 facing)
+    {
+        if (isDying || facing.sqrMagnitude <= 0.0001f)
+        {
+            return;
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+            if (animator == null)
             {
-                isAttacking = false;
-                ResetAttackAttackParameters();
+                animator = GetComponentInChildren<Animator>(true);
             }
-
-            currentDirection = newDirection;
         }
 
-        public bool isRunning;
-        public bool isRunningBackwards;
-        public bool isStrafingLeft;
-        public bool isStrafingRight;
-        public bool isAttacking = false;
-
-        void HandleMovement()
+        if (animator == null)
         {
-            // keep your original input-based movement anim logic
-            Vector3 mouseScreenPosition = Input.mousePosition;
-            mouseScreenPosition.z = Camera.main.transform.position.z - transform.position.z;
-            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-            Vector3 directionToMouse = mouseWorldPosition - transform.position;
-            directionToMouse.Normalize();
-
-            float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-            angle = (angle + 360) % 360;
-
-            string newDir = "isEast";
-            if (angle >= 337.5f || angle < 22.5f) newDir = "isEast";
-            else if (angle >= 22.5f && angle < 67.5f) newDir = "isNorthEast";
-            else if (angle >= 67.5f && angle < 112.5f) newDir = "isNorth";
-            else if (angle >= 112.5f && angle < 157.5f) newDir = "isNorthWest";
-            else if (angle >= 157.5f && angle < 202.5f) newDir = "isWest";
-            else if (angle >= 202.5f && angle < 247.5f) newDir = "isSouthWest";
-            else if (angle >= 247.5f && angle < 292.5f) newDir = "isSouth";
-            else newDir = "isSouthEast";
-
-            UpdateDirection(newDir);
-
-            bool moving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
-
-            animator.SetBool("isWalking", moving);
-            animator.SetBool("isRunning", moving && Input.GetKey(KeyCode.LeftShift));
-            isCurrentlyRunning = animator.GetBool("isRunning");
+            return;
         }
 
-        void HandleAttackAttack()
+        SetDirection(VectorToDirection(facing.normalized));
+    }
+
+    public void PlayRunAnimation(float snappedAngle)
+    {
+        if (isDying)
         {
-            // keep whatever you already had here in the asset
-            if (Input.GetMouseButtonDown(0))
+            return;
+        }
+
+        SetDirection(AngleToDirection(snappedAngle));
+        AnimatorParamAdapter.SetBool(animator, "isWalking", true);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", true);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    public void PlayIdleAnimation(float snappedAngle)
+    {
+        if (isDying)
+        {
+            return;
+        }
+
+        SetDirection(AngleToDirection(snappedAngle));
+        AnimatorParamAdapter.SetBool(animator, "isWalking", false);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", false);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    public void TriggerAttackAnimation()
+    {
+        if (isDying || animator == null)
+        {
+            return;
+        }
+
+        isAttacking = true;
+
+        AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", true);
+        AnimatorParamAdapter.SetBool(animator, "isAttackRunning", isCurrentlyRunning);
+        SetDirectionalBool("AttackAttack", true);
+        SetDirectionalBool("Attack2", true);
+
+        if (attackResetCoroutine != null)
+        {
+            StopCoroutine(attackResetCoroutine);
+        }
+
+        attackResetCoroutine = StartCoroutine(ResetAttackAfterDelay(0.2f));
+    }
+
+    public void TriggerTakeDamageAnimation()
+    {
+        if (isDying || animator == null)
+        {
+            return;
+        }
+
+        AnimatorParamAdapter.SetBool(animator, "isTakeDamage", true);
+        AnimatorParamAdapter.SetTrigger(animator, "TakeDamage");
+        SetDirectionalBool("takeDamage", true);
+        SetDirectionalBool("TakeDamage", true);
+        SpawnEffect();
+
+        if (takeDamageResetCoroutine != null)
+        {
+            StopCoroutine(takeDamageResetCoroutine);
+        }
+
+        takeDamageResetCoroutine = StartCoroutine(ResetTakeDamageAfterDelay(0.18f));
+    }
+
+    public void TriggerCrouchIdleAnimation()
+    {
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", true);
+    }
+
+    public void ResetCrouchIdleParameters()
+    {
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
+    }
+
+    public void TriggerDie()
+    {
+        if (animator == null || isDying)
+        {
+            return;
+        }
+
+        isDying = true;
+
+        AnimatorParamAdapter.SetTrigger(animator, "isDie");
+        AnimatorParamAdapter.SetTrigger(animator, "dieTrigger");
+        AnimatorParamAdapter.SetTrigger(animator, "Die");
+        SetDirectionalTrigger("die");
+    }
+
+    public void TriggerSpecialAbility1Animation()
+    {
+        TriggerSpecial("Special1", "isSpecialAbility1", "specialAbility1");
+    }
+
+    public void TriggerSpecialAbility2Animation()
+    {
+        TriggerSpecial("Special2", "isSpecialAbility2", "specialAbility2");
+    }
+
+    public void TriggerCastSpellAnimation()
+    {
+        TriggerSpecial("Cast", "isCastingSpell", "CastSpell");
+    }
+
+    public void TriggerKickAnimation()
+    {
+        TriggerSpecial("Kick", "isKicking", "Kick");
+    }
+
+    public void TriggerFlipAnimation()
+    {
+        TriggerSpecial("Flip", "isFlipping", "Flip");
+    }
+
+    public void TriggerRollAnimation()
+    {
+        TriggerSpecial("Roll", "isRolling", "Rolling");
+        StartCoroutine(ResetRoll());
+    }
+
+    public void TriggerSlideAnimation()
+    {
+        TriggerSpecial("Slide", "isSliding", "Sliding");
+    }
+
+    public void TriggerPummelAnimation()
+    {
+        TriggerSpecial("Pummel", "isPummeling", "Pummel");
+    }
+
+    public void TriggerAttackSpinAnimation()
+    {
+        TriggerSpecial("Spin", "isAttackSpinning", "AttackSpin");
+    }
+
+    private void TriggerSpecial(string triggerName, string stateBoolName, string directionalPrefix)
+    {
+        if (animator == null || isDying)
+        {
+            return;
+        }
+
+        AnimatorParamAdapter.SetTrigger(animator, triggerName);
+        AnimatorParamAdapter.SetBool(animator, stateBoolName, true);
+        SetDirectionalBool(directionalPrefix, true);
+        StartCoroutine(ResetTemporaryBool(stateBoolName, directionalPrefix, 0.2f));
+    }
+
+    private IEnumerator ResetTemporaryBool(string stateBoolName, string directionalPrefix, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, stateBoolName, false);
+        SetDirectionalBool(directionalPrefix, false);
+    }
+
+    private IEnumerator ResetAttackAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", false);
+        AnimatorParamAdapter.SetBool(animator, "isAttackRunning", false);
+        SetDirectionalBool("AttackAttack", false);
+        SetDirectionalBool("Attack2", false);
+        isAttacking = false;
+        attackResetCoroutine = null;
+    }
+
+    private IEnumerator ResetTakeDamageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AnimatorParamAdapter.SetBool(animator, "isTakeDamage", false);
+        SetDirectionalBool("takeDamage", false);
+        SetDirectionalBool("TakeDamage", false);
+        takeDamageResetCoroutine = null;
+    }
+
+    private IEnumerator ResetRoll()
+    {
+        yield return new WaitForSeconds(rollTime);
+        AnimatorParamAdapter.SetBool(animator, "isRolling", false);
+        SetDirectionalBool("Rolling", false);
+    }
+
+    private void SpawnEffect()
+    {
+        List<GameObject> prefabsToUse = isRadiated ? radiatedPrefabs : hitEffectPrefabs;
+        if (prefabsToUse != null && prefabsToUse.Count > 0)
+        {
+            GameObject selectedPrefab = prefabsToUse[Random.Range(0, prefabsToUse.Count)];
+            if (selectedPrefab != null)
             {
-                isAttacking = true;
-                animator.SetBool("isAttacking", true);
-                StartCoroutine(ResetAttackAfterDelay());
+                Instantiate(selectedPrefab, transform.position, Quaternion.identity);
+                return;
             }
         }
 
-        IEnumerator ResetAttackAfterDelay()
+        CleanVfxFactory.SpawnImpactSpark(transform.position);
+    }
+
+    private void SetDirection(string newDirection)
+    {
+        if (animator == null)
         {
-            yield return new WaitForSeconds(0.1f);
-            ResetAttackAttackParameters();
+            return;
         }
 
-        void ResetAttackAttackParameters()
+        for (int i = 0; i < DirectionParameters.Length; i++)
         {
-            if (animator == null) return;
-            animator.SetBool("isAttacking", false);
-            isAttacking = false;
+            string direction = DirectionParameters[i];
+            bool isCurrentDirection = direction == newDirection;
+            AnimatorParamAdapter.SetBool(animator, direction, isCurrentDirection);
+            AnimatorParamAdapter.SetBool(animator, "Move" + DirectionSuffix(direction), isCurrentDirection);
         }
 
-        public void TriggerTakeDamageAnimation()
-        {
-            if (!gameObject.activeInHierarchy) return;
-            if (isDying) return;
+        currentDirection = newDirection;
+    }
 
-            animator.SetTrigger("TakeDamage");
-            SpawnEffect();
+    private string VectorToDirection(Vector2 vector)
+    {
+        if (vector.sqrMagnitude <= 0.0001f)
+        {
+            return currentDirection;
         }
 
-        private void SpawnEffect()
+        float angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
+        return AngleToDirection(angle);
+    }
+
+    private static string AngleToDirection(float angle)
+    {
+        float normalizedAngle = (angle + 360f) % 360f;
+
+        if (normalizedAngle >= 337.5f || normalizedAngle < 22.5f) return "isEast";
+        if (normalizedAngle < 67.5f) return "isNorthEast";
+        if (normalizedAngle < 112.5f) return "isNorth";
+        if (normalizedAngle < 157.5f) return "isNorthWest";
+        if (normalizedAngle < 202.5f) return "isWest";
+        if (normalizedAngle < 247.5f) return "isSouthWest";
+        if (normalizedAngle < 292.5f) return "isSouth";
+        return "isSouthEast";
+    }
+
+    private void SetDirectionalBool(string prefix, bool value)
+    {
+        string suffix = DirectionSuffix(currentDirection);
+        string parameterName = prefix + suffix;
+        AnimatorParamAdapter.SetBool(animator, parameterName, value);
+    }
+
+    private void SetDirectionalTrigger(string prefix)
+    {
+        string suffix = DirectionSuffix(currentDirection);
+        string parameterName = prefix + suffix;
+        AnimatorParamAdapter.SetTrigger(animator, parameterName);
+    }
+
+    private static string DirectionSuffix(string directionBoolName)
+    {
+        if (string.IsNullOrEmpty(directionBoolName))
         {
-            List<GameObject> prefabsToUse = isRadiated ? radiatedPrefabs : hitEffectPrefabs;
-
-            if (prefabsToUse == null || prefabsToUse.Count == 0) return;
-
-            GameObject selectedPrefab = prefabsToUse[UnityEngine.Random.Range(0, prefabsToUse.Count)];
-            if (selectedPrefab == null) return;
-
-            GameObject effectInstance = Instantiate(selectedPrefab, transform.position, Quaternion.identity);
-            StartCoroutine(UpdateSpriteOrder(effectInstance));
+            return "East";
         }
 
-        private IEnumerator UpdateSpriteOrder(GameObject effectInstance)
-        {
-            if (effectInstance == null) yield break;
-            yield return new WaitForSeconds(0.5f);
-
-            SpriteRenderer r = effectInstance.GetComponent<SpriteRenderer>();
-            if (r != null) r.sortingOrder = 3;
-        }
-
-        public void TriggerCrouchIdleAnimation() { animator.SetBool("isCrouchIdling", true); }
-        public void ResetCrouchIdleParameters() { animator.SetBool("isCrouchIdling", false); }
-        public void TriggerDie() { isDying = true; animator.SetTrigger("Die"); }
-        public void TriggerSpecialAbility1Animation() { animator.SetTrigger("Special1"); }
-        public void TriggerSpecialAbility2Animation() { animator.SetTrigger("Special2"); }
-        public void TriggerCastSpellAnimation() { animator.SetTrigger("Cast"); }
-        public void TriggerKickAnimation() { animator.SetTrigger("Kick"); }
-        public void TriggerFlipAnimation() { animator.SetTrigger("Flip"); }
-        public void TriggerRollAnimation() { animator.SetTrigger("Roll"); StartCoroutine(ResetRoll()); }
-        public void TriggerSlideAnimation() { animator.SetTrigger("Slide"); }
-        public void TriggerPummelAnimation() { animator.SetTrigger("Pummel"); }
-        public void TriggerAttackSpinAnimation() { animator.SetTrigger("Spin"); }
-
-        private IEnumerator ResetRoll()
-        {
-            yield return new WaitForSeconds(rollTime);
-        }
+        return directionBoolName.StartsWith("is")
+            ? directionBoolName.Substring(2)
+            : directionBoolName;
     }
 }
