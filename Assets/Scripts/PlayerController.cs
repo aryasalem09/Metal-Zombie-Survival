@@ -919,7 +919,7 @@ public class PlayerController : MonoBehaviour
     {
         isActive = status;
     }
-
+/*
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Stairs"))
@@ -935,7 +935,7 @@ public class PlayerController : MonoBehaviour
             isOnStairs = false;
         }
     }
-
+*/
     private float SnapAngleToEightDirections(float angle)
     {
         angle = (angle + 360f) % 360f;
