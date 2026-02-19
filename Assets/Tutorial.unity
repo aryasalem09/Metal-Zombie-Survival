@@ -180220,8 +180220,8 @@ MonoBehaviour:
   restartDelaySeconds: 3
   zombieKillCount: 0
   killCountText: {fileID: 1394886943}
-  scoreText: {fileID: 0}
-  burstCounterText: {fileID: 0}
+  scoreText: {fileID: 1559114077}
+  burstCounterText: {fileID: 1559114077}
   collectibleCount: 0
   score: 0
   playerLayerName: Player
@@ -340226,8 +340226,8 @@ MonoBehaviour:
   tutorialSceneName: Tutorial
   gameplaySceneName: Level1
   mainMenuSceneName: Tutorial
-  gameOverPanel: {fileID: 0}
-  victoryPanel: {fileID: 0}
+  gameOverPanel: {fileID: 1121877961}
+  victoryPanel: {fileID: 1121877961}
   retryButton: {fileID: 0}
   quitButton: {fileID: 0}
   victoryContinueButton: {fileID: 0}

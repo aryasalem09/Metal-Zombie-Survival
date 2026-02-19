@@ -5,6 +5,8 @@ using UnityEngine;
 
 public static class AnimatorParamAdapter
 {
+    public static bool enableMissingParameterWarnings = false;
+
     public static bool HasBool(Animator animator, string parameterName)
     {
         return ResolveParameterName(animator, parameterName, AnimatorControllerParameterType.Bool) != null;
@@ -162,6 +164,11 @@ public static class AnimatorParamAdapter
         string parameterName,
         AnimatorControllerParameterType expectedType)
     {
+        if (!enableMissingParameterWarnings)
+        {
+            return;
+        }
+
         if (animator == null || string.IsNullOrWhiteSpace(parameterName))
         {
             return;

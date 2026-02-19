@@ -16,6 +16,14 @@ public class GameHudController : MonoBehaviour
     public TextMeshProUGUI burstChargeText;
     public TextMeshProUGUI burstUnlockText;
 
+    [Header("Styling")]
+    public bool applyHudStyling = true;
+    public Color hudPrimaryColor = new Color(0.95f, 0.95f, 0.86f, 1f);
+    public Color hudAccentColor = new Color(0.79f, 0.95f, 0.86f, 1f);
+    public Color hudOutlineColor = new Color(0f, 0f, 0f, 0.9f);
+    public Color healthFillColor = new Color(0.23f, 0.85f, 0.38f, 0.95f);
+    public Color healthBackgroundColor = new Color(0.1f, 0.08f, 0.07f, 0.84f);
+
     private void Start()
     {
         if (player == null || !player.HasInputAuthority)
@@ -23,6 +31,7 @@ public class GameHudController : MonoBehaviour
             player = PlayerController.FindPrimary();
         }
 
+        ApplyHudTheme();
         HookPlayer();
         RefreshAll();
     }
@@ -82,7 +91,7 @@ public class GameHudController : MonoBehaviour
 
         if (healthText != null)
         {
-            healthText.text = current + " / " + max;
+            healthText.text = "HEALTH  " + current + "/" + max;
         }
     }
 
@@ -90,12 +99,12 @@ public class GameHudController : MonoBehaviour
     {
         if (killsText != null)
         {
-            killsText.text = kills.ToString();
+            killsText.text = "KILLS  " + kills;
         }
 
         if (burstUnlockText != null && player != null)
         {
-            burstUnlockText.text = "Next Burst In: " + player.KillsUntilNextBurst;
+            burstUnlockText.text = "NEXT BURST IN  " + player.KillsUntilNextBurst;
         }
     }
 
@@ -103,7 +112,7 @@ public class GameHudController : MonoBehaviour
     {
         if (collectiblesText != null)
         {
-            collectiblesText.text = collectibles.ToString();
+            collectiblesText.text = "ORBS  " + collectibles;
         }
     }
 
@@ -111,7 +120,7 @@ public class GameHudController : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = currentScore.ToString();
+            scoreText.text = "SCORE  " + currentScore;
         }
     }
 
@@ -119,12 +128,58 @@ public class GameHudController : MonoBehaviour
     {
         if (burstChargeText != null)
         {
-            burstChargeText.text = charges.ToString();
+            burstChargeText.text = "BURST  " + charges;
         }
 
         if (burstUnlockText != null && player != null)
         {
-            burstUnlockText.text = "Next Burst In: " + player.KillsUntilNextBurst;
+            burstUnlockText.text = "NEXT BURST IN  " + player.KillsUntilNextBurst;
         }
     }
-}
+
+    private void ApplyHudTheme()
+    {
+        if (!applyHudStyling)
+        {
+            return;
+        }
+
+        TMP_FontAsset hudFont = ImportedStuffAssetUtility.GetGameplayFont();
+        ApplyTextStyle(healthText, hudFont, hudPrimaryColor);
+        ApplyTextStyle(killsText, hudFont, hudPrimaryColor);
+        ApplyTextStyle(collectiblesText, hudFont, hudAccentColor);
+        ApplyTextStyle(scoreText, hudFont, hudAccentColor);
+        ApplyTextStyle(burstChargeText, hudFont, hudAccentColor);
+        ApplyTextStyle(burstUnlockText, hudFont, hudPrimaryColor);
+
+        if (healthSlider != null)
+        {
+            if (healthSlider.targetGraphic is Image backgroundImage)
+            {
+                backgroundImage.color = healthBackgroundColor;
+            }
+
+            Image fillImage = healthSlider.fillRect != null
+                ? healthSlider.fillRect.GetComponent<Image>()
+                : null;
+            if (fillImage != null)
+            {
+                fillImage.color = healthFillColor;
+            }
+        }
+    }
+
+    private void ApplyTextStyle(TextMeshProUGUI text, TMP_FontAsset font, Color color)
+    {
+        if (text == null)
+        {
+            return;
+        }
+
+        ImportedStuffAssetUtility.ApplyUsableFont(text, font);
+
+        text.color = color;
+        text.outlineColor = hudOutlineColor;
+        text.outlineWidth = Mathf.Max(text.outlineWidth, 0.15f);
+    }
+}

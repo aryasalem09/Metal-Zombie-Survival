@@ -204227,8 +204227,8 @@ MonoBehaviour:
   restartDelaySeconds: 3
   zombieKillCount: 0
   killCountText: {fileID: 1394886943}
-  scoreText: {fileID: 0}
-  burstCounterText: {fileID: 0}
+  scoreText: {fileID: 1559114077}
+  burstCounterText: {fileID: 1559114077}
   collectibleCount: 0
   score: 0
   forceRuntimeHudPanel: 1

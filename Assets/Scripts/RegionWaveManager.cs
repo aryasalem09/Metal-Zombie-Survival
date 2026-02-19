@@ -77,6 +77,10 @@ public class RegionWaveManager : MonoBehaviour
 
     public int CurrentRegionIndex => currentRegionIndex;
     public bool IsRegionRunning => regionRunning;
+    public int AliveEnemies => aliveEnemies;
+    public int RegionKillCount => regionKillCount;
+    public int RegionTargetKillCount => regionTargetKillCount;
+    public int RemainingEnemiesInRegion => Mathf.Max(0, regionTargetKillCount - regionKillCount);
 
     private void Start()
     {

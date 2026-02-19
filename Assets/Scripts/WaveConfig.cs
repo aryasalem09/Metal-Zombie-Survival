@@ -13,6 +13,9 @@ public class WaveConfig : ScriptableObject
 
     [Header("waves")]
     public int waveCount = 0; // 0 = infinite
+    [Tooltip("If false and waveCount is 0 or below, WaveManager will use defaultFiniteWaveCount instead of running forever.")]
+    public bool allowInfiniteWaves;
+    [Min(1)] public int defaultFiniteWaveCount = 6;
     public int zombiesPerWave = 8;
     public int zombiesPerWaveIncrease = 3;
     public int maxZombiesPerWave = 0; // 0 = no cap
@@ -50,6 +53,18 @@ public class WaveConfig : ScriptableObject
     [Range(1f, 10f)] public float tankHealthBonus = 2.0f;
     [Range(0.1f, 1f)] public float tankSpeedMultiplier = 0.75f;
     [Range(1f, 2.5f)] public float tankScaleMultiplier = 1.25f;
+
+    [Header("boss wave (optional)")]
+    [Tooltip("When enabled, a specific wave is replaced with a boss wave using boss settings below.")]
+    public bool useBossWave;
+    [Tooltip("Wave number to use as boss wave. 0 means final wave.")]
+    [Min(0)] public int bossWaveNumber;
+    [Min(1)] public int bossZombieCount = 1;
+    [Range(1f, 50f)] public float bossHealthMultiplier = 12f;
+    [Range(0.4f, 4f)] public float bossSpeedMultiplier = 1.1f;
+    [Range(1f, 5f)] public float bossScaleMultiplier = 2f;
+    [Range(1f, 6f)] public float bossDamageMultiplier = 2.5f;
+    public Color bossTint = new Color(0.95f, 0.45f, 0.35f, 1f);
 
     [Header("scene flow (optional)")]
     [Tooltip("If waveCount > 0 and this is set, WaveManager will load this scene after finishing all waves.")]

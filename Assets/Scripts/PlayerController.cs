@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     public float projectileCooldown = 0.1f;
     [Min(0.01f)] public float minProjectileCooldown = 0.02f;
     [Min(0.01f)] public float maxRecommendedProjectileCooldown = 0.1f;
+    [Min(0.05f)] public float minimumTimeBetweenShots = 0.5f;
     public bool clampLegacyProjectileCooldown = true;
     public float projectileLifetime = 1.5f;
     [Range(0.02f, 2f)] public float projectileScaleMultiplier = 0.25f;
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
     [Range(0.05f, 1f)] public float globalProjectileSizeMultiplier = 0.12f;
     public float projectileSpawnOffset = 0.35f;
     public int projectileDamage = 1;
+    [Min(1)] public int energyOrbDamageMultiplier = 3;
     public bool allowRuntimeProjectileFallback = true;
     public Sprite runtimeFallbackProjectileSprite;
     public Color runtimeFallbackProjectileColor = new Color(0.35f, 0.95f, 1f, 0.95f);
@@ -94,7 +96,7 @@ public class PlayerController : MonoBehaviour
     [Header("Runtime HUD Fallback")]
     public bool forceRuntimeHudPanel = true;
     public bool showRuntimeHudPanel = true;
-    public Vector2 runtimeHudPanelSize = new Vector2(300f, 120f);
+    public Vector2 runtimeHudPanelSize = new Vector2(360f, 140f);
     public Vector2 runtimeHudPanelOffset = new Vector2(18f, -18f);
     public Color runtimeHudPanelColor = new Color(0f, 0f, 0f, 0.58f);
     public Color runtimeHudTextColor = Color.white;
@@ -176,6 +178,7 @@ public class PlayerController : MonoBehaviour
         }
 
         NormalizeLegacyCombatValues();
+        TryAutoBindHudTextReferences();
 
         if (enforceContinuousMouseLook)
         {
@@ -208,6 +211,88 @@ public class PlayerController : MonoBehaviour
 
         EnsureRuntimeHudPanel();
         RefreshRuntimeHudPanel();
+    }
+
+    private void TryAutoBindHudTextReferences()
+    {
+        if (killCountText == null)
+        {
+            killCountText = FindHudTextByName("Kill Count", "Kills", "Kill");
+        }
+
+        if (scoreText == null)
+        {
+            scoreText = FindHudTextByName("Score TExt", "Score Text", "Score");
+        }
+
+        if (burstCounterText == null)
+        {
+            burstCounterText = FindHudTextByName("Burst Counter", "Burst");
+        }
+
+        // Scenes often only have one combined score text. Use it for burst fallback
+        // so both counters still render without extra scene wiring.
+        if (scoreText == null && burstCounterText != null)
+        {
+            scoreText = burstCounterText;
+        }
+        else if (burstCounterText == null && scoreText != null)
+        {
+            burstCounterText = scoreText;
+        }
+    }
+
+    private static TextMeshProUGUI FindHudTextByName(params string[] nameCandidates)
+    {
+        TextMeshProUGUI[] texts = FindObjectsOfType<TextMeshProUGUI>(true);
+        for (int i = 0; i < nameCandidates.Length; i++)
+        {
+            string candidate = nameCandidates[i];
+            if (string.IsNullOrWhiteSpace(candidate))
+            {
+                continue;
+            }
+
+            for (int j = 0; j < texts.Length; j++)
+            {
+                TextMeshProUGUI text = texts[j];
+                if (text == null)
+                {
+                    continue;
+                }
+
+                if (text.gameObject.name.IndexOf("RuntimeHud", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    continue;
+                }
+
+                if (string.Equals(text.gameObject.name, candidate, StringComparison.OrdinalIgnoreCase))
+                {
+                    return text;
+                }
+            }
+
+            for (int j = 0; j < texts.Length; j++)
+            {
+                TextMeshProUGUI text = texts[j];
+                if (text == null)
+                {
+                    continue;
+                }
+
+                if (text.gameObject.name.IndexOf("RuntimeHud", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    continue;
+                }
+
+                if (text.gameObject.name.IndexOf(candidate, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return text;
+                }
+            }
+        }
+
+        return null;
     }
 
     private void Update()
@@ -329,7 +414,7 @@ public class PlayerController : MonoBehaviour
         }
 
         nextProjectileTime = Time.time + GetEffectiveProjectileCooldown();
-        FireProjectile(lookDirection, projectileDamage);
+        FireProjectile(lookDirection, GetEffectiveProjectileDamage());
         ProjectileAttackPerformed?.Invoke();
         animationController?.TriggerAttackAnimation();
         AudioManager.Instance?.PlayAttackSfx();
@@ -459,10 +544,18 @@ public class PlayerController : MonoBehaviour
         return projectilePrefab != null || allowRuntimeProjectileFallback;
     }
 
+    private int GetEffectiveProjectileDamage()
+    {
+        int baseDamage = Mathf.Max(1, projectileDamage);
+        int multiplier = Mathf.Max(1, energyOrbDamageMultiplier);
+        return baseDamage * multiplier;
+    }
+
     private float GetEffectiveProjectileCooldown()
     {
         float minimum = Mathf.Max(0.01f, minProjectileCooldown);
-        return Mathf.Max(minimum, projectileCooldown);
+        float enforcedMinimum = Mathf.Max(0.05f, minimumTimeBetweenShots);
+        return Mathf.Max(minimum, projectileCooldown, enforcedMinimum);
     }
 
     private void NormalizeLegacyCombatValues()
@@ -678,7 +771,7 @@ public class PlayerController : MonoBehaviour
         {
             float angle = (step * i) * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-            FireProjectile(direction, projectileDamage);
+            FireProjectile(direction, GetEffectiveProjectileDamage());
         }
 
         if (burstEffectPrefab != null)
@@ -766,7 +859,7 @@ public class PlayerController : MonoBehaviour
             flow.HandlePlayerDefeated();
         }
 
-        if (autoRestartOnDeath)
+        if (autoRestartOnDeath && flow == null)
         {
             StartCoroutine(RestartSceneAfterDelay(restartDelaySeconds));
         }
@@ -876,16 +969,29 @@ public class PlayerController : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = score.ToString();
+            scoreText.text = burstCounterText != null && ReferenceEquals(scoreText, burstCounterText)
+                ? BuildScoreAndBurstLabel()
+                : "SCORE  " + score;
         }
+
+        RefreshRuntimeHudPanel();
     }
 
     private void UpdateBurstUi()
     {
         if (burstCounterText != null)
         {
-            burstCounterText.text = "Burst: " + burstCharges;
+            burstCounterText.text = scoreText != null && ReferenceEquals(scoreText, burstCounterText)
+                ? BuildScoreAndBurstLabel()
+                : "BURST  " + burstCharges;
         }
+
+        RefreshRuntimeHudPanel();
+    }
+
+    private string BuildScoreAndBurstLabel()
+    {
+        return "SCORE  " + score + "  |  BURST  " + burstCharges;
     }
 
     private static string FormatKillCount(int kills)
@@ -1175,6 +1281,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        Vector2 panelSize = new Vector2(
+            Mathf.Max(runtimeHudPanelSize.x, 360f),
+            Mathf.Max(runtimeHudPanelSize.y, 140f));
+
         if (runtimeHudHealthText != null &&
             runtimeHudKillText != null &&
             runtimeHudHealthBarFillImage != null)
@@ -1230,7 +1340,7 @@ public class PlayerController : MonoBehaviour
             panelRect.anchorMax = new Vector2(0f, 1f);
             panelRect.pivot = new Vector2(0f, 1f);
             panelRect.anchoredPosition = runtimeHudPanelOffset;
-            panelRect.sizeDelta = runtimeHudPanelSize;
+            panelRect.sizeDelta = panelSize;
 
             Image panelImage = panelObject.GetComponent<Image>();
             panelImage.color = runtimeHudPanelColor;
@@ -1253,7 +1363,7 @@ public class PlayerController : MonoBehaviour
                 panelRect.anchorMax = new Vector2(0f, 1f);
                 panelRect.pivot = new Vector2(0f, 1f);
                 panelRect.anchoredPosition = runtimeHudPanelOffset;
-                panelRect.sizeDelta = runtimeHudPanelSize;
+                panelRect.sizeDelta = panelSize;
             }
         }
 
@@ -1338,11 +1448,14 @@ public class PlayerController : MonoBehaviour
         rectTransform.anchorMax = new Vector2(0f, 1f);
         rectTransform.pivot = new Vector2(0f, 1f);
         rectTransform.anchoredPosition = anchoredPosition;
-        rectTransform.sizeDelta = new Vector2(runtimeHudPanelSize.x - 24f, 30f);
+        rectTransform.sizeDelta = new Vector2(Mathf.Max(runtimeHudPanelSize.x, 360f) - 24f, 30f);
 
         TextMeshProUGUI text = textObject.GetComponent<TextMeshProUGUI>();
         text.text = initialText;
         text.fontSize = 24f;
+        text.enableAutoSizing = true;
+        text.fontSizeMin = 16f;
+        text.fontSizeMax = 24f;
         text.color = runtimeHudTextColor;
         text.alignment = TextAlignmentOptions.MidlineLeft;
         TMP_FontAsset hudFont = GetRuntimeHudFont();
@@ -1364,7 +1477,7 @@ public class PlayerController : MonoBehaviour
         backgroundRect.anchorMax = new Vector2(0f, 1f);
         backgroundRect.pivot = new Vector2(0f, 1f);
         backgroundRect.anchoredPosition = new Vector2(12f, -44f);
-        backgroundRect.sizeDelta = new Vector2(runtimeHudPanelSize.x - 24f, 18f);
+        backgroundRect.sizeDelta = new Vector2(Mathf.Max(runtimeHudPanelSize.x, 360f) - 24f, 18f);
 
         Image background = backgroundObject.GetComponent<Image>();
         background.color = runtimeHudHealthBarBackgroundColor;
@@ -1438,7 +1551,9 @@ public class PlayerController : MonoBehaviour
 
         if (runtimeHudKillText != null)
         {
-            runtimeHudKillText.text = FormatKillCount(zombieKillCount);
+            runtimeHudKillText.text = "KILLS: " + zombieKillCount +
+                                      "   SCORE: " + score +
+                                      "   BURST: " + burstCharges;
             runtimeHudKillText.color = runtimeHudTextColor;
         }
     }

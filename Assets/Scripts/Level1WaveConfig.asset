@@ -15,11 +15,13 @@ MonoBehaviour:
   zombiePrefab: {fileID: 5175559253248552603, guid: 190172a822a7a164d8c75220bd302b88, type: 3}
   offscreenSpawnMargin: 2
   minSpawnDistanceFromPlayer: 6
-  waveCount: 0
+  waveCount: 2
+  allowInfiniteWaves: 0
+  defaultFiniteWaveCount: 2
   zombiesPerWave: 8
-  zombiesPerWaveIncrease: 3
+  zombiesPerWaveIncrease: 4
   maxZombiesPerWave: 0
-  maxAliveAtOnce: 12
+  maxAliveAtOnce: 10
   timeBeforeFirstWave: 1
   timeBetweenSpawns: 0.5
   timeBetweenWaves: 2.5
@@ -29,15 +31,23 @@ MonoBehaviour:
   runnerChanceIncreasePerWave: 0.03
   runnerSpeedBonus: 1.35
   runnerDetectionBonus: 1.25
-  radiatedWaveStart: 3
-  radiatedChanceStart: 0.1
+  radiatedWaveStart: 2
+  radiatedChanceStart: 0.08
   radiatedChanceIncreasePerWave: 0.03
   radiatedHealthBonus: 1.25
   radiatedSpeedBonus: 1.1
-  tankWaveStart: 5
+  tankWaveStart: 4
   tankChanceStart: 0.08
   tankChanceIncreasePerWave: 0.02
   tankHealthBonus: 2
   tankSpeedMultiplier: 0.75
   tankScaleMultiplier: 1.25
+  useBossWave: 0
+  bossWaveNumber: 0
+  bossZombieCount: 1
+  bossHealthMultiplier: 12
+  bossSpeedMultiplier: 1.1
+  bossScaleMultiplier: 2
+  bossDamageMultiplier: 2.5
+  bossTint: {r: 0.95, g: 0.45, b: 0.35, a: 1}
   nextSceneName: Level 2

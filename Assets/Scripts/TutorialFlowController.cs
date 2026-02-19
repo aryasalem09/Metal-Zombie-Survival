@@ -19,6 +19,7 @@ public class TutorialFlowController : MonoBehaviour
         None,
         Move,
         Attack,
+        InteractPaperNpc,
         RadialBurst
     }
 
@@ -44,12 +45,19 @@ public class TutorialFlowController : MonoBehaviour
     public bool pauseEnemiesUntilTutorialComplete = true;
     [Min(0.05f)] public float enemyPauseRefreshInterval = 0.25f;
 
+    [Header("Paper NPC Objective")]
+    public Vector3 tutorialPaperNpcOffset = new Vector3(1.4f, 0.9f, 0f);
+    [Min(1f)] public float tutorialPaperNpcMaxDistance = 8f;
+    [Min(0.1f)] public float tutorialPaperNpcRepositionInterval = 0.5f;
+
     private int currentStepIndex;
     private bool attackObjectiveCompleted;
+    private bool paperNpcObjectiveCompleted;
     private bool burstObjectiveCompleted;
     private PlayerController subscribedPlayer;
     private bool tutorialCompleted;
     private float nextEnemyPauseRefreshTime;
+    private float nextPaperNpcRepositionTime;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void AutoBootstrapTutorialFlow()
@@ -99,16 +107,26 @@ public class TutorialFlowController : MonoBehaviour
             gameFlowManager = FindObjectOfType<GameFlowManager>();
         }
 
+        DisableTutorialWaveManager();
+
         if (steps == null || steps.Count == 0)
         {
             BuildDefaultSteps();
         }
+        else
+        {
+            EnsurePaperNpcObjectiveStepExists();
+        }
+
+        EnsurePaperNpcBootstrapInScene();
+        ApplyDialogueStyling(dialoguePanel);
 
         if (dialoguePanel != null)
         {
             dialoguePanel.NextPressed += HandleNextPressed;
         }
 
+        PaperNpcInteractable.Interacted += HandlePaperNpcInteracted;
         BindPlayerEvents(player);
         SetEnemyState(false);
         tutorialCompleted = false;
@@ -125,6 +143,7 @@ public class TutorialFlowController : MonoBehaviour
             dialoguePanel.NextPressed -= HandleNextPressed;
         }
 
+        PaperNpcInteractable.Interacted -= HandlePaperNpcInteracted;
         BindPlayerEvents(null);
     }
 
@@ -168,6 +187,13 @@ public class TutorialFlowController : MonoBehaviour
                     dialoguePanel.SetNextInteractable(true);
                 }
                 break;
+            case TutorialObjective.InteractPaperNpc:
+                EnsurePaperNpcNearPlayer();
+                if (paperNpcObjectiveCompleted)
+                {
+                    dialoguePanel.SetNextInteractable(true);
+                }
+                break;
             case TutorialObjective.RadialBurst:
                 if (burstObjectiveCompleted)
                 {
@@ -187,6 +213,21 @@ public class TutorialFlowController : MonoBehaviour
         burstObjectiveCompleted = true;
     }
 
+    private void HandlePaperNpcInteracted(PaperNpcInteractable npc, PlayerController actor)
+    {
+        if (npc == null)
+        {
+            return;
+        }
+
+        if (actor != null && player != null && actor != player)
+        {
+            return;
+        }
+
+        paperNpcObjectiveCompleted = true;
+    }
+
     private void ShowCurrentStep()
     {
         if (dialoguePanel == null)
@@ -204,6 +245,11 @@ public class TutorialFlowController : MonoBehaviour
         dialoguePanel.ShowMessage(step.text);
         dialoguePanel.SetNextButtonLabel(currentStepIndex == steps.Count - 1 ? "Start Mission" : "Next");
         dialoguePanel.SetNextInteractable(step.objective == TutorialObjective.None);
+
+        if (step.objective == TutorialObjective.InteractPaperNpc)
+        {
+            EnsurePaperNpcNearPlayer(force: true);
+        }
 
         if (step.objective == TutorialObjective.RadialBurst &&
             grantBurstChargeForTutorial &&
@@ -260,6 +306,12 @@ public class TutorialFlowController : MonoBehaviour
             },
             new TutorialStep
             {
+                text =
+                    "Find the glowing diary and press [E] (or Left Click) while aiming at it to interact.",
+                objective = TutorialObjective.InteractPaperNpc
+            },
+            new TutorialStep
+            {
                 text = "Every 10 kills grants a Radial Burst charge. Press Q to fire 10 pulses around you.",
                 objective = TutorialObjective.RadialBurst
             },
@@ -274,6 +326,38 @@ public class TutorialFlowController : MonoBehaviour
                 objective = TutorialObjective.None
             }
         };
+    }
+
+    private void EnsurePaperNpcObjectiveStepExists()
+    {
+        if (steps == null)
+        {
+            steps = new List<TutorialStep>();
+        }
+
+        for (int i = 0; i < steps.Count; i++)
+        {
+            if (steps[i] != null && steps[i].objective == TutorialObjective.InteractPaperNpc)
+            {
+                return;
+            }
+        }
+
+        int insertIndex = steps.Count;
+        for (int i = 0; i < steps.Count; i++)
+        {
+            if (steps[i] != null && steps[i].objective == TutorialObjective.Attack)
+            {
+                insertIndex = i + 1;
+                break;
+            }
+        }
+
+        steps.Insert(insertIndex, new TutorialStep
+        {
+            text = "Find the glowing diary and press [E] (or Left Click) while aiming at it to interact.",
+            objective = TutorialObjective.InteractPaperNpc
+        });
     }
 
     private void BindPlayerEvents(PlayerController targetPlayer)
@@ -330,6 +414,96 @@ public class TutorialFlowController : MonoBehaviour
         return false;
     }
 
+    private void DisableTutorialWaveManager()
+    {
+        if (!IsTutorialScene(SceneManager.GetActiveScene().name))
+        {
+            return;
+        }
+
+        WaveManager waveManager = FindObjectOfType<WaveManager>();
+        if (waveManager != null)
+        {
+            waveManager.StopAllCoroutines();
+            waveManager.enabled = false;
+        }
+
+        GameObject waveStatusCanvas = GameObject.Find("WaveStatusCanvas");
+        if (waveStatusCanvas != null)
+        {
+            waveStatusCanvas.SetActive(false);
+        }
+    }
+
+    private void EnsurePaperNpcBootstrapInScene()
+    {
+        if (FindObjectOfType<Level1PaperNpcBootstrap>() != null)
+        {
+            return;
+        }
+
+        if (!IsTutorialScene(SceneManager.GetActiveScene().name))
+        {
+            return;
+        }
+
+        GameObject bootstrapObject = new GameObject("TutorialPaperNpcBootstrap");
+        Level1PaperNpcBootstrap bootstrap = bootstrapObject.AddComponent<Level1PaperNpcBootstrap>();
+        bootstrap.levelSceneName = "Tutorial";
+        bootstrap.includeTutorialScenes = true;
+    }
+
+    private void ApplyDialogueStyling(DialoguePanelUI panel)
+    {
+        if (panel == null)
+        {
+            return;
+        }
+
+        TMP_FontAsset preferredFont = ImportedStuffAssetUtility.GetGameplayFont();
+        TextMeshProUGUI[] texts = panel.GetComponentsInChildren<TextMeshProUGUI>(true);
+        for (int i = 0; i < texts.Length; i++)
+        {
+            TextMeshProUGUI text = texts[i];
+            if (text == null)
+            {
+                continue;
+            }
+
+            ImportedStuffAssetUtility.ApplyUsableFont(text, preferredFont);
+
+            text.outlineColor = new Color(0f, 0f, 0f, 0.75f);
+            text.outlineWidth = Mathf.Max(text.outlineWidth, 0.16f);
+        }
+
+        Image[] images = panel.GetComponentsInChildren<Image>(true);
+        Sprite tutorialBackdropSprite = ImportedStuffAssetUtility.GetTutorialBackgroundSprite();
+        for (int i = 0; i < images.Length; i++)
+        {
+            Image image = images[i];
+            if (image == null)
+            {
+                continue;
+            }
+
+            string objectName = image.gameObject.name;
+            if (string.Equals(objectName, "DialoguePanel", StringComparison.OrdinalIgnoreCase))
+            {
+                image.color = new Color(0.2f, 0.15f, 0.1f, 0.92f);
+                if (tutorialBackdropSprite != null)
+                {
+                    image.sprite = tutorialBackdropSprite;
+                    image.type = Image.Type.Simple;
+                    image.preserveAspect = false;
+                }
+            }
+            else if (string.Equals(objectName, "NextButton", StringComparison.OrdinalIgnoreCase))
+            {
+                image.color = new Color(0.74f, 0.34f, 0.16f, 1f);
+            }
+        }
+    }
+
     private static DialoguePanelUI CreateRuntimeDialoguePanel()
     {
         EnsureEventSystemExists();
@@ -349,25 +523,35 @@ public class TutorialFlowController : MonoBehaviour
 
         GameObject panelObject = CreateUiElement("DialoguePanel", canvasObject.transform);
         Image panelImage = panelObject.AddComponent<Image>();
-        panelImage.color = new Color(0.05f, 0.08f, 0.12f, 0.88f);
+        panelImage.color = new Color(0.2f, 0.15f, 0.1f, 0.92f);
+        Sprite backdropSprite = ImportedStuffAssetUtility.GetTutorialBackgroundSprite();
+        if (backdropSprite != null)
+        {
+            panelImage.sprite = backdropSprite;
+            panelImage.type = Image.Type.Simple;
+            panelImage.preserveAspect = false;
+        }
+
         RectTransform panelRect = panelObject.GetComponent<RectTransform>();
         panelRect.anchorMin = new Vector2(0.08f, 0.03f);
-        panelRect.anchorMax = new Vector2(0.92f, 0.28f);
+        panelRect.anchorMax = new Vector2(0.92f, 0.34f);
         panelRect.offsetMin = Vector2.zero;
         panelRect.offsetMax = Vector2.zero;
 
-        TMP_FontAsset defaultFont = TMP_Settings.defaultFontAsset;
+        TMP_FontAsset defaultFont = ImportedStuffAssetUtility.GetGameplayFont() ?? TMP_Settings.defaultFontAsset;
 
         GameObject messageObject = CreateUiElement("Message", panelObject.transform);
         TextMeshProUGUI messageText = messageObject.AddComponent<TextMeshProUGUI>();
         messageText.text = string.Empty;
-        messageText.fontSize = 28f;
+        messageText.fontSize = 32f;
         messageText.enableWordWrapping = true;
-        messageText.color = new Color(0.95f, 0.98f, 1f, 1f);
+        messageText.color = new Color(0.99f, 0.95f, 0.85f, 1f);
         messageText.alignment = TextAlignmentOptions.MidlineLeft;
+        messageText.outlineColor = new Color(0f, 0f, 0f, 0.75f);
+        messageText.outlineWidth = 0.18f;
         if (defaultFont != null)
         {
-            messageText.font = defaultFont;
+            ImportedStuffAssetUtility.ApplyUsableFont(messageText, defaultFont);
         }
 
         RectTransform messageRect = messageObject.GetComponent<RectTransform>();
@@ -378,31 +562,33 @@ public class TutorialFlowController : MonoBehaviour
 
         GameObject buttonObject = CreateUiElement("NextButton", panelObject.transform);
         Image buttonImage = buttonObject.AddComponent<Image>();
-        buttonImage.color = new Color(0.2f, 0.65f, 0.9f, 1f);
+        buttonImage.color = new Color(0.74f, 0.34f, 0.16f, 1f);
         Button nextButton = buttonObject.AddComponent<Button>();
 
         ColorBlock buttonColors = nextButton.colors;
-        buttonColors.normalColor = new Color(0.2f, 0.65f, 0.9f, 1f);
-        buttonColors.highlightedColor = new Color(0.3f, 0.75f, 1f, 1f);
-        buttonColors.pressedColor = new Color(0.14f, 0.52f, 0.75f, 1f);
+        buttonColors.normalColor = new Color(0.74f, 0.34f, 0.16f, 1f);
+        buttonColors.highlightedColor = new Color(0.86f, 0.42f, 0.2f, 1f);
+        buttonColors.pressedColor = new Color(0.55f, 0.24f, 0.11f, 1f);
         buttonColors.selectedColor = buttonColors.highlightedColor;
         nextButton.colors = buttonColors;
 
         RectTransform buttonRect = buttonObject.GetComponent<RectTransform>();
-        buttonRect.anchorMin = new Vector2(0.8f, 0.18f);
-        buttonRect.anchorMax = new Vector2(0.97f, 0.58f);
+        buttonRect.anchorMin = new Vector2(0.77f, 0.14f);
+        buttonRect.anchorMax = new Vector2(0.97f, 0.54f);
         buttonRect.offsetMin = Vector2.zero;
         buttonRect.offsetMax = Vector2.zero;
 
         GameObject buttonTextObject = CreateUiElement("Label", buttonObject.transform);
         TextMeshProUGUI nextButtonLabel = buttonTextObject.AddComponent<TextMeshProUGUI>();
         nextButtonLabel.text = "Next";
-        nextButtonLabel.fontSize = 26f;
+        nextButtonLabel.fontSize = 30f;
         nextButtonLabel.alignment = TextAlignmentOptions.Center;
         nextButtonLabel.color = Color.white;
+        nextButtonLabel.outlineColor = new Color(0f, 0f, 0f, 0.75f);
+        nextButtonLabel.outlineWidth = 0.16f;
         if (defaultFont != null)
         {
-            nextButtonLabel.font = defaultFont;
+            ImportedStuffAssetUtility.ApplyUsableFont(nextButtonLabel, defaultFont);
         }
 
         RectTransform labelRect = buttonTextObject.GetComponent<RectTransform>();
@@ -437,5 +623,39 @@ public class TutorialFlowController : MonoBehaviour
             typeof(StandaloneInputModule));
 
         eventSystemObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+    }
+
+    private void EnsurePaperNpcNearPlayer(bool force = false)
+    {
+        if (paperNpcObjectiveCompleted || player == null)
+        {
+            return;
+        }
+
+        if (!force && Time.time < nextPaperNpcRepositionTime)
+        {
+            return;
+        }
+
+        nextPaperNpcRepositionTime = Time.time + Mathf.Max(0.1f, tutorialPaperNpcRepositionInterval);
+
+        PaperNpcInteractable npc = FindObjectOfType<PaperNpcInteractable>();
+        if (npc == null)
+        {
+            return;
+        }
+
+        Vector3 playerPosition = player.transform.position;
+        Vector3 targetPosition = playerPosition + tutorialPaperNpcOffset;
+        targetPosition.z = npc.transform.position.z;
+
+        if (!force &&
+            Vector2.Distance(new Vector2(npc.transform.position.x, npc.transform.position.y),
+                             new Vector2(playerPosition.x, playerPosition.y)) <= tutorialPaperNpcMaxDistance)
+        {
+            return;
+        }
+
+        npc.transform.position = targetPosition;
     }
 }

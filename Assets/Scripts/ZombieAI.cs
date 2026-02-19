@@ -44,6 +44,10 @@ public class ZombieAI : MonoBehaviour
     public float alertDuration = 2.5f;
     public Color hitFlashColor = new Color(1f, 0.28f, 0.28f, 1f);
     [Range(0.03f, 0.3f)] public float hitFlashDuration = 0.12f;
+    [Min(0.1f)] public float knockbackVelocityDamping = 22f;
+    [Min(0.1f)] public float idleVelocityDamping = 16f;
+    [Range(0f, 1f)] public float knockbackRetentionAfterHurt = 0.1f;
+    [Min(0.2f)] public float maxKnockbackSpeed = 4f;
 
     [Header("Health")]
     public int maxHealth = 10;
@@ -246,10 +250,27 @@ public class ZombieAI : MonoBehaviour
 
         if (rb != null)
         {
+            float followSmoothing = Mathf.Max(1f, movementSmoothing);
             rb.velocity = Vector2.Lerp(
                 rb.velocity,
                 desiredVelocity,
-                Time.fixedDeltaTime * movementSmoothing);
+                Time.fixedDeltaTime * followSmoothing);
+
+            if (temporarilyHurt || Time.time < hurtUntilTime)
+            {
+                float damp = Mathf.Clamp01(Time.fixedDeltaTime * Mathf.Max(0.1f, knockbackVelocityDamping));
+                rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, damp);
+            }
+            else if (desiredVelocity.sqrMagnitude < 0.0001f)
+            {
+                float damp = Mathf.Clamp01(Time.fixedDeltaTime * Mathf.Max(0.1f, idleVelocityDamping));
+                rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, damp);
+            }
+
+            if (desiredVelocity.sqrMagnitude < 0.0001f && rb.velocity.sqrMagnitude < 0.0004f)
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
         else
         {
@@ -394,6 +415,12 @@ public class ZombieAI : MonoBehaviour
         }
 
         rb.AddForce(away * Mathf.Max(0f, knockbackImpulse), ForceMode2D.Impulse);
+
+        float maxSpeed = Mathf.Max(0.2f, maxKnockbackSpeed);
+        if (rb.velocity.magnitude > maxSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * maxSpeed;
+        }
     }
 
     private void TriggerTakeDamageAnimation()
@@ -809,6 +836,16 @@ public class ZombieAI : MonoBehaviour
         yield return new WaitForSeconds(Mathf.Max(0.05f, delay));
         temporarilyHurt = false;
         hurtUntilTime = 0f;
+
+        if (rb != null && !isDead)
+        {
+            rb.velocity *= Mathf.Clamp01(knockbackRetentionAfterHurt);
+            if (rb.velocity.sqrMagnitude < 0.001f)
+            {
+                rb.velocity = Vector2.zero;
+            }
+        }
+
         hurtRecoveryCoroutine = null;
     }
 

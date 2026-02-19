@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private int aliveZombies = 0;
     [SerializeField] private int zombiesRemainingInWave = 0;
     [SerializeField] private bool isSpawning = false;
+    [SerializeField] private bool currentWaveIsBoss = false;
 
     [Header("Wave Indicator UI")]
     public TextMeshProUGUI waveStatusText;
@@ -25,12 +28,23 @@ public class WaveManager : MonoBehaviour
     public bool forceWaveStatusUi = true;
     public Vector2 waveStatusOffset = new Vector2(-24f, -24f);
     public Color waveStatusColor = new Color(1f, 0.96f, 0.72f, 1f);
+    public Color waveStatusPanelColor = new Color(0f, 0f, 0f, 0.62f);
+    public Color waveStatusOutlineColor = new Color(0f, 0f, 0f, 0.85f);
+    public Vector2 waveStatusPanelSize = new Vector2(560f, 128f);
     [Range(16, 72)] public int waveStatusFontSize = 32;
 
     private PlayerController player;
     private readonly HashSet<ZombieAI> activeZombies = new HashSet<ZombieAI>();
     private string cachedWaveStatusText = string.Empty;
     private static TMP_FontAsset runtimeWaveStatusFont;
+    private Image waveStatusPanelImage;
+    private int resolvedWaveLimit;
+
+    public int CurrentWave => currentWave;
+    public int AliveZombies => aliveZombies;
+    public int ZombiesRemainingInWave => zombiesRemainingInWave;
+    public bool IsSpawningWave => isSpawning;
+    public event System.Action AllWavesCompleted;
 
     private void Start()
     {
@@ -52,12 +66,15 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
+        ApplyTutorialOverridesIfNeeded();
+
         if (forceWaveStatusUi)
         {
             autoCreateWaveStatusUi = true;
         }
 
         EnsureWaveStatusUi();
+        resolvedWaveLimit = ResolveWaveLimit();
         RefreshWaveStatusUi();
 
         StartCoroutine(RunWaves());
@@ -70,17 +87,17 @@ public class WaveManager : MonoBehaviour
         while (true)
         {
             currentWave++;
+            currentWaveIsBoss = false;
 
-            // if config is finite and we finished, move to next scene or stop
-            if (config.waveCount > 0 && currentWave > config.waveCount)
+            // if config is finite and we finished, move to next scene or notify completion
+            if (resolvedWaveLimit > 0 && currentWave > resolvedWaveLimit)
             {
-                if (!string.IsNullOrWhiteSpace(config.nextSceneName))
-                    SceneTransitionTo(config.nextSceneName);
+                HandleWaveSequenceCompleted();
                 yield break;
             }
 
-            int zombiesThisWave = config.zombiesPerWave + (currentWave - 1) * config.zombiesPerWaveIncrease;
-            if (config.maxZombiesPerWave > 0) zombiesThisWave = Mathf.Min(zombiesThisWave, config.maxZombiesPerWave);
+            currentWaveIsBoss = IsBossWave(currentWave);
+            int zombiesThisWave = GetZombieCountForWave(currentWave, currentWaveIsBoss);
             zombiesRemainingInWave = Mathf.Max(0, zombiesThisWave);
 
             isSpawning = true;
@@ -92,7 +109,7 @@ public class WaveManager : MonoBehaviour
                 while (config.maxAliveAtOnce > 0 && GetAliveZombieCount() >= config.maxAliveAtOnce)
                     yield return null;
 
-                SpawnOneZombie(currentWave);
+                SpawnOneZombie(currentWave, currentWaveIsBoss);
                 yield return new WaitForSeconds(config.timeBetweenSpawns);
             }
 
@@ -105,6 +122,99 @@ public class WaveManager : MonoBehaviour
 
             yield return new WaitForSeconds(config.timeBetweenWaves);
         }
+    }
+
+    private bool IsBossWave(int waveNumber)
+    {
+        if (config == null || !config.useBossWave || waveNumber <= 0)
+        {
+            return false;
+        }
+
+        int configuredWave = config.bossWaveNumber;
+        if (configuredWave <= 0)
+        {
+            configuredWave = resolvedWaveLimit > 0
+                ? resolvedWaveLimit
+                : 0;
+        }
+
+        if (configuredWave <= 0)
+        {
+            return false;
+        }
+
+        return waveNumber == configuredWave;
+    }
+
+    private int GetZombieCountForWave(int waveNumber, bool isBossWave)
+    {
+        if (config == null)
+        {
+            return 0;
+        }
+
+        if (isBossWave)
+        {
+            return Mathf.Max(1, config.bossZombieCount);
+        }
+
+        int zombiesThisWave = config.zombiesPerWave + (waveNumber - 1) * config.zombiesPerWaveIncrease;
+        if (config.maxZombiesPerWave > 0)
+        {
+            zombiesThisWave = Mathf.Min(zombiesThisWave, config.maxZombiesPerWave);
+        }
+
+        return Mathf.Max(0, zombiesThisWave);
+    }
+
+    private int ResolveWaveLimit()
+    {
+        if (config == null)
+        {
+            return 0;
+        }
+
+        if (config.waveCount > 0)
+        {
+            return config.waveCount;
+        }
+
+        if (config.allowInfiniteWaves)
+        {
+            return 0;
+        }
+
+        return Mathf.Max(1, config.defaultFiniteWaveCount);
+    }
+
+    private void HandleWaveSequenceCompleted()
+    {
+        isSpawning = false;
+        zombiesRemainingInWave = 0;
+        ShowCompletionStatus();
+
+        string nextSceneName = config != null ? config.nextSceneName : string.Empty;
+        if (!string.IsNullOrWhiteSpace(nextSceneName))
+        {
+            SceneTransitionTo(nextSceneName);
+            return;
+        }
+
+        AllWavesCompleted?.Invoke();
+    }
+
+    private void ShowCompletionStatus()
+    {
+        if (waveStatusText == null)
+        {
+            return;
+        }
+
+        cachedWaveStatusText = "MISSION COMPLETE\nALL WAVES CLEARED";
+        waveStatusText.text = cachedWaveStatusText;
+        waveStatusText.color = waveStatusColor;
+        waveStatusText.outlineColor = waveStatusOutlineColor;
     }
 
     private void SceneTransitionTo(string sceneName)
@@ -152,6 +262,32 @@ public class WaveManager : MonoBehaviour
         Debug.LogWarning(
             "WaveManager: using fallback zombie prefab '" + fallbackZombiePrefab.name + "' for WaveConfig '" + config.name + "'.");
         return true;
+    }
+
+    private void ApplyTutorialOverridesIfNeeded()
+    {
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (!IsTutorialSceneName(sceneName) || config == null)
+        {
+            return;
+        }
+
+        WaveConfig runtimeConfig = Instantiate(config);
+        runtimeConfig.waveCount = 0;
+        runtimeConfig.allowInfiniteWaves = true;
+        runtimeConfig.nextSceneName = string.Empty;
+        config = runtimeConfig;
+    }
+
+    private static bool IsTutorialSceneName(string sceneName)
+    {
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            return false;
+        }
+
+        return string.Equals(sceneName, "Tutorial", StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(sceneName, "TutorialGame", StringComparison.OrdinalIgnoreCase);
     }
 
     private static WaveConfig FindFallbackWaveConfig()
@@ -213,7 +349,7 @@ public class WaveManager : MonoBehaviour
         return firstPrefab;
     }
 
-    private void SpawnOneZombie(int waveIndex)
+    private void SpawnOneZombie(int waveIndex, bool forceBoss)
     {
         if (config.zombiePrefab == null) return;
 
@@ -252,19 +388,26 @@ public class WaveManager : MonoBehaviour
         z.currentHealth = z.maxHealth;
         z.moveSpeed = z.moveSpeed * spdMult;
 
-        // runners become more common later
-        float runnerChance = config.runnerChanceStart + (waveIndex - 1) * config.runnerChanceIncreasePerWave;
-        runnerChance = Mathf.Clamp01(runnerChance);
-
-        z.isRunner = Random.value < runnerChance;
-        if (z.isRunner)
+        if (forceBoss)
         {
-            z.moveSpeed *= config.runnerSpeedBonus;
-            z.detectionRadius *= config.runnerDetectionBonus;
+            ApplyBossModifiers(z);
         }
+        else
+        {
+            // runners become more common later
+            float runnerChance = config.runnerChanceStart + (waveIndex - 1) * config.runnerChanceIncreasePerWave;
+            runnerChance = Mathf.Clamp01(runnerChance);
 
-        // mutations
-        ApplyMutations(z, waveIndex);
+            z.isRunner = Random.value < runnerChance;
+            if (z.isRunner)
+            {
+                z.moveSpeed *= config.runnerSpeedBonus;
+                z.detectionRadius *= config.runnerDetectionBonus;
+            }
+
+            // mutations
+            ApplyMutations(z, waveIndex);
+        }
     }
 
     private Vector3 GetSpawnPosition()
@@ -355,6 +498,27 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    private void ApplyBossModifiers(ZombieAI z)
+    {
+        if (z == null || config == null)
+        {
+            return;
+        }
+
+        z.maxHealth = Mathf.Max(1, Mathf.RoundToInt(z.maxHealth * Mathf.Max(1f, config.bossHealthMultiplier)));
+        z.currentHealth = z.maxHealth;
+        z.moveSpeed *= Mathf.Max(0.4f, config.bossSpeedMultiplier);
+        z.zombieDamage = Mathf.Max(1, Mathf.RoundToInt(z.zombieDamage * Mathf.Max(1f, config.bossDamageMultiplier)));
+        z.transform.localScale *= Mathf.Max(1f, config.bossScaleMultiplier);
+        z.detectionRadius *= 1.35f;
+        z.attackRange *= 1.2f;
+
+        if (z.spriteRenderer != null)
+        {
+            z.spriteRenderer.color = config.bossTint;
+        }
+    }
+
     private void OnZombieDied(ZombieAI z)
     {
         if (z != null)
@@ -390,6 +554,7 @@ public class WaveManager : MonoBehaviour
         if (existingText != null)
         {
             waveStatusText = existingText.GetComponent<TextMeshProUGUI>();
+            waveStatusPanelImage = existingText.GetComponentInParent<Image>();
             if (waveStatusText != null)
             {
                 return;
@@ -422,44 +587,92 @@ public class WaveManager : MonoBehaviour
             scaler.matchWidthOrHeight = 0.5f;
         }
 
-        GameObject textObject = new GameObject("WaveStatusText", typeof(RectTransform), typeof(TextMeshProUGUI));
-        textObject.transform.SetParent(canvasObject.transform, false);
+        GameObject panelObject = GameObject.Find("WaveStatusPanel");
+        if (panelObject == null)
+        {
+            panelObject = new GameObject("WaveStatusPanel", typeof(RectTransform), typeof(Image));
+            panelObject.transform.SetParent(canvasObject.transform, false);
+        }
+
+        waveStatusPanelImage = panelObject.GetComponent<Image>();
+        if (waveStatusPanelImage == null)
+        {
+            waveStatusPanelImage = panelObject.AddComponent<Image>();
+        }
+
+        waveStatusPanelImage.color = waveStatusPanelColor;
+
+        RectTransform panelRect = panelObject.GetComponent<RectTransform>();
+        panelRect.anchorMin = new Vector2(1f, 1f);
+        panelRect.anchorMax = new Vector2(1f, 1f);
+        panelRect.pivot = new Vector2(1f, 1f);
+        panelRect.anchoredPosition = waveStatusOffset;
+        panelRect.sizeDelta = waveStatusPanelSize;
+
+        GameObject textObject = panelObject.transform.Find("WaveStatusText")?.gameObject;
+        if (textObject == null)
+        {
+            textObject = new GameObject("WaveStatusText", typeof(RectTransform), typeof(TextMeshProUGUI));
+            textObject.transform.SetParent(panelObject.transform, false);
+        }
 
         RectTransform rectTransform = textObject.GetComponent<RectTransform>();
-        rectTransform.anchorMin = new Vector2(1f, 1f);
+        rectTransform.anchorMin = new Vector2(0f, 0f);
         rectTransform.anchorMax = new Vector2(1f, 1f);
-        rectTransform.pivot = new Vector2(1f, 1f);
-        rectTransform.anchoredPosition = waveStatusOffset;
-        rectTransform.sizeDelta = new Vector2(640f, 88f);
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        rectTransform.offsetMin = new Vector2(16f, 12f);
+        rectTransform.offsetMax = new Vector2(-16f, -12f);
 
         waveStatusText = textObject.GetComponent<TextMeshProUGUI>();
         waveStatusText.fontSize = waveStatusFontSize;
         waveStatusText.alignment = TextAlignmentOptions.TopRight;
         waveStatusText.color = waveStatusColor;
-        waveStatusText.enableWordWrapping = false;
+        waveStatusText.outlineColor = waveStatusOutlineColor;
+        waveStatusText.outlineWidth = 0.18f;
+        waveStatusText.enableWordWrapping = true;
         waveStatusText.text = string.Empty;
 
         TMP_FontAsset defaultFont = GetRuntimeWaveStatusFont();
-        if (defaultFont != null)
-        {
-            waveStatusText.font = defaultFont;
-        }
+        ImportedStuffAssetUtility.ApplyUsableFont(waveStatusText, defaultFont);
     }
 
     private static TMP_FontAsset GetRuntimeWaveStatusFont()
     {
-        if (runtimeWaveStatusFont != null)
+        if (IsUsableRuntimeFont(runtimeWaveStatusFont))
         {
             return runtimeWaveStatusFont;
         }
 
-        runtimeWaveStatusFont = TMP_Settings.defaultFontAsset;
-        if (runtimeWaveStatusFont == null)
+        runtimeWaveStatusFont = ImportedStuffAssetUtility.GetGameplayFont();
+        if (!IsUsableRuntimeFont(runtimeWaveStatusFont))
+        {
+            runtimeWaveStatusFont = TMP_Settings.defaultFontAsset;
+        }
+
+        if (!IsUsableRuntimeFont(runtimeWaveStatusFont))
         {
             runtimeWaveStatusFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
         }
 
         return runtimeWaveStatusFont;
+    }
+
+    private static bool IsUsableRuntimeFont(TMP_FontAsset fontAsset)
+    {
+        if (fontAsset == null || fontAsset.atlasTextures == null || fontAsset.atlasTextures.Length == 0)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < fontAsset.atlasTextures.Length; i++)
+        {
+            if (fontAsset.atlasTextures[i] != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void RefreshWaveStatusUi()
@@ -479,6 +692,13 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
+        TMP_FontAsset preferredFont = GetRuntimeWaveStatusFont();
+        ImportedStuffAssetUtility.ApplyUsableFont(waveStatusText, preferredFont);
+
+        waveStatusText.fontSize = waveStatusFontSize;
+        waveStatusText.alignment = TextAlignmentOptions.TopRight;
+        waveStatusText.enableWordWrapping = true;
+
         string nextValue = BuildWaveStatusText();
         if (nextValue == cachedWaveStatusText)
         {
@@ -488,16 +708,41 @@ public class WaveManager : MonoBehaviour
         cachedWaveStatusText = nextValue;
         waveStatusText.text = nextValue;
         waveStatusText.color = waveStatusColor;
+        waveStatusText.outlineColor = waveStatusOutlineColor;
+
+        if (waveStatusPanelImage != null)
+        {
+            waveStatusPanelImage.color = waveStatusPanelColor;
+        }
     }
 
     private string BuildWaveStatusText()
     {
+        string waveLabel = resolvedWaveLimit > 0
+            ? "1/" + resolvedWaveLimit
+            : "1";
+
         if (currentWave <= 0)
         {
-            return "Wave 1 | Zombies Left: 0";
+            return "WAVE " + waveLabel + "\nZOMBIES LEFT: 0";
         }
 
-        string spawningSuffix = isSpawning ? " (Spawning)" : string.Empty;
-        return "Wave " + currentWave + " | Zombies Left: " + Mathf.Max(0, zombiesRemainingInWave) + spawningSuffix;
+        waveLabel = resolvedWaveLimit > 0
+            ? currentWave + "/" + resolvedWaveLimit
+            : currentWave.ToString();
+
+        string statusText;
+        if (currentWaveIsBoss)
+        {
+            statusText = isSpawning ? "BOSS ARRIVING" : "BOSS FIGHT";
+        }
+        else
+        {
+            statusText = isSpawning ? "SPAWNING" : "CLEARING";
+        }
+
+        return "WAVE " + waveLabel +
+               "\nZOMBIES LEFT: " + Mathf.Max(0, zombiesRemainingInWave) +
+               "\nSTATUS: " + statusText;
     }
 }
