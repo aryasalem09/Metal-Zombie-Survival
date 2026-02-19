@@ -33,7 +33,7 @@ public class ZombieAI : MonoBehaviour
     [Min(0f)] public float attackRangePadding = 0.15f;
 
     [Header("Low Health Rage")]
-    [Min(1)] public int lowHealthThreshold = 5;
+    [Min(1)] public int lowHealthThreshold = 3;
     [Range(1f, 4f)] public float lowHealthSpeedMultiplier = 1.6f;
     [Range(1f, 4f)] public float lowHealthDamageMultiplier = 1.7f;
     [SerializeField] private bool enragedAtLowHealth;
@@ -51,7 +51,7 @@ public class ZombieAI : MonoBehaviour
     [Min(0.2f)] public float maxKnockbackSpeed = 4f;
 
     [Header("Health")]
-    public int maxHealth = 10;
+    public int maxHealth = 9;
     public int currentHealth;
     public bool isDead;
 
@@ -97,6 +97,15 @@ public class ZombieAI : MonoBehaviour
     private string currentDirection = "isEast";
     private Color baseSpriteColor = Color.white;
     private Coroutine hitFlashCoroutine;
+
+    // Animation safety flags – prevent movement bools from overwriting
+    // attack / take-damage states, same pattern as the player controller.
+    private bool isPlayingAttackAnim;
+    private bool isPlayingHurtAnim;
+    private float attackAnimSetTime;
+    private float hurtAnimSetTime;
+    private const float MaxZombieAttackAnimDuration = 0.5f;
+    private const float MaxZombieHurtAnimDuration = 0.4f;
 
     private void Start()
     {
@@ -324,6 +333,9 @@ public class ZombieAI : MonoBehaviour
         nextAttackTime = Time.time + Mathf.Max(0.05f, attackCooldown);
         facingDirection = ((Vector2)player.position - (Vector2)transform.position).normalized;
 
+        isPlayingAttackAnim = true;
+        attackAnimSetTime = Time.time;
+
         AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", true);
         AnimatorParamAdapter.SetBool(animator, "isAttackRunning", false);
         SetDirectionalBool("AttackAttack", true);
@@ -434,6 +446,9 @@ public class ZombieAI : MonoBehaviour
 
     private void TriggerTakeDamageAnimation()
     {
+        isPlayingHurtAnim = true;
+        hurtAnimSetTime = Time.time;
+
         AnimatorParamAdapter.SetBool(animator, "isTakeDamage", true);
         SetDirectionalBool("TakeDamage", true);
         SetDirectionalBool("takeDamage", true);
@@ -448,11 +463,28 @@ public class ZombieAI : MonoBehaviour
             return;
         }
 
+        // Safety timeout: force-clear stale anim flags if coroutines were killed
+        if (isPlayingAttackAnim && Time.time - attackAnimSetTime > MaxZombieAttackAnimDuration)
+        {
+            isPlayingAttackAnim = false;
+        }
+        if (isPlayingHurtAnim && Time.time - hurtAnimSetTime > MaxZombieHurtAnimDuration)
+        {
+            isPlayingHurtAnim = false;
+        }
+
+        // Always update facing so the sprite looks correct
         bool isMoving = velocity.sqrMagnitude > 0.01f;
         Vector2 directionForAnimation = isMoving ? velocity.normalized : facingDirection;
         if (directionForAnimation.sqrMagnitude > 0.0001f)
         {
             SetDirection(VectorToDirection(directionForAnimation));
+        }
+
+        // Priority guard – don't overwrite attack/hurt bools
+        if (isPlayingAttackAnim || isPlayingHurtAnim)
+        {
+            return;
         }
 
         AnimatorParamAdapter.SetBool(animator, "isWalking", isMoving);
@@ -485,6 +517,8 @@ public class ZombieAI : MonoBehaviour
         desiredVelocity = Vector2.zero;
         temporarilyHurt = false;
         hurtUntilTime = 0f;
+        isPlayingAttackAnim = false;
+        isPlayingHurtAnim = false;
 
         if (hurtRecoveryCoroutine != null)
         {
@@ -871,6 +905,7 @@ public class ZombieAI : MonoBehaviour
         AnimatorParamAdapter.SetBool(animator, "isTakeDamage", false);
         SetDirectionalBool("TakeDamage", false);
         SetDirectionalBool("takeDamage", false);
+        isPlayingHurtAnim = false;
     }
 
     private IEnumerator ResetAttackAnimationAfterDelay(float delay)
@@ -880,6 +915,7 @@ public class ZombieAI : MonoBehaviour
         AnimatorParamAdapter.SetBool(animator, "isAttackRunning", false);
         SetDirectionalBool("AttackAttack", false);
         SetDirectionalBool("Attack2", false);
+        isPlayingAttackAnim = false;
     }
 
     private void SpawnHitEffect()
@@ -900,6 +936,11 @@ public class ZombieAI : MonoBehaviour
 
     private void SetDirection(string direction)
     {
+        if (direction == currentDirection)
+        {
+            return;
+        }
+
         for (int i = 0; i < DirectionParameters.Length; i++)
         {
             string parameter = DirectionParameters[i];

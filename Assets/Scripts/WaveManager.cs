@@ -380,11 +380,11 @@ public class WaveManager : MonoBehaviour
             z.playerController = player;
         }
 
-        // scaling: health + speed ramp
-        float hpMult = Mathf.Pow(config.healthMultiplierPerWave, Mathf.Max(0, waveIndex - 1));
+        // scaling: speed ramp only – health scaling removed so regular
+        // zombies always die in exactly 3 shots (base HP 9, damage per shot 3).
         float spdMult = Mathf.Pow(config.speedMultiplierPerWave, Mathf.Max(0, waveIndex - 1));
 
-        z.maxHealth = Mathf.Max(1, Mathf.RoundToInt(z.maxHealth * hpMult));
+        // z.maxHealth stays at the prefab value (9) – no per-wave HP inflation.
         z.currentHealth = z.maxHealth;
         z.moveSpeed = z.moveSpeed * spdMult;
 

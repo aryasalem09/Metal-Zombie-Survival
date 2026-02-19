@@ -44,6 +44,14 @@ public class AnimationController : MonoBehaviour
     public bool isStrafingLeft;
     public bool isStrafingRight;
     public bool isAttacking;
+    public bool isTakingDamage;
+
+    // Safety timeout — if a coroutine is killed (death, disable, scene change)
+    // these timestamps let Update detect stale flags and force-reset them.
+    private float attackFlagSetTime;
+    private float takeDamageFlagSetTime;
+    private const float MaxAttackFlagDuration = 0.6f;
+    private const float MaxTakeDamageFlagDuration = 0.5f;
 
     private void Awake()
     {
@@ -66,56 +74,116 @@ public class AnimationController : MonoBehaviour
         AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", false);
     }
 
+    // Animation is driven externally by PlayerController.Update() calling
+    // UpdateMovementAnimation / UpdateFacingDirection.  A self-driven Update
+    // was here before but caused a double-update every frame, making the
+    // animator thrash between states and producing visible flicker.
+    //
+    // If this component is ever used standalone (no PlayerController) you can
+    // uncomment the block below, but with a PlayerController present it MUST
+    // be disabled.
+    /*
     private void Update()
     {
-        if (!gameObject.activeInHierarchy || isDying)
-        {
-            return;
-        }
-
+        if (!gameObject.activeInHierarchy || isDying) return;
         if (playerController == null)
         {
             playerController = GetComponent<PlayerController>();
-            if (playerController == null)
-            {
-                playerController = GetComponentInParent<PlayerController>();
-            }
-
-            if (playerController == null)
-            {
-                return;
-            }
+            if (playerController == null) playerController = GetComponentInParent<PlayerController>();
+            if (playerController == null) return;
         }
-
         if (animator == null)
         {
             animator = GetComponent<Animator>();
-            if (animator == null)
-            {
-                animator = GetComponentInChildren<Animator>(true);
-            }
-
-            if (animator == null)
-            {
-                return;
-            }
+            if (animator == null) animator = GetComponentInChildren<Animator>(true);
+            if (animator == null) return;
         }
-
         Vector2 movement = playerController.MovementDirection;
         if (movement.sqrMagnitude <= 0.0001f && playerBody != null && playerBody.velocity.sqrMagnitude > 0.0004f)
-        {
             movement = playerBody.velocity;
+        UpdateMovementAnimation(movement, playerController.LookDirection, playerController.IsRunning, playerController.isCrouching);
+    }
+    */
+
+    /// <summary>
+    /// Safety net: if isAttacking or isTakingDamage flags are stuck (e.g. coroutine
+    /// killed by death or scene change), force-clear them after a timeout so the
+    /// animator is never permanently locked out of movement states.
+    /// </summary>
+    private void LateUpdate()
+    {
+        if (isDying) return;
+
+        if (isAttacking && Time.time - attackFlagSetTime > MaxAttackFlagDuration)
+        {
+            ForceResetAttack();
         }
 
-        Vector2 facing = playerController.LookDirection;
-        bool running = playerController.IsRunning;
+        if (isTakingDamage && Time.time - takeDamageFlagSetTime > MaxTakeDamageFlagDuration)
+        {
+            ForceResetTakeDamage();
+        }
+    }
 
-        UpdateMovementAnimation(movement, facing, running, playerController.isCrouching);
+    private void OnDisable()
+    {
+        // Reset all transient flags so re-enabling the object starts clean.
+        if (isAttacking) ForceResetAttack();
+        if (isTakingDamage) ForceResetTakeDamage();
+    }
+
+    private void ForceResetAttack()
+    {
+        isAttacking = false;
+        if (animator != null)
+        {
+            AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", false);
+            AnimatorParamAdapter.SetBool(animator, "isAttackRunning", false);
+            SetDirectionalBoolExclusive("AttackAttack", false);
+            SetDirectionalBoolExclusive("Attack2", false);
+        }
+        if (attackResetCoroutine != null)
+        {
+            StopCoroutine(attackResetCoroutine);
+            attackResetCoroutine = null;
+        }
+    }
+
+    private void ForceResetTakeDamage()
+    {
+        isTakingDamage = false;
+        if (animator != null)
+        {
+            AnimatorParamAdapter.SetBool(animator, "isTakeDamage", false);
+            SetDirectionalBoolExclusive("takeDamage", false);
+            SetDirectionalBoolExclusive("TakeDamage", false);
+        }
+        if (takeDamageResetCoroutine != null)
+        {
+            StopCoroutine(takeDamageResetCoroutine);
+            takeDamageResetCoroutine = null;
+        }
     }
 
     public void UpdateMovementAnimation(Vector2 movement, Vector2 facing, bool running, bool crouching)
     {
         if (animator == null || isDying)
+        {
+            return;
+        }
+
+        // Always update facing direction (so the character looks at the mouse)
+        Vector2 facingDirection = facing.sqrMagnitude > 0.0001f
+            ? facing.normalized
+            : Vector2.right;
+        SetDirection(VectorToDirection(facingDirection));
+
+        // --- PRIORITY GUARD ---
+        // During attack, damage, or special-ability windows, do NOT overwrite
+        // the movement booleans.  The animator transitions for those states
+        // need their bools to stay stable until the coroutine resets them;
+        // otherwise movement bools fight them and the animation flickers.
+        if (isAttacking || isTakingDamage)
         {
             return;
         }
@@ -135,12 +203,6 @@ public class AnimationController : MonoBehaviour
 
         bool movingFromInput = forwardInput || backwardInput || leftInput || rightInput;
         bool moving = movement.sqrMagnitude > 0.0001f || movingFromInput;
-
-        // The original controller is direction-driven by facing (mouse), not velocity.
-        Vector2 facingDirection = facing.sqrMagnitude > 0.0001f
-            ? facing.normalized
-            : (moving ? movement.normalized : Vector2.right);
-        SetDirection(VectorToDirection(facingDirection));
 
         if (!movingFromInput && moving)
         {
@@ -271,6 +333,7 @@ public class AnimationController : MonoBehaviour
         }
 
         isAttacking = true;
+        attackFlagSetTime = Time.time;
 
         AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", true);
         AnimatorParamAdapter.SetBool(animator, "isAttackRunning", isCurrentlyRunning);
@@ -292,6 +355,8 @@ public class AnimationController : MonoBehaviour
             return;
         }
 
+        isTakingDamage = true;
+        takeDamageFlagSetTime = Time.time;
         AnimatorParamAdapter.SetBool(animator, "isTakeDamage", true);
         AnimatorParamAdapter.SetTrigger(animator, "TakeDamage");
         SetDirectionalBoolExclusive("takeDamage", true);
@@ -414,6 +479,7 @@ public class AnimationController : MonoBehaviour
         AnimatorParamAdapter.SetBool(animator, "isTakeDamage", false);
         SetDirectionalBoolExclusive("takeDamage", false);
         SetDirectionalBoolExclusive("TakeDamage", false);
+        isTakingDamage = false;
         takeDamageResetCoroutine = null;
     }
 
@@ -443,6 +509,11 @@ public class AnimationController : MonoBehaviour
     private void SetDirection(string newDirection)
     {
         if (animator == null)
+        {
+            return;
+        }
+
+        if (newDirection == currentDirection)
         {
             return;
         }

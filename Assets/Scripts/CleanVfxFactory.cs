@@ -1,7 +1,30 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class CleanVfxFactory
 {
+    private const int MaxPoolPerEffect = 24;
+
+    private sealed class FactoryHost : MonoBehaviour
+    {
+        private void Update()
+        {
+            Tick(Time.unscaledTime);
+        }
+    }
+
+    private sealed class PooledBurst
+    {
+        public string key;
+        public GameObject gameObject;
+        public ParticleSystem particleSystem;
+        public float releaseAt;
+    }
+
+    private static FactoryHost host;
+    private static readonly Dictionary<string, Queue<PooledBurst>> Pool = new Dictionary<string, Queue<PooledBurst>>();
+    private static readonly List<PooledBurst> Active = new List<PooledBurst>();
+
     public static void SpawnImpactSpark(Vector3 position)
     {
         SpawnBurst(
@@ -47,10 +70,12 @@ public static class CleanVfxFactory
         float lifetime,
         int particleCount)
     {
-        GameObject vfxObject = new GameObject(name);
-        vfxObject.transform.position = position;
+        PooledBurst burst = Acquire(name);
+        burst.gameObject.name = name;
+        burst.gameObject.transform.position = position;
+        burst.gameObject.SetActive(true);
 
-        ParticleSystem particles = vfxObject.AddComponent<ParticleSystem>();
+        ParticleSystem particles = burst.particleSystem;
         ParticleSystem.MainModule main = particles.main;
         main.startColor = startColor;
         main.startSize = startSize;
@@ -90,7 +115,95 @@ public static class CleanVfxFactory
         ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
         renderer.sortingOrder = 15;
 
+        particles.Clear(true);
         particles.Play();
-        Object.Destroy(vfxObject, lifetime + 0.5f);
+
+        burst.releaseAt = Time.unscaledTime + lifetime + 0.5f;
+        Active.Add(burst);
     }
-}
+
+    private static void EnsureHost()
+    {
+        if (host != null)
+        {
+            return;
+        }
+
+        GameObject existing = GameObject.Find("CleanVfxFactoryHost");
+        GameObject hostObject = existing != null ? existing : new GameObject("CleanVfxFactoryHost");
+        host = hostObject.GetComponent<FactoryHost>();
+        if (host == null)
+        {
+            host = hostObject.AddComponent<FactoryHost>();
+        }
+
+        Object.DontDestroyOnLoad(hostObject);
+    }
+
+    private static PooledBurst Acquire(string key)
+    {
+        EnsureHost();
+
+        if (Pool.TryGetValue(key, out Queue<PooledBurst> queue) && queue.Count > 0)
+        {
+            return queue.Dequeue();
+        }
+
+        GameObject burstObject = new GameObject(key);
+        burstObject.transform.SetParent(host.transform, false);
+        ParticleSystem particles = burstObject.AddComponent<ParticleSystem>();
+
+        return new PooledBurst
+        {
+            key = key,
+            gameObject = burstObject,
+            particleSystem = particles
+        };
+    }
+
+    private static void Tick(float now)
+    {
+        for (int i = Active.Count - 1; i >= 0; i--)
+        {
+            PooledBurst burst = Active[i];
+            if (burst == null || burst.gameObject == null || burst.particleSystem == null)
+            {
+                Active.RemoveAt(i);
+                continue;
+            }
+
+            if (now < burst.releaseAt && burst.particleSystem.IsAlive(true))
+            {
+                continue;
+            }
+
+            ReturnToPool(burst);
+            Active.RemoveAt(i);
+        }
+    }
+
+    private static void ReturnToPool(PooledBurst burst)
+    {
+        if (burst == null || burst.gameObject == null)
+        {
+            return;
+        }
+
+        burst.particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        burst.gameObject.SetActive(false);
+
+        if (!Pool.TryGetValue(burst.key, out Queue<PooledBurst> queue))
+        {
+            queue = new Queue<PooledBurst>();
+            Pool[burst.key] = queue;
+        }
+
+        if (queue.Count >= MaxPoolPerEffect)
+        {
+            Object.Destroy(burst.gameObject);
+            return;
+        }
+
+        queue.Enqueue(burst);
+    }
+}

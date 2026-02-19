@@ -76,6 +76,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int nextBurstUnlockAt = 10;
     public GameObject burstEffectPrefab;
 
+    [Header("Double Shot")]
+    [Tooltip("Every N kills the player gains +1 projectile per shot.")]
+    public int killsPerDoubleShotUnlock = 5;
+    [SerializeField] private int extraProjectiles;
+    [SerializeField] private int nextDoubleShotUnlockAt = 5;
+    [Range(4f, 20f)] public float doubleShotSpreadAngle = 10f;
+
     [Header("Health & UI")]
     public int maxHealth = 100;
     public int currentHealth;
@@ -130,6 +137,7 @@ public class PlayerController : MonoBehaviour
     private TextMeshProUGUI runtimeHudHealthText;
     private TextMeshProUGUI runtimeHudKillText;
     private Image runtimeHudHealthBarFillImage;
+    private Camera mainCamera;
 
     public bool isCrouching;
 
@@ -173,6 +181,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         CacheComponents();
+        CacheMainCamera();
         if (animationController == null) animationController = GetComponent<AnimationController>();
 
         if (spriteRenderer != null)
@@ -319,7 +328,12 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (Camera.main == null)
+        if (mainCamera == null)
+        {
+            CacheMainCamera();
+        }
+
+        if (mainCamera == null)
         {
             return;
         }
@@ -331,7 +345,6 @@ public class PlayerController : MonoBehaviour
         HandleCrouchingToggle();
         HandleRadialBurstInput();
         UpdateAnimation();
-        animationController?.UpdateFacingDirection(lookDirection);
     }
 
     private void FixedUpdate()
@@ -356,7 +369,16 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateLookDirectionFromMouse()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (mainCamera == null)
+        {
+            CacheMainCamera();
+            if (mainCamera == null)
+            {
+                return;
+            }
+        }
+
+        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 toMouse = mousePosition - (Vector2)transform.position;
         if (toMouse.sqrMagnitude < 0.0001f)
         {
@@ -436,7 +458,30 @@ public class PlayerController : MonoBehaviour
         }
 
         nextProjectileTime = Time.time + GetEffectiveProjectileCooldown();
-        FireProjectile(lookDirection, GetEffectiveProjectileDamage());
+
+        int totalShots = 1 + Mathf.Max(0, extraProjectiles);
+        int damage = GetEffectiveProjectileDamage();
+
+        if (totalShots <= 1)
+        {
+            FireProjectile(lookDirection, damage);
+        }
+        else
+        {
+            // spread projectiles evenly around the look direction
+            float totalSpread = doubleShotSpreadAngle * (totalShots - 1);
+            float startAngle = -totalSpread * 0.5f;
+            float baseAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+
+            for (int i = 0; i < totalShots; i++)
+            {
+                float offsetAngle = startAngle + doubleShotSpreadAngle * i;
+                float finalAngle = (baseAngle + offsetAngle) * Mathf.Deg2Rad;
+                Vector2 dir = new Vector2(Mathf.Cos(finalAngle), Mathf.Sin(finalAngle));
+                FireProjectile(dir, damage);
+            }
+        }
+
         ProjectileAttackPerformed?.Invoke();
         animationController?.TriggerAttackAnimation();
         AudioManager.Instance?.PlayAttackSfx();
@@ -921,6 +966,12 @@ public class PlayerController : MonoBehaviour
             nextBurstUnlockAt += Mathf.Max(1, killsPerBurstUnlock);
         }
 
+        while (zombieKillCount >= nextDoubleShotUnlockAt)
+        {
+            extraProjectiles++;
+            nextDoubleShotUnlockAt += Mathf.Max(1, killsPerDoubleShotUnlock);
+        }
+
         KillCountChanged?.Invoke(zombieKillCount);
         BurstChargeChanged?.Invoke(burstCharges);
         UpdateBurstUi();
@@ -1013,7 +1064,8 @@ public class PlayerController : MonoBehaviour
 
     private string BuildScoreAndBurstLabel()
     {
-        return "SCORE  " + score + "  |  BURST  " + burstCharges;
+        int shotCount = 1 + Mathf.Max(0, extraProjectiles);
+        return "SCORE  " + score + "  |  BURST  " + burstCharges + "  |  SHOTS  " + shotCount;
     }
 
     private static string FormatKillCount(int kills)
@@ -1255,6 +1307,11 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
+    }
+
+    private void CacheMainCamera()
+    {
+        mainCamera = Camera.main;
     }
 
     private static void TryAssignLayer(GameObject target, string layerName)
@@ -1578,9 +1635,11 @@ public class PlayerController : MonoBehaviour
 
         if (runtimeHudKillText != null)
         {
+            int shotCount = 1 + Mathf.Max(0, extraProjectiles);
             runtimeHudKillText.text = "KILLS: " + zombieKillCount +
                                       "   SCORE: " + score +
-                                      "   BURST: " + burstCharges;
+                                      "   BURST: " + burstCharges +
+                                      "   SHOTS: " + shotCount;
             runtimeHudKillText.color = runtimeHudTextColor;
         }
     }

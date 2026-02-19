@@ -222,7 +222,9 @@ public class RegionWaveManager : MonoBehaviour
         MutantVariant variant,
         bool isBoss)
     {
-        float healthMultiplier = wave.healthMultiplier;
+        // Normal zombies keep their base HP (9 = 3 shots).
+        // Only special variants get health multipliers.
+        float healthMultiplier = 1f;
         float speedMultiplier = wave.speedMultiplier;
         float damageMultiplier = wave.damageMultiplier;
         float scaleMultiplier = 1f;

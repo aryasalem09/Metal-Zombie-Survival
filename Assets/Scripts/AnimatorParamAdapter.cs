@@ -45,7 +45,14 @@ public static class AnimatorParamAdapter
             return false;
         }
 
+        string valueKey = BuildValueCacheKey(animator, resolvedName, AnimatorControllerParameterType.Bool);
+        if (BoolValueCache.TryGetValue(valueKey, out bool cachedValue) && cachedValue == value)
+        {
+            return true;
+        }
+
         animator.SetBool(resolvedName, value);
+        BoolValueCache[valueKey] = value;
         return true;
     }
 
@@ -58,7 +65,14 @@ public static class AnimatorParamAdapter
             return false;
         }
 
+        string valueKey = BuildValueCacheKey(animator, resolvedName, AnimatorControllerParameterType.Float);
+        if (FloatValueCache.TryGetValue(valueKey, out float cachedValue) && Mathf.Abs(cachedValue - value) <= 0.0001f)
+        {
+            return true;
+        }
+
         animator.SetFloat(resolvedName, value);
+        FloatValueCache[valueKey] = value;
         return true;
     }
 
@@ -97,11 +111,15 @@ public static class AnimatorParamAdapter
 
     private static readonly HashSet<string> MissingParameterWarnings = new HashSet<string>();
     private static readonly Dictionary<string, string> ResolvedParameterCache = new Dictionary<string, string>();
+    private static readonly Dictionary<string, bool> BoolValueCache = new Dictionary<string, bool>();
+    private static readonly Dictionary<string, float> FloatValueCache = new Dictionary<string, float>();
 
     private static void ClearCaches()
     {
         MissingParameterWarnings.Clear();
         ResolvedParameterCache.Clear();
+        BoolValueCache.Clear();
+        FloatValueCache.Clear();
     }
 
     private static string ResolveParameterName(
@@ -232,6 +250,15 @@ public static class AnimatorParamAdapter
 
         int animatorId = animator != null ? animator.GetInstanceID() : 0;
         return "animator:" + animatorId + "|" + expectedType + "|" + parameterName;
+    }
+
+    private static string BuildValueCacheKey(
+        Animator animator,
+        string parameterName,
+        AnimatorControllerParameterType expectedType)
+    {
+        int animatorId = animator != null ? animator.GetInstanceID() : 0;
+        return "animator-value:" + animatorId + "|" + expectedType + "|" + parameterName;
     }
 
     private static bool HasParameter(

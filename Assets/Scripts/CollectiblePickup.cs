@@ -7,9 +7,21 @@ public class CollectiblePickup : MonoBehaviour
     [SerializeField] private AudioClip pickupSfx;
     [SerializeField] private GameObject pickupVfxPrefab;
     [SerializeField] private bool destroyOnPickup = true;
+    private bool collected;
+    private Collider2D triggerCollider;
+
+    private void Awake()
+    {
+        triggerCollider = GetComponent<Collider2D>();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (collected)
+        {
+            return;
+        }
+
         PlayerController player = other.GetComponent<PlayerController>();
         if (player == null)
         {
@@ -19,6 +31,12 @@ public class CollectiblePickup : MonoBehaviour
         if (player == null)
         {
             return;
+        }
+
+        collected = true;
+        if (triggerCollider != null)
+        {
+            triggerCollider.enabled = false;
         }
 
         player.AddCollectible(collectibleAmount, scorePerCollectible);
@@ -46,4 +64,4 @@ public class CollectiblePickup : MonoBehaviour
             Destroy(gameObject);
         }
     }
-}
+}
