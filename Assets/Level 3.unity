@@ -49301,7 +49301,7 @@ GameObject:
   - component: {fileID: 221870832}
   - component: {fileID: 221870831}
   - component: {fileID: 221870830}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205033,7 +205033,7 @@ GameObject:
   - component: {fileID: 856871599}
   - component: {fileID: 856871598}
   - component: {fileID: 856871600}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ColliderGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}

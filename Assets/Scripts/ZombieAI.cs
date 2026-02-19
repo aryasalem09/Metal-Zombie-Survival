@@ -23,6 +23,7 @@ public class ZombieAI : MonoBehaviour
     public LayerMask obstacleMask;
     public float lineOfSightCheckInterval = 0.15f;
     public float blockedPauseSeconds = 0.3f;
+    [SerializeField] private string regionBoundsLayerName = "RegionBounds";
 
     [Header("Attack")]
     public float attackRange = 0.8f;
@@ -92,6 +93,7 @@ public class ZombieAI : MonoBehaviour
     private bool hasLineOfSight = true;
     private bool lineOfSightBlocked;
     private bool hasLastKnownPlayerPosition;
+    private bool regionBoundaryBypassApplied;
     private string currentDirection = "isEast";
     private Color baseSpriteColor = Color.white;
     private Coroutine hitFlashCoroutine;
@@ -134,6 +136,8 @@ public class ZombieAI : MonoBehaviour
             }
         }
 
+        regionBoundaryBypassApplied = TryIgnoreRegionBoundaryCollisions();
+
         currentHealth = Mathf.Max(1, maxHealth);
         baseDetectionRadius = Mathf.Max(3f, detectionRadius);
         attackRange = Mathf.Max(minimumAttackRange, attackRange);
@@ -154,6 +158,11 @@ public class ZombieAI : MonoBehaviour
             desiredVelocity = Vector2.zero;
             UpdateMovementAnimation(Vector2.zero);
             return;
+        }
+
+        if (!regionBoundaryBypassApplied)
+        {
+            regionBoundaryBypassApplied = TryIgnoreRegionBoundaryCollisions();
         }
 
         Vector2 toPlayer = (Vector2)player.position - (Vector2)transform.position;
@@ -941,5 +950,87 @@ public class ZombieAI : MonoBehaviour
         return directionBoolName.StartsWith("is")
             ? directionBoolName.Substring(2)
             : directionBoolName;
+    }
+
+    private bool TryIgnoreRegionBoundaryCollisions()
+    {
+        if (colliders == null || colliders.Length == 0)
+        {
+            colliders = GetComponents<Collider2D>();
+            if (colliders == null || colliders.Length == 0)
+            {
+                return false;
+            }
+        }
+
+        Collider2D[] sceneColliders = FindObjectsOfType<Collider2D>(true);
+        if (sceneColliders == null || sceneColliders.Length == 0)
+        {
+            return false;
+        }
+
+        int regionBoundsLayer = LayerMask.NameToLayer(regionBoundsLayerName);
+        int ignoredCount = 0;
+
+        for (int i = 0; i < sceneColliders.Length; i++)
+        {
+            Collider2D boundary = sceneColliders[i];
+            if (boundary == null || !boundary.enabled || boundary.isTrigger)
+            {
+                continue;
+            }
+
+            if (boundary.transform.root == transform.root)
+            {
+                continue;
+            }
+
+            bool matchesLayer = regionBoundsLayer >= 0 &&
+                                boundary.gameObject.layer == regionBoundsLayer;
+            bool matchesFallbackName = IsLikelyBoundaryByName(boundary);
+            if (!matchesLayer && !matchesFallbackName)
+            {
+                continue;
+            }
+
+            for (int j = 0; j < colliders.Length; j++)
+            {
+                Collider2D ownCollider = colliders[j];
+                if (ownCollider == null || !ownCollider.enabled)
+                {
+                    continue;
+                }
+
+                Physics2D.IgnoreCollision(ownCollider, boundary, true);
+            }
+
+            ignoredCount++;
+        }
+
+        return ignoredCount > 0;
+    }
+
+    private static bool IsLikelyBoundaryByName(Collider2D collider)
+    {
+        if (collider == null)
+        {
+            return false;
+        }
+
+        Transform target = collider.transform;
+        if (string.Equals(target.name, "ColliderGrid", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (target.parent != null &&
+            string.Equals(target.parent.name, "ColliderGrid", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return collider is EdgeCollider2D &&
+               target.parent != null &&
+               target.parent.GetComponent<Grid>() != null;
     }
 }

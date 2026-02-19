@@ -11,6 +11,7 @@ public class CollisionLayerBootstrap : MonoBehaviour
     public string gateLayer = "Gate";
     public string interactableLayer = "Interactable";
     public string regionBoundsLayer = "RegionBounds";
+    public bool autoAssignRegionBoundsLayer = true;
 
     private static readonly HashSet<string> MissingLayerWarnings = new HashSet<string>();
 
@@ -27,8 +28,19 @@ public class CollisionLayerBootstrap : MonoBehaviour
             regionBoundsLayer: "RegionBounds");
     }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void AssignRegionBoundsLayerAtStartup()
+    {
+        AssignLikelyBoundaryObjectsToRegionBounds("RegionBounds");
+    }
+
     private void Awake()
     {
+        if (autoAssignRegionBoundsLayer)
+        {
+            AssignLikelyBoundaryObjectsToRegionBounds(regionBoundsLayer);
+        }
+
         ConfigureCollisionMatrix(
             playerLayer,
             enemyLayer,
@@ -61,6 +73,8 @@ public class CollisionLayerBootstrap : MonoBehaviour
         SetLayerCollision(enemyLayer, obstacleLayer, true);
         SetLayerCollision(playerLayer, gateLayer, true);
         SetLayerCollision(enemyLayer, gateLayer, true);
+        SetLayerCollision(playerLayer, regionBoundsLayer, true);
+        SetLayerCollision(enemyLayer, regionBoundsLayer, false);
         SetLayerCollision(playerLayer, interactableLayer, true);
         SetLayerCollision(enemyLayer, interactableLayer, false);
     }
@@ -88,5 +102,63 @@ public class CollisionLayerBootstrap : MonoBehaviour
 
         Debug.LogWarning(
             $"CollisionLayerBootstrap: Layer '{layerName}' is missing. Add it in Project Settings > Tags and Layers.");
+    }
+
+    private static void AssignLikelyBoundaryObjectsToRegionBounds(string regionBoundsLayerName)
+    {
+        if (string.IsNullOrWhiteSpace(regionBoundsLayerName))
+        {
+            return;
+        }
+
+        int regionBoundsLayer = LayerMask.NameToLayer(regionBoundsLayerName);
+        if (regionBoundsLayer < 0)
+        {
+            WarnLayerMissing(regionBoundsLayerName);
+            return;
+        }
+
+        Transform[] transforms = FindObjectsOfType<Transform>(true);
+        for (int i = 0; i < transforms.Length; i++)
+        {
+            Transform candidate = transforms[i];
+            if (candidate == null || !IsLikelyBoundaryObject(candidate))
+            {
+                continue;
+            }
+
+            SetLayerRecursively(candidate, regionBoundsLayer);
+        }
+    }
+
+    private static bool IsLikelyBoundaryObject(Transform candidate)
+    {
+        if (candidate == null)
+        {
+            return false;
+        }
+
+        if (string.Equals(candidate.name, "ColliderGrid", System.StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return string.Equals(candidate.name, "Collider", System.StringComparison.OrdinalIgnoreCase) &&
+               candidate.parent != null &&
+               string.Equals(candidate.parent.name, "ColliderGrid", System.StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void SetLayerRecursively(Transform root, int layer)
+    {
+        if (root == null)
+        {
+            return;
+        }
+
+        root.gameObject.layer = layer;
+        for (int i = 0; i < root.childCount; i++)
+        {
+            SetLayerRecursively(root.GetChild(i), layer);
+        }
     }
 }
