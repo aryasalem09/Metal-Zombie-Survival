@@ -228,8 +228,16 @@ MonoBehaviour:
   snapToTargetOnAcquire: 1
   smoothTime: 0.1
   enableLookAhead: 0
+  forceCenterOnTarget: 1
+  hardLockToPlayerCenter: 1
   lookAheadDistance: 0.2
   lookAheadSpeed: 2
+  constrainToLevelBounds: 1
+  autoDetectBoundsFromTilemaps: 1
+  manualCameraBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 60, y: 40, z: 0}
+  boundsPadding: 0.15
 --- !u!114 &10213674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18238,8 +18246,12 @@ MonoBehaviour:
   backgroundMusic: {fileID: 8300000, guid: dc1d6b96e081b4befbd033dee4730596, type: 3}
   playMusicOnStart: 1
   persistAcrossScenes: 1
+  autoSwitchMusicByScene: 1
+  autoAssignImportedStuffAudio: 1
+  sceneMusicOverrides: []
   attackSfx: {fileID: 8300000, guid: ab297b593498a6e47ba84de770477cbe, type: 3}
   hitSparkSfx: {fileID: 8300000, guid: 3061c7b9b32d894478e4126ccce25ca3, type: 3}
+  playerDamageSfx: {fileID: 0}
   uiClickSfx: {fileID: 8300000, guid: a58e438b7cfa445498120af0e6169082, type: 3}
   zombieDeathSfx: {fileID: 8300000, guid: 4310474905e266640852f43bd609a1a4, type: 3}
   abilityBurstSfx: {fileID: 0}
@@ -49448,7 +49460,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0.5, y: 2.7519999, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
@@ -134854,6 +134866,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 72, y: 177, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: -81, y: 178, z: 0}
     second:
       serializedVersion: 2
@@ -136938,11 +136960,15 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 8747
     m_Data: {fileID: 11400000, guid: a9fe8468f5bce3d43a1a633d0f0b2b70, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 3993144897466ab44848d5441f1ea1c9, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 8747
     m_Data: {fileID: 21300000, guid: 41e1e3c244ace8045acc8950df778d3d, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 9d03e440afe2bc647ab039ed66eb3bb0, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 8747
+  - m_RefCount: 8748
     m_Data:
       e00: 1
       e01: 0
@@ -136961,7 +136987,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 8747
+  - m_RefCount: 8748
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -184651,6 +184677,7 @@ MonoBehaviour:
   projectileCooldown: 0.1
   minProjectileCooldown: 0.02
   maxRecommendedProjectileCooldown: 0.1
+  minimumTimeBetweenShots: 0.5
   clampLegacyProjectileCooldown: 1
   projectileLifetime: 1.5
   projectileScaleMultiplier: 0.1
@@ -184658,6 +184685,7 @@ MonoBehaviour:
   globalProjectileSizeMultiplier: 0.1
   projectileSpawnOffset: 0.35
   projectileDamage: 1
+  energyOrbDamageMultiplier: 3
   allowRuntimeProjectileFallback: 1
   runtimeFallbackProjectileSprite: {fileID: 0}
   runtimeFallbackProjectileColor: {r: 0.35, g: 0.95, b: 1, a: 0.95}
@@ -184910,11 +184938,15 @@ MonoBehaviour:
   aliveZombies: 0
   zombiesRemainingInWave: 0
   isSpawning: 0
+  currentWaveIsBoss: 0
   waveStatusText: {fileID: 0}
   autoCreateWaveStatusUi: 1
   forceWaveStatusUi: 1
   waveStatusOffset: {x: -24, y: -24}
   waveStatusColor: {r: 1, g: 0.96, b: 0.72, a: 1}
+  waveStatusPanelColor: {r: 0, g: 0, b: 0, a: 0.62}
+  waveStatusOutlineColor: {r: 0, g: 0, b: 0, a: 0.85}
+  waveStatusPanelSize: {x: 560, y: 128}
   waveStatusFontSize: 32
 --- !u!4 &798659730
 Transform:
@@ -344713,8 +344745,10 @@ MonoBehaviour:
   quitButton: {fileID: 0}
   victoryContinueButton: {fileID: 0}
   pauseGameplayOnPanelOpen: 1
+  autoCreatePanelsIfMissing: 1
   player: {fileID: 645137715}
   regionWaveManager: {fileID: 0}
+  waveManager: {fileID: 0}
 --- !u!4 &1965760478
 Transform:
   m_ObjectHideFlags: 0
