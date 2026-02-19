@@ -108,7 +108,6 @@ public class AnimationController : MonoBehaviour
         }
 
         Vector2 facing = playerController.LookDirection;
-        bool isMoving = movement.sqrMagnitude > 0.0001f;
         bool running = playerController.IsRunning;
 
         UpdateMovementAnimation(movement, facing, running, playerController.isCrouching);
@@ -121,45 +120,95 @@ public class AnimationController : MonoBehaviour
             return;
         }
 
-        bool moving = movement.sqrMagnitude > 0.0001f;
+        bool forwardInput = false;
+        bool backwardInput = false;
+        bool leftInput = false;
+        bool rightInput = false;
 
-        // Use movement direction for locomotion states so walk/run/crouch
-        // always match world motion, then fall back to facing while idle.
-        Vector2 directionSource = moving
-            ? movement.normalized
-            : (facing.sqrMagnitude > 0.0001f ? facing.normalized : Vector2.right);
+        if (playerController != null && playerController.HasInputAuthority)
+        {
+            forwardInput = playerController.ForwardInputHeld;
+            backwardInput = playerController.BackwardInputHeld;
+            leftInput = playerController.LeftInputHeld;
+            rightInput = playerController.RightInputHeld;
+        }
 
-        SetDirection(VectorToDirection(directionSource));
+        bool movingFromInput = forwardInput || backwardInput || leftInput || rightInput;
+        bool moving = movement.sqrMagnitude > 0.0001f || movingFromInput;
 
-        isCurrentlyRunning = moving && running;
+        // The original controller is direction-driven by facing (mouse), not velocity.
+        Vector2 facingDirection = facing.sqrMagnitude > 0.0001f
+            ? facing.normalized
+            : (moving ? movement.normalized : Vector2.right);
+        SetDirection(VectorToDirection(facingDirection));
+
+        if (!movingFromInput && moving)
+        {
+            Vector2 movementDirection = movement.normalized;
+            Vector2 rightDirection = new Vector2(facingDirection.y, -facingDirection.x);
+
+            float forwardAmount = Vector2.Dot(movementDirection, facingDirection);
+            float rightAmount = Vector2.Dot(movementDirection, rightDirection);
+            const float directionalThreshold = 0.28f;
+
+            forwardInput = forwardAmount > directionalThreshold;
+            backwardInput = forwardAmount < -directionalThreshold;
+            leftInput = rightAmount < -directionalThreshold;
+            rightInput = rightAmount > directionalThreshold;
+
+            if (!forwardInput && !backwardInput && !leftInput && !rightInput)
+            {
+                if (Mathf.Abs(forwardAmount) >= Mathf.Abs(rightAmount))
+                {
+                    forwardInput = forwardAmount >= 0f;
+                }
+                else
+                {
+                    rightInput = rightAmount >= 0f;
+                }
+            }
+        }
+
+        if (moving && !forwardInput && !backwardInput && !leftInput && !rightInput)
+        {
+            forwardInput = true;
+        }
+
+        if (crouching)
+        {
+            forwardInput = false;
+            backwardInput = false;
+            leftInput = false;
+            rightInput = false;
+        }
+
         isCrouching = crouching;
+        isCurrentlyRunning = moving && !crouching;
+        isRunning = (forwardInput || (running && moving)) && !crouching;
+        isRunningBackwards = backwardInput && !crouching;
+        isStrafingLeft = leftInput && !crouching;
+        isStrafingRight = rightInput && !crouching;
 
-        // Keep locomotion deterministic for this controller; avoid toggling
-        // complex strafe/backward branches that can block base movement states.
-        isRunningBackwards = false;
-        isStrafingLeft = false;
-        isStrafingRight = false;
-
+        bool isWalking = moving && !crouching;
         bool isCrouchRunning = moving && crouching;
-        bool isRunMoving = moving && running && !crouching;
+        bool isCrouchIdling = !moving && crouching;
 
-        // The controller expects "isWalking" for many movement transitions,
-        // including paths that then branch to run/crouch directional states.
-        AnimatorParamAdapter.SetBool(animator, "isWalking", moving);
-        AnimatorParamAdapter.SetBool(animator, "isRunning", isRunMoving);
+        AnimatorParamAdapter.SetBool(animator, "isWalking", isWalking);
+        AnimatorParamAdapter.SetBool(animator, "isRunning", isRunning);
         AnimatorParamAdapter.SetBool(animator, "isCrouchRunning", isCrouchRunning);
-        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", !moving && crouching);
+        AnimatorParamAdapter.SetBool(animator, "isCrouchIdling", isCrouchIdling);
         AnimatorParamAdapter.SetBool(animator, "isRunningBackwards", isRunningBackwards);
         AnimatorParamAdapter.SetBool(animator, "isStrafingLeft", isStrafingLeft);
         AnimatorParamAdapter.SetBool(animator, "isStrafingRight", isStrafingRight);
 
         // Feed directional variants used by this specific controller.
-        SetDirectionalBool("Run", isRunMoving && !isRunningBackwards && !isStrafingLeft && !isStrafingRight);
-        SetDirectionalBool("CrouchRun", isCrouchRunning);
-        SetDirectionalBool("CrouchIdle", !moving && crouching);
-        SetDirectionalBool("RunBackwards", isRunningBackwards);
-        SetDirectionalBool("StrafeLeft", isStrafingLeft);
-        SetDirectionalBool("StrafeRight", isStrafingRight);
+        // These are exclusive families: only one direction stays true.
+        SetDirectionalBoolExclusive("Move", isWalking);
+        SetDirectionalBoolExclusive("CrouchRun", isCrouchRunning);
+        SetDirectionalBoolExclusive("CrouchIdle", isCrouchIdling);
+        SetDirectionalBoolExclusive("RunBackwards", isRunningBackwards);
+        SetDirectionalBoolExclusive("StrafeLeft", isStrafingLeft);
+        SetDirectionalBoolExclusive("StrafeRight", isStrafingRight);
     }
 
     public void UpdateFacingDirection(Vector2 facing)
@@ -225,8 +274,8 @@ public class AnimationController : MonoBehaviour
 
         AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", true);
         AnimatorParamAdapter.SetBool(animator, "isAttackRunning", isCurrentlyRunning);
-        SetDirectionalBool("AttackAttack", true);
-        SetDirectionalBool("Attack2", true);
+        SetDirectionalBoolExclusive("AttackAttack", true);
+        SetDirectionalBoolExclusive("Attack2", true);
 
         if (attackResetCoroutine != null)
         {
@@ -245,8 +294,8 @@ public class AnimationController : MonoBehaviour
 
         AnimatorParamAdapter.SetBool(animator, "isTakeDamage", true);
         AnimatorParamAdapter.SetTrigger(animator, "TakeDamage");
-        SetDirectionalBool("takeDamage", true);
-        SetDirectionalBool("TakeDamage", true);
+        SetDirectionalBoolExclusive("takeDamage", true);
+        SetDirectionalBoolExclusive("TakeDamage", true);
         SpawnEffect();
 
         if (takeDamageResetCoroutine != null)
@@ -337,7 +386,7 @@ public class AnimationController : MonoBehaviour
 
         AnimatorParamAdapter.SetTrigger(animator, triggerName);
         AnimatorParamAdapter.SetBool(animator, stateBoolName, true);
-        SetDirectionalBool(directionalPrefix, true);
+        SetDirectionalBoolExclusive(directionalPrefix, true);
         StartCoroutine(ResetTemporaryBool(stateBoolName, directionalPrefix, 0.2f));
     }
 
@@ -345,7 +394,7 @@ public class AnimationController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         AnimatorParamAdapter.SetBool(animator, stateBoolName, false);
-        SetDirectionalBool(directionalPrefix, false);
+        SetDirectionalBoolExclusive(directionalPrefix, false);
     }
 
     private IEnumerator ResetAttackAfterDelay(float delay)
@@ -353,8 +402,8 @@ public class AnimationController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         AnimatorParamAdapter.SetBool(animator, "isAttackAttacking", false);
         AnimatorParamAdapter.SetBool(animator, "isAttackRunning", false);
-        SetDirectionalBool("AttackAttack", false);
-        SetDirectionalBool("Attack2", false);
+        SetDirectionalBoolExclusive("AttackAttack", false);
+        SetDirectionalBoolExclusive("Attack2", false);
         isAttacking = false;
         attackResetCoroutine = null;
     }
@@ -363,8 +412,8 @@ public class AnimationController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         AnimatorParamAdapter.SetBool(animator, "isTakeDamage", false);
-        SetDirectionalBool("takeDamage", false);
-        SetDirectionalBool("TakeDamage", false);
+        SetDirectionalBoolExclusive("takeDamage", false);
+        SetDirectionalBoolExclusive("TakeDamage", false);
         takeDamageResetCoroutine = null;
     }
 
@@ -372,7 +421,7 @@ public class AnimationController : MonoBehaviour
     {
         yield return new WaitForSeconds(rollTime);
         AnimatorParamAdapter.SetBool(animator, "isRolling", false);
-        SetDirectionalBool("Rolling", false);
+        SetDirectionalBoolExclusive("Rolling", false);
     }
 
     private void SpawnEffect()
@@ -403,7 +452,6 @@ public class AnimationController : MonoBehaviour
             string direction = DirectionParameters[i];
             bool isCurrentDirection = direction == newDirection;
             AnimatorParamAdapter.SetBool(animator, direction, isCurrentDirection);
-            AnimatorParamAdapter.SetBool(animator, "Move" + DirectionSuffix(direction), isCurrentDirection);
         }
 
         currentDirection = newDirection;
@@ -434,11 +482,20 @@ public class AnimationController : MonoBehaviour
         return "isSouthEast";
     }
 
-    private void SetDirectionalBool(string prefix, bool value)
+    private void SetDirectionalBoolExclusive(string prefix, bool value)
     {
-        string suffix = DirectionSuffix(currentDirection);
-        string parameterName = prefix + suffix;
-        AnimatorParamAdapter.SetBool(animator, parameterName, value);
+        if (animator == null || string.IsNullOrEmpty(prefix))
+        {
+            return;
+        }
+
+        for (int i = 0; i < DirectionParameters.Length; i++)
+        {
+            string direction = DirectionParameters[i];
+            bool isCurrent = value && direction == currentDirection;
+            string parameterName = prefix + DirectionSuffix(direction);
+            AnimatorParamAdapter.SetBool(animator, parameterName, isCurrent);
+        }
     }
 
     private void SetDirectionalTrigger(string prefix)

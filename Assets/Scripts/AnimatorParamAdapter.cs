@@ -2,10 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class AnimatorParamAdapter
 {
     public static bool enableMissingParameterWarnings = false;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void RegisterSceneHooks()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+        ClearCaches();
+    }
+
+    private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ClearCaches();
+    }
 
     public static bool HasBool(Animator animator, string parameterName)
     {
@@ -84,6 +98,12 @@ public static class AnimatorParamAdapter
     private static readonly HashSet<string> MissingParameterWarnings = new HashSet<string>();
     private static readonly Dictionary<string, string> ResolvedParameterCache = new Dictionary<string, string>();
 
+    private static void ClearCaches()
+    {
+        MissingParameterWarnings.Clear();
+        ResolvedParameterCache.Clear();
+    }
+
     private static string ResolveParameterName(
         Animator animator,
         string parameterName,
@@ -97,7 +117,17 @@ public static class AnimatorParamAdapter
         string cacheKey = BuildCacheKey(animator, parameterName, expectedType);
         if (ResolvedParameterCache.TryGetValue(cacheKey, out string cachedName))
         {
-            return cachedName;
+            if (cachedName == null)
+            {
+                return null;
+            }
+
+            if (HasParameter(animator, cachedName, expectedType))
+            {
+                return cachedName;
+            }
+
+            ResolvedParameterCache.Remove(cacheKey);
         }
 
         AnimatorControllerParameter[] parameters = animator.parameters;
@@ -189,8 +219,42 @@ public static class AnimatorParamAdapter
         string parameterName,
         AnimatorControllerParameterType expectedType)
     {
+        int controllerId = 0;
+        if (animator != null && animator.runtimeAnimatorController != null)
+        {
+            controllerId = animator.runtimeAnimatorController.GetInstanceID();
+        }
+
+        if (controllerId != 0)
+        {
+            return "controller:" + controllerId + "|" + expectedType + "|" + parameterName;
+        }
+
         int animatorId = animator != null ? animator.GetInstanceID() : 0;
-        return animatorId + "|" + expectedType + "|" + parameterName;
+        return "animator:" + animatorId + "|" + expectedType + "|" + parameterName;
+    }
+
+    private static bool HasParameter(
+        Animator animator,
+        string parameterName,
+        AnimatorControllerParameterType expectedType)
+    {
+        if (animator == null || string.IsNullOrWhiteSpace(parameterName))
+        {
+            return false;
+        }
+
+        AnimatorControllerParameter[] parameters = animator.parameters;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            AnimatorControllerParameter parameter = parameters[i];
+            if (parameter.type == expectedType && parameter.name == parameterName)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static string NormalizeParameterName(string value)

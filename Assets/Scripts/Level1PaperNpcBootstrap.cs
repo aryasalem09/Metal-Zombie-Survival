@@ -40,7 +40,87 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
     private float nextRecoveryTime;
     private PaperNpcInteractable runtimePaperNpc;
+    private bool hasCollectedDiaryThisScene;
     private static Sprite runtimeBillboardSprite;
+
+    private static readonly Vector3[] TutorialCandidateOffsets =
+    {
+        new Vector3(1.35f, 0.95f, 0f),
+        new Vector3(-1.1f, 1.2f, 0f),
+        new Vector3(1.25f, -1f, 0f),
+        new Vector3(-1.35f, -0.8f, 0f),
+        new Vector3(0f, 1.6f, 0f),
+        new Vector3(1.8f, 0f, 0f)
+    };
+
+    private static readonly Vector3[] Level1CandidateOffsets =
+    {
+        new Vector3(2.1f, 1.2f, 0f),
+        new Vector3(1.8f, 0f, 0f),
+        new Vector3(-1.8f, 0f, 0f),
+        new Vector3(0f, 1.6f, 0f),
+        new Vector3(0f, -1.6f, 0f),
+        new Vector3(1.35f, 1.1f, 0f),
+        new Vector3(-1.35f, 1.1f, 0f),
+        new Vector3(1.35f, -1.1f, 0f),
+        new Vector3(-1.35f, -1.1f, 0f)
+    };
+
+    private static readonly Vector3[] Level2CandidateOffsets =
+    {
+        new Vector3(-2.35f, 1.45f, 0f),
+        new Vector3(-2f, 0.2f, 0f),
+        new Vector3(-1.5f, -1.3f, 0f),
+        new Vector3(0f, 1.9f, 0f),
+        new Vector3(1.6f, 1.2f, 0f),
+        new Vector3(-0.2f, -1.9f, 0f)
+    };
+
+    private static readonly Vector3[] Level3CandidateOffsets =
+    {
+        new Vector3(1.25f, -2.2f, 0f),
+        new Vector3(2.1f, -1.1f, 0f),
+        new Vector3(-1.4f, -1.8f, 0f),
+        new Vector3(0f, -2.4f, 0f),
+        new Vector3(1.6f, 0.7f, 0f),
+        new Vector3(-1.8f, 1f, 0f)
+    };
+
+    private const string TutorialDiaryStory =
+        "Mara Ilyin - Field Diary, Prologue\n\n" +
+        "The sirens did not mark an evacuation. They marked a lock. District gates sealed first, then the broadcasts changed to looped instructions with no signatures.\n\n" +
+        "At 03:17, a clean three-tone signal slipped under the noise. Every infected inside the clinic corridor stopped and faced the same direction. They were listening.\n\n" +
+        "If you find this page, stay above ground at dawn and below ground after dark. The city is not empty. It is waiting.";
+
+    private const string Level1DiaryStory =
+        "Mara Ilyin - Field Diary, Fragment 12\n\n" +
+        "We traced the pulse through dead substations until it converged on the old transit line. The infected avoid the lower tunnels unless the signal changes.\n\n" +
+        "Someone painted route marks over the station maps. Not warnings. Instructions. They lead to a sealed blast door behind flood pumps.\n\n" +
+        "I left this fragment here in case I do not come back. Restore power to Platform C and listen at 03:17.\f" +
+        "Mara Ilyin - Field Diary, Fragment 13\n\n" +
+        "We heard movement behind the blast door, but no footsteps. Metal on metal, like tools being arranged.\n\n" +
+        "For fourteen seconds after each pulse, the infected freeze and turn toward the tunnel mouth. Whatever is transmitting, they still obey it.\n\n" +
+        "Next marker: Sector Vault B. If I am gone, follow the red cable with the cracked insulation.";
+
+    private const string Level2DiaryStory =
+        "Mara Ilyin - Field Diary, Fragment 14\n\n" +
+        "Sector Vault B was not a shelter. It was a relay room with every wall covered in hand-written call signs. Most were crossed out.\n\n" +
+        "The pulse now carries a whisper under the tones. We slowed it on a recorder and found coordinates embedded in the static.\n\n" +
+        "They point toward the drowned service quarter where the streetlights still flicker in sequence, even with no grid power.\f" +
+        "Mara Ilyin - Field Diary, Fragment 15\n\n" +
+        "Tonight we found a maintenance chapel below the pumps. Candles were still warm, but there were no people, only maps pinned with watchtower photos.\n\n" +
+        "Every tower photo had the same symbol scratched into the corner: a split circle with three teeth. The same shape is stamped on the blast-door hinges.\n\n" +
+        "If you hear boots behind you with no shadows in front of you, do not run to the nearest light. Run to the nearest water tower.";
+
+    private const string Level3DiaryStory =
+        "Mara Ilyin - Field Diary, Fragment 16\n\n" +
+        "The tower reservoir was drained from the inside. At the bottom we found a hatch labeled HEARTLINE ACCESS, still powered, still unlocked.\n\n" +
+        "Inside were operator consoles, all set to transmit at 03:17. One screen listed district names, then replaced them with one word: COMPLIANT.\n\n" +
+        "Someone has been steering both panic routes and infection routes at the same time.\f" +
+        "Mara Ilyin - Field Diary, Fragment 17\n\n" +
+        "We followed the final cable to a room with no doors and one active speaker. It played the three tones once, then my own voice repeated back from a log that had never been recorded.\n\n" +
+        "If this reaches you, the signal is no longer just a command. It is learning who answers.\n\n" +
+        "The next fragment is not in this district. Look for the station map where every exit is painted black except one.";
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void AutoBootstrapOnSceneLoad()
@@ -57,7 +137,8 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
         }
 
         GameObject bootstrap = new GameObject("Level1PaperNpcBootstrap");
-        bootstrap.AddComponent<Level1PaperNpcBootstrap>();
+        Level1PaperNpcBootstrap bootstrapComponent = bootstrap.AddComponent<Level1PaperNpcBootstrap>();
+        bootstrapComponent.levelSceneName = activeScene.name;
     }
 
     private void Start()
@@ -68,13 +149,24 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
             return;
         }
 
+        hasCollectedDiaryThisScene = false;
         PlayerController player = EnsurePlayerInteractor();
         runtimePaperNpc = EnsurePaperNpcExists(player);
     }
 
+    private void OnEnable()
+    {
+        PaperNpcInteractable.Interacted += HandlePaperNpcInteracted;
+    }
+
+    private void OnDisable()
+    {
+        PaperNpcInteractable.Interacted -= HandlePaperNpcInteracted;
+    }
+
     private void Update()
     {
-        if (!keepNpcNearPlayer || !IsSceneTarget(SceneManager.GetActiveScene().name))
+        if (!keepNpcNearPlayer || !IsSceneTarget(SceneManager.GetActiveScene().name) || hasCollectedDiaryThisScene)
         {
             return;
         }
@@ -116,6 +208,11 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
     private PaperNpcInteractable EnsurePaperNpcExists(PlayerController player)
     {
+        if (hasCollectedDiaryThisScene)
+        {
+            return null;
+        }
+
         PaperNpcInteractable existingNpc = FindObjectOfType<PaperNpcInteractable>();
         if (existingNpc != null)
         {
@@ -151,6 +248,17 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
         ConfigureNpc(paperNpc);
         return paperNpc;
+    }
+
+    private void HandlePaperNpcInteracted(PaperNpcInteractable npc, PlayerController actor)
+    {
+        if (npc == null || !IsSceneTarget(SceneManager.GetActiveScene().name))
+        {
+            return;
+        }
+
+        hasCollectedDiaryThisScene = true;
+        runtimePaperNpc = null;
     }
 
     private GameObject SpawnPaperNpc(PlayerController player)
@@ -199,9 +307,13 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
             return;
         }
 
+        string sceneName = SceneManager.GetActiveScene().name;
         paperNpc.interactionDistance = interactionDistance;
-        paperNpc.diaryTitle = "Diary Of Mara Ilyin";
+        paperNpc.diaryTitle = GetDiaryTitleForScene(sceneName);
+        paperNpc.diaryStoryText = GetDiaryStoryForScene(sceneName);
         paperNpc.interactionActionText = "open the survivor diary";
+        paperNpc.removeAfterInteraction = true;
+        paperNpc.removeDelayAfterClose = 0.05f;
         paperNpc.enableIllumination = true;
         paperNpc.showExclamationMarker = true;
         paperNpc.exclamationText = "!";
@@ -420,7 +532,9 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
     private static bool IsDefaultTargetScene(string sceneName)
     {
-        if (MatchesSceneName(sceneName, "Level1"))
+        if (MatchesSceneName(sceneName, "Level1") ||
+            MatchesSceneName(sceneName, "Level2") ||
+            MatchesSceneName(sceneName, "Level3"))
         {
             return true;
         }
@@ -490,22 +604,16 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
     private Vector3 ResolvePreferredSpawnPosition(PlayerController player)
     {
+        string sceneName = SceneManager.GetActiveScene().name;
+        Vector3[] candidateOffsets = GetCandidateOffsetsForScene(sceneName);
+        Vector3 scenePrimaryOffset = candidateOffsets.Length > 0
+            ? candidateOffsets[0]
+            : playerRelativeOffset;
+
         Vector3 position;
         if (player != null)
         {
             Vector3 playerPosition = player.transform.position;
-            Vector3[] candidateOffsets =
-            {
-                playerRelativeOffset,
-                new Vector3(1.8f, 0f, 0f),
-                new Vector3(-1.8f, 0f, 0f),
-                new Vector3(0f, 1.6f, 0f),
-                new Vector3(0f, -1.6f, 0f),
-                new Vector3(1.35f, 1.1f, 0f),
-                new Vector3(-1.35f, 1.1f, 0f),
-                new Vector3(1.35f, -1.1f, 0f),
-                new Vector3(-1.35f, -1.1f, 0f)
-            };
 
             for (int i = 0; i < candidateOffsets.Length; i++)
             {
@@ -517,7 +625,7 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
                 }
             }
 
-            position = playerPosition + playerRelativeOffset;
+            position = playerPosition + scenePrimaryOffset;
             position.z = npcWorldDepth;
             return position;
         }
@@ -529,9 +637,89 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
             return position;
         }
 
-        position = fallbackWorldPosition;
+        position = GetFallbackWorldPositionForScene(sceneName);
         position.z = npcWorldDepth;
         return position;
+    }
+
+    private static Vector3[] GetCandidateOffsetsForScene(string sceneName)
+    {
+        if (MatchesSceneName(sceneName, "Tutorial") || MatchesSceneName(sceneName, "TutorialGame"))
+        {
+            return TutorialCandidateOffsets;
+        }
+
+        if (MatchesSceneName(sceneName, "Level 2"))
+        {
+            return Level2CandidateOffsets;
+        }
+
+        if (MatchesSceneName(sceneName, "Level 3"))
+        {
+            return Level3CandidateOffsets;
+        }
+
+        return Level1CandidateOffsets;
+    }
+
+    private Vector3 GetFallbackWorldPositionForScene(string sceneName)
+    {
+        if (MatchesSceneName(sceneName, "Tutorial") || MatchesSceneName(sceneName, "TutorialGame"))
+        {
+            return fallbackWorldPosition + new Vector3(0f, 1.8f, 0f);
+        }
+
+        if (MatchesSceneName(sceneName, "Level 2"))
+        {
+            return fallbackWorldPosition + new Vector3(-4.5f, -0.5f, 0f);
+        }
+
+        if (MatchesSceneName(sceneName, "Level 3"))
+        {
+            return fallbackWorldPosition + new Vector3(4f, -3f, 0f);
+        }
+
+        return fallbackWorldPosition;
+    }
+
+    private static string GetDiaryTitleForScene(string sceneName)
+    {
+        if (MatchesSceneName(sceneName, "Level 2"))
+        {
+            return "Diary Of Mara Ilyin - Fragments 14-15";
+        }
+
+        if (MatchesSceneName(sceneName, "Level 3"))
+        {
+            return "Diary Of Mara Ilyin - Fragments 16-17";
+        }
+
+        if (MatchesSceneName(sceneName, "Tutorial") || MatchesSceneName(sceneName, "TutorialGame"))
+        {
+            return "Diary Of Mara Ilyin - Prologue";
+        }
+
+        return "Diary Of Mara Ilyin - Fragments 12-13";
+    }
+
+    private static string GetDiaryStoryForScene(string sceneName)
+    {
+        if (MatchesSceneName(sceneName, "Level 2"))
+        {
+            return Level2DiaryStory;
+        }
+
+        if (MatchesSceneName(sceneName, "Level 3"))
+        {
+            return Level3DiaryStory;
+        }
+
+        if (MatchesSceneName(sceneName, "Tutorial") || MatchesSceneName(sceneName, "TutorialGame"))
+        {
+            return TutorialDiaryStory;
+        }
+
+        return Level1DiaryStory;
     }
 
     private static Vector3 ConvertWorldScaleToLocal(Transform parent, Vector3 worldScale)

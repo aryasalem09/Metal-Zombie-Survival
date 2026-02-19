@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -67,6 +68,10 @@ public class PaperNpcInteractable : MonoBehaviour, IRaycastInteractable
     [Header("Debug")]
     public bool autoAddCollider = true;
 
+    [Header("Lifecycle")]
+    public bool removeAfterInteraction = true;
+    [Min(0f)] public float removeDelayAfterClose = 0.05f;
+
     private readonly List<Material> emissiveMaterials = new List<Material>();
     private readonly List<Color> emissiveBaseColors = new List<Color>();
 
@@ -85,6 +90,8 @@ public class PaperNpcInteractable : MonoBehaviour, IRaycastInteractable
     private MeshRenderer fallbackBodyRenderer;
     private Transform fallbackBodyTransform;
     private SphereCollider interactionHitbox;
+    private bool hasBeenInteracted;
+    private bool removeQueued;
     private static Sprite locatorSprite;
 
     private static readonly string DefaultDiaryText =
@@ -151,6 +158,11 @@ public class PaperNpcInteractable : MonoBehaviour, IRaycastInteractable
 
     public string GetInteractionPrompt(PlayerController player)
     {
+        if (removeAfterInteraction && hasBeenInteracted)
+        {
+            return "Diary already collected";
+        }
+
         if (isDialogOpen)
         {
             return "Diary in use";
@@ -161,6 +173,11 @@ public class PaperNpcInteractable : MonoBehaviour, IRaycastInteractable
 
     public bool CanInteract(PlayerController player)
     {
+        if (removeAfterInteraction && hasBeenInteracted)
+        {
+            return false;
+        }
+
         if (player == null)
         {
             return true;
@@ -177,6 +194,7 @@ public class PaperNpcInteractable : MonoBehaviour, IRaycastInteractable
             return;
         }
 
+        hasBeenInteracted = true;
         isDialogOpen = true;
         PlaySfx(inspectSfx);
         Interacted?.Invoke(this, player);
@@ -335,6 +353,27 @@ public class PaperNpcInteractable : MonoBehaviour, IRaycastInteractable
         }
 
         PlaySfx(panelCloseSfx);
+
+        if (removeAfterInteraction && hasBeenInteracted && !removeQueued)
+        {
+            StartCoroutine(RemoveAfterPanelClose());
+        }
+    }
+
+    private IEnumerator RemoveAfterPanelClose()
+    {
+        removeQueued = true;
+
+        float delay = Mathf.Max(0f, removeDelayAfterClose);
+        if (delay > 0f)
+        {
+            yield return new WaitForSeconds(delay);
+        }
+
+        if (this != null)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void CacheEmissiveMaterials()

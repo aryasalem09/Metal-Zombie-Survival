@@ -120,6 +120,10 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementDirection;
     private Vector2 lookDirection = Vector2.right;
     private float lookAngle;
+    private bool forwardInputHeld;
+    private bool backwardInputHeld;
+    private bool leftInputHeld;
+    private bool rightInputHeld;
     private bool hasInputAuthority = true;
     private static Sprite generatedFallbackProjectileSprite;
     private static TMP_FontAsset runtimeHudFontAsset;
@@ -142,6 +146,10 @@ public class PlayerController : MonoBehaviour
     public Vector2 MovementDirection => movementDirection;
     public Vector2 LookDirection => lookDirection;
     public bool IsRunning => isRunning;
+    public bool ForwardInputHeld => forwardInputHeld;
+    public bool BackwardInputHeld => backwardInputHeld;
+    public bool LeftInputHeld => leftInputHeld;
+    public bool RightInputHeld => rightInputHeld;
     public int BurstCharges => burstCharges;
     public int KillsUntilNextBurst => Mathf.Max(0, nextBurstUnlockAt - zombieKillCount);
     public bool HasInputAuthority => hasInputAuthority;
@@ -179,6 +187,7 @@ public class PlayerController : MonoBehaviour
 
         NormalizeLegacyCombatValues();
         TryAutoBindHudTextReferences();
+        ApplyLegacyHudLayoutAndStyle();
 
         if (enforceContinuousMouseLook)
         {
@@ -204,9 +213,17 @@ public class PlayerController : MonoBehaviour
         UpdateScoreUi();
         UpdateBurstUi();
 
-        if (forceRuntimeHudPanel)
+        if (ShouldUseRuntimeHudPanel())
         {
-            showRuntimeHudPanel = true;
+            if (forceRuntimeHudPanel)
+            {
+                showRuntimeHudPanel = true;
+            }
+        }
+        else
+        {
+            showRuntimeHudPanel = false;
+            DisableRuntimeHudPanelIfPresent();
         }
 
         EnsureRuntimeHudPanel();
@@ -363,22 +380,27 @@ public class PlayerController : MonoBehaviour
     {
         movementDirection = Vector2.zero;
 
-        if (Input.GetKey(KeyCode.W))
+        forwardInputHeld = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+        backwardInputHeld = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+        leftInputHeld = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
+        rightInputHeld = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+
+        if (forwardInputHeld)
         {
             movementDirection += lookDirection;
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (backwardInputHeld)
         {
             movementDirection -= lookDirection;
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (leftInputHeld)
         {
             movementDirection += new Vector2(-lookDirection.y, lookDirection.x);
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (rightInputHeld)
         {
             movementDirection += new Vector2(lookDirection.y, -lookDirection.x);
         }
@@ -1186,12 +1208,17 @@ public class PlayerController : MonoBehaviour
             }
 
             SetVisualState(true);
+            ApplyLegacyHudLayoutAndStyle();
             EnsureRuntimeHudPanel();
             RefreshRuntimeHudPanel();
         }
         else
         {
             movementDirection = Vector2.zero;
+            forwardInputHeld = false;
+            backwardInputHeld = false;
+            leftInputHeld = false;
+            rightInputHeld = false;
             if (rb != null)
             {
                 rb.velocity = Vector2.zero;
@@ -1555,6 +1582,260 @@ public class PlayerController : MonoBehaviour
                                       "   SCORE: " + score +
                                       "   BURST: " + burstCharges;
             runtimeHudKillText.color = runtimeHudTextColor;
+        }
+    }
+
+    private bool ShouldUseRuntimeHudPanel()
+    {
+        // Prefer the authored scene HUD when a health slider exists to avoid duplicate health UI.
+        return healthSlider == null;
+    }
+
+    private void ApplyLegacyHudLayoutAndStyle()
+    {
+        if (!hasInputAuthority || healthSlider == null)
+        {
+            return;
+        }
+
+        EnsureLegacyHudBackdropPanel();
+        ConfigureLegacyPortrait();
+        ConfigureLegacyHealthSlider();
+        ConfigureLegacyHudText(
+            killCountText,
+            new Vector2(20f, -136f),
+            new Vector2(390f, 32f),
+            22f,
+            new Color(1f, 0.28f, 0.22f, 1f));
+
+        if (scoreText != null && burstCounterText != null && ReferenceEquals(scoreText, burstCounterText))
+        {
+            ConfigureLegacyHudText(
+                scoreText,
+                new Vector2(20f, -168f),
+                new Vector2(390f, 30f),
+                19f,
+                new Color(1f, 1f, 1f, 1f));
+            return;
+        }
+
+        ConfigureLegacyHudText(
+            scoreText,
+            new Vector2(20f, -168f),
+            new Vector2(390f, 30f),
+            19f,
+            new Color(1f, 1f, 1f, 1f));
+        ConfigureLegacyHudText(
+            burstCounterText,
+            new Vector2(20f, -198f),
+            new Vector2(390f, 28f),
+            19f,
+            new Color(1f, 0.96f, 0.72f, 1f));
+    }
+
+    private void EnsureLegacyHudBackdropPanel()
+    {
+        Canvas hudCanvas = healthSlider != null ? healthSlider.GetComponentInParent<Canvas>() : null;
+        if (hudCanvas == null)
+        {
+            return;
+        }
+
+        Transform panelTransform = hudCanvas.transform.Find("LegacyHudPanel");
+        GameObject panelObject;
+        if (panelTransform == null)
+        {
+            panelObject = new GameObject("LegacyHudPanel", typeof(RectTransform), typeof(Image));
+            panelObject.transform.SetParent(hudCanvas.transform, false);
+        }
+        else
+        {
+            panelObject = panelTransform.gameObject;
+        }
+
+        RectTransform panelRect = panelObject.GetComponent<RectTransform>();
+        LayoutLegacyHudRect(panelRect, new Vector2(10f, -6f), new Vector2(420f, 224f));
+
+        Image panelImage = panelObject.GetComponent<Image>();
+        panelImage.color = new Color(0.02f, 0.04f, 0.08f, 0.62f);
+        panelImage.raycastTarget = false;
+        panelObject.transform.SetSiblingIndex(0);
+    }
+
+    private void ConfigureLegacyPortrait()
+    {
+        Canvas hudCanvas = healthSlider != null ? healthSlider.GetComponentInParent<Canvas>() : null;
+        if (hudCanvas == null)
+        {
+            return;
+        }
+
+        RectTransform portraitRect = FindLegacyPortraitRect(hudCanvas.transform);
+        if (portraitRect == null)
+        {
+            return;
+        }
+
+        LayoutLegacyHudRect(portraitRect, new Vector2(16f, -4f), new Vector2(96f, 96f));
+        portraitRect.SetAsLastSibling();
+
+        Image portraitImage = portraitRect.GetComponent<Image>();
+        if (portraitImage != null)
+        {
+            portraitImage.raycastTarget = false;
+        }
+    }
+
+    private static RectTransform FindLegacyPortraitRect(Transform hudRoot)
+    {
+        if (hudRoot == null)
+        {
+            return null;
+        }
+
+        Transform directMatch = hudRoot.Find("Portrait");
+        if (directMatch is RectTransform directRect)
+        {
+            return directRect;
+        }
+
+        RectTransform[] candidates = hudRoot.GetComponentsInChildren<RectTransform>(true);
+        for (int i = 0; i < candidates.Length; i++)
+        {
+            RectTransform candidate = candidates[i];
+            if (candidate == null)
+            {
+                continue;
+            }
+
+            string lowerName = candidate.name.ToLowerInvariant();
+            if (!lowerName.Contains("portrait") && !lowerName.Contains("avatar"))
+            {
+                continue;
+            }
+
+            if (candidate.GetComponent<Image>() == null)
+            {
+                continue;
+            }
+
+            return candidate;
+        }
+
+        return null;
+    }
+
+    private void ConfigureLegacyHealthSlider()
+    {
+        if (healthSlider == null)
+        {
+            return;
+        }
+
+        LayoutLegacyHudRect(
+            healthSlider.GetComponent<RectTransform>(),
+            new Vector2(124f, -92f),
+            new Vector2(282f, 40f));
+
+        healthSlider.interactable = false;
+        healthSlider.transition = Selectable.Transition.None;
+
+        if (healthSlider.targetGraphic is Image background)
+        {
+            StretchLegacyHudChildRect(background.rectTransform, Vector2.zero, Vector2.zero);
+            background.color = new Color(0.18f, 0.12f, 0.14f, 0.96f);
+            background.raycastTarget = false;
+        }
+
+        if (healthSlider.fillRect != null)
+        {
+            RectTransform fillAreaRect = healthSlider.fillRect.parent as RectTransform;
+            StretchLegacyHudChildRect(fillAreaRect, new Vector2(6f, 6f), new Vector2(-6f, -6f));
+            StretchLegacyHudChildRect(healthSlider.fillRect, Vector2.zero, Vector2.zero);
+
+            Image fillImage = healthSlider.fillRect.GetComponent<Image>();
+            if (fillImage != null)
+            {
+                fillImage.color = new Color(0.96f, 0.18f, 0.2f, 0.98f);
+                fillImage.raycastTarget = false;
+            }
+        }
+
+        if (healthSlider.handleRect != null)
+        {
+            RectTransform handleAreaRect = healthSlider.handleRect.parent as RectTransform;
+            StretchLegacyHudChildRect(handleAreaRect, Vector2.zero, Vector2.zero);
+            healthSlider.handleRect.gameObject.SetActive(false);
+        }
+    }
+
+    private static void StretchLegacyHudChildRect(RectTransform rect, Vector2 offsetMin, Vector2 offsetMax)
+    {
+        if (rect == null)
+        {
+            return;
+        }
+
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = Vector2.zero;
+        rect.offsetMin = offsetMin;
+        rect.offsetMax = offsetMax;
+        rect.localRotation = Quaternion.identity;
+        rect.localScale = Vector3.one;
+    }
+
+    private static void ConfigureLegacyHudText(
+        TextMeshProUGUI text,
+        Vector2 anchoredPosition,
+        Vector2 size,
+        float fontSize,
+        Color color)
+    {
+        if (text == null)
+        {
+            return;
+        }
+
+        LayoutLegacyHudRect(text.rectTransform, anchoredPosition, size);
+        text.enableAutoSizing = false;
+        text.fontSize = Mathf.Max(14f, fontSize);
+        text.fontStyle = FontStyles.Bold;
+        text.alignment = TextAlignmentOptions.MidlineLeft;
+        text.enableWordWrapping = false;
+        text.color = color;
+        text.outlineColor = new Color(0f, 0f, 0f, 0.85f);
+        text.outlineWidth = Mathf.Max(text.outlineWidth, 0.18f);
+        text.raycastTarget = false;
+    }
+
+    private static void LayoutLegacyHudRect(RectTransform rect, Vector2 anchoredPosition, Vector2 size)
+    {
+        if (rect == null)
+        {
+            return;
+        }
+
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(0f, 1f);
+        rect.pivot = new Vector2(0f, 1f);
+        rect.anchoredPosition = anchoredPosition;
+        rect.sizeDelta = size;
+        rect.localRotation = Quaternion.identity;
+        rect.localScale = Vector3.one;
+    }
+
+    private void DisableRuntimeHudPanelIfPresent()
+    {
+        runtimeHudHealthText = null;
+        runtimeHudKillText = null;
+        runtimeHudHealthBarFillImage = null;
+
+        GameObject runtimeHudCanvas = GameObject.Find("RuntimeHudCanvas");
+        if (runtimeHudCanvas != null)
+        {
+            Destroy(runtimeHudCanvas);
         }
     }
 
