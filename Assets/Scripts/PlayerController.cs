@@ -564,6 +564,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 spawnPosition = transform.position + (Vector3)(direction.normalized * projectileSpawnOffset);
         float rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        CleanVfxFactory.SpawnProjectileMuzzleFlash(spawnPosition, direction);
 
         GameObject projectile;
         if (projectilePrefab != null)
@@ -683,9 +684,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        const float projectileVisualScaleBoost = 1.15f;
         float configuredScale = Mathf.Max(
             0.01f,
-            projectileScaleMultiplier * projectileShotScaleMultiplier * globalProjectileSizeMultiplier);
+            projectileScaleMultiplier * projectileShotScaleMultiplier * globalProjectileSizeMultiplier * projectileVisualScaleBoost);
         projectile.transform.localScale *= configuredScale;
 
         Vector3 currentScale = projectile.transform.localScale;
@@ -891,9 +893,31 @@ public class PlayerController : MonoBehaviour
         else
         {
             animationController?.TriggerTakeDamageAnimation();
-            CleanVfxFactory.SpawnImpactSpark(transform.position);
             AudioManager.Instance?.PlayHitSparkSfx();
         }
+    }
+
+    public int Heal(int healAmount)
+    {
+        if (!hasInputAuthority && Primary != null && Primary != this)
+        {
+            return Primary.Heal(healAmount);
+        }
+
+        if (isDead || healAmount <= 0)
+        {
+            return 0;
+        }
+
+        int previousHealth = currentHealth;
+        currentHealth = Mathf.Min(maxHealth, currentHealth + healAmount);
+        int healedAmount = currentHealth - previousHealth;
+        if (healedAmount > 0)
+        {
+            UpdateHealthUi();
+        }
+
+        return healedAmount;
     }
 
     private void Die()
@@ -904,6 +928,7 @@ public class PlayerController : MonoBehaviour
         }
 
         isDead = true;
+        CleanVfxFactory.SpawnZombieDeathPoof(transform.position);
 
         if (circleCollider != null)
         {
@@ -1628,7 +1653,7 @@ public class PlayerController : MonoBehaviour
                 : 0f;
             runtimeHudHealthBarFillImage.fillAmount = normalizedHealth;
             runtimeHudHealthBarFillImage.color = Color.Lerp(
-                new Color(1f, 0.25f, 0.2f, 0.95f),
+                new Color(1f, 0.74f, 0.2f, 0.95f),
                 runtimeHudHealthBarFillColor,
                 normalizedHealth);
         }
@@ -1657,22 +1682,38 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        EnsureLegacyHudBackdropPanel();
-        ConfigureLegacyPortrait();
-        ConfigureLegacyHealthSlider();
+        const float panelWidth = 452f;
+        const float panelHeight = 236f;
+
+        EnsureLegacyHudBackdropPanel(panelWidth, panelHeight);
+        RectTransform portraitRect = ConfigureLegacyPortrait();
+
+        float contentStartX = 20f;
+        if (portraitRect != null)
+        {
+            contentStartX = Mathf.Max(
+                contentStartX,
+                portraitRect.anchoredPosition.x + portraitRect.sizeDelta.x + 18f);
+        }
+
+        // Keep score/burst labels clear of large portrait art variants.
+        contentStartX = Mathf.Max(contentStartX, 136f);
+        float contentWidth = Mathf.Clamp(panelWidth - contentStartX - 18f, 180f, 420f);
+
+        ConfigureLegacyHealthSlider(contentStartX, contentWidth);
         ConfigureLegacyHudText(
             killCountText,
-            new Vector2(20f, -136f),
-            new Vector2(390f, 32f),
+            new Vector2(contentStartX, -136f),
+            new Vector2(contentWidth, 32f),
             22f,
-            new Color(1f, 0.28f, 0.22f, 1f));
+            new Color(1f, 0.82f, 0.28f, 1f));
 
         if (scoreText != null && burstCounterText != null && ReferenceEquals(scoreText, burstCounterText))
         {
             ConfigureLegacyHudText(
                 scoreText,
-                new Vector2(20f, -168f),
-                new Vector2(390f, 30f),
+                new Vector2(contentStartX, -168f),
+                new Vector2(contentWidth, 30f),
                 19f,
                 new Color(1f, 1f, 1f, 1f));
             return;
@@ -1680,19 +1721,19 @@ public class PlayerController : MonoBehaviour
 
         ConfigureLegacyHudText(
             scoreText,
-            new Vector2(20f, -168f),
-            new Vector2(390f, 30f),
+            new Vector2(contentStartX, -168f),
+            new Vector2(contentWidth, 30f),
             19f,
             new Color(1f, 1f, 1f, 1f));
         ConfigureLegacyHudText(
             burstCounterText,
-            new Vector2(20f, -198f),
-            new Vector2(390f, 28f),
+            new Vector2(contentStartX, -198f),
+            new Vector2(contentWidth, 28f),
             19f,
             new Color(1f, 0.96f, 0.72f, 1f));
     }
 
-    private void EnsureLegacyHudBackdropPanel()
+    private void EnsureLegacyHudBackdropPanel(float panelWidth, float panelHeight)
     {
         Canvas hudCanvas = healthSlider != null ? healthSlider.GetComponentInParent<Canvas>() : null;
         if (hudCanvas == null)
@@ -1713,29 +1754,47 @@ public class PlayerController : MonoBehaviour
         }
 
         RectTransform panelRect = panelObject.GetComponent<RectTransform>();
-        LayoutLegacyHudRect(panelRect, new Vector2(10f, -6f), new Vector2(420f, 224f));
+        LayoutLegacyHudRect(panelRect, new Vector2(10f, -6f), new Vector2(panelWidth, panelHeight));
 
         Image panelImage = panelObject.GetComponent<Image>();
-        panelImage.color = new Color(0.02f, 0.04f, 0.08f, 0.62f);
+        panelImage.color = new Color(0.02f, 0.06f, 0.11f, 0.7f);
         panelImage.raycastTarget = false;
         panelObject.transform.SetSiblingIndex(0);
+
+        Transform accentTransform = panelObject.transform.Find("HudAccent");
+        GameObject accentObject;
+        if (accentTransform == null)
+        {
+            accentObject = new GameObject("HudAccent", typeof(RectTransform), typeof(Image));
+            accentObject.transform.SetParent(panelObject.transform, false);
+        }
+        else
+        {
+            accentObject = accentTransform.gameObject;
+        }
+
+        RectTransform accentRect = accentObject.GetComponent<RectTransform>();
+        LayoutLegacyHudRect(accentRect, new Vector2(0f, -108f), new Vector2(panelWidth, 2f));
+        Image accentImage = accentObject.GetComponent<Image>();
+        accentImage.color = new Color(1f, 0.86f, 0.32f, 0.9f);
+        accentImage.raycastTarget = false;
     }
 
-    private void ConfigureLegacyPortrait()
+    private RectTransform ConfigureLegacyPortrait()
     {
         Canvas hudCanvas = healthSlider != null ? healthSlider.GetComponentInParent<Canvas>() : null;
         if (hudCanvas == null)
         {
-            return;
+            return null;
         }
 
         RectTransform portraitRect = FindLegacyPortraitRect(hudCanvas.transform);
         if (portraitRect == null)
         {
-            return;
+            return null;
         }
 
-        LayoutLegacyHudRect(portraitRect, new Vector2(16f, -4f), new Vector2(96f, 96f));
+        LayoutLegacyHudRect(portraitRect, new Vector2(16f, -12f), new Vector2(82f, 82f));
         portraitRect.SetAsLastSibling();
 
         Image portraitImage = portraitRect.GetComponent<Image>();
@@ -1743,6 +1802,8 @@ public class PlayerController : MonoBehaviour
         {
             portraitImage.raycastTarget = false;
         }
+
+        return portraitRect;
     }
 
     private static RectTransform FindLegacyPortraitRect(Transform hudRoot)
@@ -1784,7 +1845,7 @@ public class PlayerController : MonoBehaviour
         return null;
     }
 
-    private void ConfigureLegacyHealthSlider()
+    private void ConfigureLegacyHealthSlider(float contentStartX, float contentWidth)
     {
         if (healthSlider == null)
         {
@@ -1793,8 +1854,8 @@ public class PlayerController : MonoBehaviour
 
         LayoutLegacyHudRect(
             healthSlider.GetComponent<RectTransform>(),
-            new Vector2(124f, -92f),
-            new Vector2(282f, 40f));
+            new Vector2(contentStartX, -92f),
+            new Vector2(contentWidth, 40f));
 
         healthSlider.interactable = false;
         healthSlider.transition = Selectable.Transition.None;
@@ -1802,7 +1863,7 @@ public class PlayerController : MonoBehaviour
         if (healthSlider.targetGraphic is Image background)
         {
             StretchLegacyHudChildRect(background.rectTransform, Vector2.zero, Vector2.zero);
-            background.color = new Color(0.18f, 0.12f, 0.14f, 0.96f);
+            background.color = new Color(0.08f, 0.12f, 0.18f, 0.95f);
             background.raycastTarget = false;
         }
 
@@ -1815,7 +1876,7 @@ public class PlayerController : MonoBehaviour
             Image fillImage = healthSlider.fillRect.GetComponent<Image>();
             if (fillImage != null)
             {
-                fillImage.color = new Color(0.96f, 0.18f, 0.2f, 0.98f);
+                fillImage.color = new Color(0.22f, 0.88f, 0.36f, 0.98f);
                 fillImage.raycastTarget = false;
             }
         }

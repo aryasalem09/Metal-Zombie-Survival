@@ -196,6 +196,7 @@ public class PaperNpcInteractable : MonoBehaviour, IRaycastInteractable
 
         hasBeenInteracted = true;
         isDialogOpen = true;
+        CleanVfxFactory.SpawnPickupBurst(transform.position + Vector3.up * 0.2f);
         PlaySfx(inspectSfx);
         Interacted?.Invoke(this, player);
 

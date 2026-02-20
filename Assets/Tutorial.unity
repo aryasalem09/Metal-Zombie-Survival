@@ -223,10 +223,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 645137709}
   offset: {x: 0, y: 0, z: -10.36}
+  autoFindPlayerTarget: 1
+  alwaysFollowPrimaryPlayer: 1
+  snapToTargetOnAcquire: 1
   smoothTime: 0.1
   enableLookAhead: 0
+  forceCenterOnTarget: 1
+  hardLockToPlayerCenter: 1
   lookAheadDistance: 0.2
   lookAheadSpeed: 2
+  constrainToLevelBounds: 1
+  autoDetectBoundsFromTilemaps: 1
+  manualCameraBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 60, y: 40, z: 0}
+  boundsPadding: 0.15
 --- !u!114 &10213674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10510,9 +10521,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.3519, y: -48.3802}
-  m_SizeDelta: {x: 210.1368, y: 210.1368}
-  m_Pivot: {x: 0.49999994, y: 0.49999985}
+  m_AnchoredPosition: {x: 6.5999, y: -53.016}
+  m_SizeDelta: {x: 135.857, y: 135.857}
+  m_Pivot: {x: 0.49999934, y: 0.49999982}
 --- !u!114 &96681222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18235,8 +18246,12 @@ MonoBehaviour:
   backgroundMusic: {fileID: 8300000, guid: dc1d6b96e081b4befbd033dee4730596, type: 3}
   playMusicOnStart: 1
   persistAcrossScenes: 1
+  autoSwitchMusicByScene: 1
+  autoAssignImportedStuffAudio: 1
+  sceneMusicOverrides: []
   attackSfx: {fileID: 8300000, guid: ab297b593498a6e47ba84de770477cbe, type: 3}
   hitSparkSfx: {fileID: 8300000, guid: 3061c7b9b32d894478e4126ccce25ca3, type: 3}
+  playerDamageSfx: {fileID: 0}
   uiClickSfx: {fileID: 8300000, guid: a58e438b7cfa445498120af0e6169082, type: 3}
   zombieDeathSfx: {fileID: 8300000, guid: 4310474905e266640852f43bd609a1a4, type: 3}
   abilityBurstSfx: {fileID: 0}
@@ -180151,6 +180166,8 @@ MonoBehaviour:
   isDying: 0
   hitEffectPrefabs: []
   radiatedPrefabs: []
+  allowConfiguredHitEffects: 0
+  blockBloodLikeConfiguredHitEffects: 1
   isRadiated: 0
   rollTime: 0.5
   isRunning: 0
@@ -180158,6 +180175,7 @@ MonoBehaviour:
   isStrafingLeft: 0
   isStrafingRight: 0
   isAttacking: 0
+  isTakingDamage: 0
 --- !u!114 &645137715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180174,6 +180192,9 @@ MonoBehaviour:
   moveSpeed: 1
   crouchSpeedMultiplier: 0.6
   runSpeedMultiplier: 1.25
+  snapLookToEightDirections: 0
+  forceContinuousMouseLook: 1
+  enforceContinuousMouseLook: 1
   isActive: 0
   isRanged: 0
   isStealth: 0
@@ -180185,6 +180206,7 @@ MonoBehaviour:
   projectileCooldown: 0.1
   minProjectileCooldown: 0.02
   maxRecommendedProjectileCooldown: 0.1
+  minimumTimeBetweenShots: 0.5
   clampLegacyProjectileCooldown: 1
   projectileLifetime: 1.5
   projectileScaleMultiplier: 0.1
@@ -180192,6 +180214,7 @@ MonoBehaviour:
   globalProjectileSizeMultiplier: 0.1
   projectileSpawnOffset: 0.35
   projectileDamage: 1
+  energyOrbDamageMultiplier: 3
   allowRuntimeProjectileFallback: 1
   runtimeFallbackProjectileSprite: {fileID: 0}
   runtimeFallbackProjectileColor: {r: 0.35, g: 0.95, b: 1, a: 0.95}
@@ -180211,6 +180234,10 @@ MonoBehaviour:
   burstCharges: 0
   nextBurstUnlockAt: 10
   burstEffectPrefab: {fileID: 0}
+  killsPerDoubleShotUnlock: 5
+  extraProjectiles: 0
+  nextDoubleShotUnlockAt: 5
+  doubleShotSpreadAngle: 10
   maxHealth: 5
   currentHealth: 5
   isDead: 0
@@ -180224,6 +180251,14 @@ MonoBehaviour:
   burstCounterText: {fileID: 1559114077}
   collectibleCount: 0
   score: 0
+  forceRuntimeHudPanel: 1
+  showRuntimeHudPanel: 1
+  runtimeHudPanelSize: {x: 360, y: 140}
+  runtimeHudPanelOffset: {x: 18, y: -18}
+  runtimeHudPanelColor: {r: 0, g: 0, b: 0, a: 0.58}
+  runtimeHudTextColor: {r: 1, g: 1, b: 1, a: 1}
+  runtimeHudHealthBarBackgroundColor: {r: 1, g: 1, b: 1, a: 0.2}
+  runtimeHudHealthBarFillColor: {r: 0.21, g: 0.92, b: 0.4, a: 0.95}
   playerLayerName: Player
   projectileLayerName: Projectile
   isCrouching: 0
@@ -180401,6 +180436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee5df2300d0cb241a8572bb70619500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openVfxPrefab: {fileID: 0}
+  addIdleLoopVfx: 1
+  vfxOffset: {x: 0, y: 0.32, z: 0}
+  idleLoopScale: 0.9
 --- !u!1 &798659728
 GameObject:
   m_ObjectHideFlags: 0
@@ -180434,7 +180473,18 @@ MonoBehaviour:
   spawnPoints: []
   currentWave: 0
   aliveZombies: 0
+  zombiesRemainingInWave: 0
   isSpawning: 0
+  currentWaveIsBoss: 0
+  waveStatusText: {fileID: 0}
+  autoCreateWaveStatusUi: 1
+  forceWaveStatusUi: 1
+  waveStatusOffset: {x: -24, y: -24}
+  waveStatusColor: {r: 1, g: 0.96, b: 0.72, a: 1}
+  waveStatusPanelColor: {r: 0, g: 0, b: 0, a: 0.62}
+  waveStatusOutlineColor: {r: 0, g: 0, b: 0, a: 0.85}
+  waveStatusPanelSize: {x: 560, y: 128}
+  waveStatusFontSize: 32
 --- !u!4 &798659730
 Transform:
   m_ObjectHideFlags: 0
@@ -338139,8 +338189,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.3519, y: -48.3802}
-  m_SizeDelta: {x: 210.1447, y: 210.1447}
+  m_AnchoredPosition: {x: 3.5, y: -56.8}
+  m_SizeDelta: {x: 140.817, y: 140.817}
   m_Pivot: {x: 0.49999994, y: 0.49999985}
 --- !u!114 &1276378975
 MonoBehaviour:
@@ -338351,7 +338401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1744.4209, y: 898.0526}
+  m_AnchoredPosition: {x: -1695.5, y: 860.7}
   m_SizeDelta: {x: 237.1583, y: 241.8896}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1345263712
@@ -338391,7 +338441,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1692.3, y: 769.1}
+  m_AnchoredPosition: {x: -1693.2, y: 731.3}
   m_SizeDelta: {x: 261.0354, y: 70.8087}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1345263714
@@ -338480,8 +338530,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -11.385}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1670.8, y: 743.4}
-  m_SizeDelta: {x: 220.4492, y: 67.4259}
+  m_AnchoredPosition: {x: -1687.1, y: 718.3}
+  m_SizeDelta: {x: 220.449, y: 91.537}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1394886943
 MonoBehaviour:
@@ -338784,7 +338834,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1709.4885, y: 718}
+  m_AnchoredPosition: {x: -1710.4, y: 692}
   m_SizeDelta: {x: 226.6229, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1559114077
@@ -339654,8 +339704,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.3519, y: -48.3802}
-  m_SizeDelta: {x: 185.3292, y: 185.3292}
+  m_AnchoredPosition: {x: 6.6, y: -53.599}
+  m_SizeDelta: {x: 119.819, y: 119.819}
   m_Pivot: {x: 0.49999994, y: 0.49999985}
 --- !u!114 &1691813825
 MonoBehaviour:
@@ -340232,8 +340282,15 @@ MonoBehaviour:
   quitButton: {fileID: 0}
   victoryContinueButton: {fileID: 0}
   pauseGameplayOnPanelOpen: 1
+  autoCreatePanelsIfMissing: 1
+  endStateTransitionSeconds: 0.35
+  useUnscaledEndStateTransition: 1
+  enableSkipLevelHotkey: 1
+  skipLevelKey: 110
+  skipLevelWrapToFirstScene: 1
   player: {fileID: 645137715}
   regionWaveManager: {fileID: 0}
+  waveManager: {fileID: 0}
 --- !u!4 &1965760478
 Transform:
   m_ObjectHideFlags: 0
@@ -340451,6 +340508,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee5df2300d0cb241a8572bb70619500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openVfxPrefab: {fileID: 0}
+  addIdleLoopVfx: 1
+  vfxOffset: {x: 0, y: 0.32, z: 0}
+  idleLoopScale: 0.9
 --- !u!1 &2090841204
 GameObject:
   m_ObjectHideFlags: 0

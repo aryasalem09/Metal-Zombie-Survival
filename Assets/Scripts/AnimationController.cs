@@ -36,6 +36,8 @@ public class AnimationController : MonoBehaviour
     [FormerlySerializedAs("bloodPrefabs")]
     [SerializeField] private List<GameObject> hitEffectPrefabs = new List<GameObject>();
     [SerializeField] private List<GameObject> radiatedPrefabs = new List<GameObject>();
+    [SerializeField] private bool allowConfiguredHitEffects;
+    [SerializeField] private bool blockBloodLikeConfiguredHitEffects = true;
     public bool isRadiated;
     public float rollTime = 0.5f;
 
@@ -361,7 +363,6 @@ public class AnimationController : MonoBehaviour
         AnimatorParamAdapter.SetTrigger(animator, "TakeDamage");
         SetDirectionalBoolExclusive("takeDamage", true);
         SetDirectionalBoolExclusive("TakeDamage", true);
-        SpawnEffect();
 
         if (takeDamageResetCoroutine != null)
         {
@@ -492,18 +493,45 @@ public class AnimationController : MonoBehaviour
 
     private void SpawnEffect()
     {
-        List<GameObject> prefabsToUse = isRadiated ? radiatedPrefabs : hitEffectPrefabs;
-        if (prefabsToUse != null && prefabsToUse.Count > 0)
+        // Intentionally no-op: impact particles are reserved for enemy hits,
+        // not for the player taking damage.
+    }
+
+    private bool TrySpawnConfiguredHitEffect(List<GameObject> prefabsToUse)
+    {
+        if (prefabsToUse == null || prefabsToUse.Count == 0)
         {
-            GameObject selectedPrefab = prefabsToUse[Random.Range(0, prefabsToUse.Count)];
-            if (selectedPrefab != null)
-            {
-                Instantiate(selectedPrefab, transform.position, Quaternion.identity);
-                return;
-            }
+            return false;
         }
 
-        CleanVfxFactory.SpawnImpactSpark(transform.position);
+        int startIndex = Random.Range(0, prefabsToUse.Count);
+        for (int i = 0; i < prefabsToUse.Count; i++)
+        {
+            GameObject selectedPrefab = prefabsToUse[(startIndex + i) % prefabsToUse.Count];
+            if (selectedPrefab == null || IsBlockedHitEffectPrefab(selectedPrefab))
+            {
+                continue;
+            }
+
+            Instantiate(selectedPrefab, transform.position, Quaternion.identity);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool IsBlockedHitEffectPrefab(GameObject prefab)
+    {
+        if (!blockBloodLikeConfiguredHitEffects || prefab == null)
+        {
+            return false;
+        }
+
+        string lowerName = prefab.name.ToLowerInvariant();
+        return lowerName.Contains("blood") ||
+               lowerName.Contains("gore") ||
+               lowerName.Contains("splatter") ||
+               lowerName.Contains("bleed");
     }
 
     private void SetDirection(string newDirection)

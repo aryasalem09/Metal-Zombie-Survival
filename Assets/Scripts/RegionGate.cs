@@ -7,8 +7,11 @@ public class RegionGate : MonoBehaviour
     [SerializeField] private GameObject[] lockedVisuals;
     [SerializeField] private GameObject[] unlockedVisuals;
     [SerializeField] private bool lockedAtStart = true;
+    [SerializeField] private bool playToggleVfx = true;
+    [SerializeField] private Vector3 toggleVfxOffset = new Vector3(0f, 0.2f, 0f);
 
     public bool IsLocked { get; private set; }
+    private bool hasInitializedState;
 
     private void Awake()
     {
@@ -22,6 +25,7 @@ public class RegionGate : MonoBehaviour
 
     public void SetLocked(bool locked)
     {
+        bool stateChanged = !hasInitializedState || IsLocked != locked;
         IsLocked = locked;
 
         if (primaryCollider != null)
@@ -43,6 +47,13 @@ public class RegionGate : MonoBehaviour
 
         ToggleVisuals(lockedVisuals, locked);
         ToggleVisuals(unlockedVisuals, !locked);
+
+        if (playToggleVfx && hasInitializedState && stateChanged)
+        {
+            CleanVfxFactory.SpawnGateToggle(transform.position + toggleVfxOffset, locked);
+        }
+
+        hasInitializedState = true;
     }
 
     private static void ToggleVisuals(GameObject[] visuals, bool state)
@@ -60,4 +71,4 @@ public class RegionGate : MonoBehaviour
             }
         }
     }
-}
+}

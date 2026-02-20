@@ -43,7 +43,7 @@ public class ZombieAI : MonoBehaviour
     public float knockbackImpulse = 1.15f;
     public float alertedDetectionRadius = 16f;
     public float alertDuration = 2.5f;
-    public Color hitFlashColor = new Color(1f, 0.28f, 0.28f, 1f);
+    public Color hitFlashColor = new Color(0.62f, 0.9f, 1f, 1f);
     [Range(0.03f, 0.3f)] public float hitFlashDuration = 0.12f;
     [Min(0.1f)] public float knockbackVelocityDamping = 22f;
     [Min(0.1f)] public float idleVelocityDamping = 16f;
@@ -58,6 +58,8 @@ public class ZombieAI : MonoBehaviour
     [Header("Visual Effects")]
     [SerializeField] private List<GameObject> hitEffectPrefabs = new List<GameObject>();
     [SerializeField] private List<GameObject> radiatedPrefabs = new List<GameObject>();
+    [SerializeField] private bool allowConfiguredHitEffects;
+    [SerializeField] private bool blockBloodLikeConfiguredHitEffects = true;
     public bool isRadiated;
 
     [Header("Cleanup")]
@@ -590,6 +592,7 @@ public class ZombieAI : MonoBehaviour
             1,
             Mathf.RoundToInt(zombieDamage * Mathf.Max(1f, lowHealthDamageMultiplier)));
         detectionRadius = Mathf.Max(detectionRadius, alertedDetectionRadius);
+        CleanVfxFactory.SpawnAbilityBurstGlow(transform.position + Vector3.up * 0.12f);
     }
 
     private void TriggerHitFlash()
@@ -920,18 +923,53 @@ public class ZombieAI : MonoBehaviour
 
     private void SpawnHitEffect()
     {
-        List<GameObject> effectPool = isRadiated ? radiatedPrefabs : hitEffectPrefabs;
-        if (effectPool != null && effectPool.Count > 0)
+        if (allowConfiguredHitEffects)
         {
-            GameObject prefab = effectPool[UnityEngine.Random.Range(0, effectPool.Count)];
-            if (prefab != null)
+            List<GameObject> effectPool = isRadiated ? radiatedPrefabs : hitEffectPrefabs;
+            if (TrySpawnConfiguredHitEffect(effectPool))
             {
-                Instantiate(prefab, transform.position, Quaternion.identity);
                 return;
             }
         }
 
         CleanVfxFactory.SpawnImpactSpark(transform.position);
+    }
+
+    private bool TrySpawnConfiguredHitEffect(List<GameObject> effectPool)
+    {
+        if (effectPool == null || effectPool.Count == 0)
+        {
+            return false;
+        }
+
+        int startIndex = UnityEngine.Random.Range(0, effectPool.Count);
+        for (int i = 0; i < effectPool.Count; i++)
+        {
+            GameObject prefab = effectPool[(startIndex + i) % effectPool.Count];
+            if (prefab == null || IsBlockedHitEffectPrefab(prefab))
+            {
+                continue;
+            }
+
+            Instantiate(prefab, transform.position, Quaternion.identity);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool IsBlockedHitEffectPrefab(GameObject prefab)
+    {
+        if (!blockBloodLikeConfiguredHitEffects || prefab == null)
+        {
+            return false;
+        }
+
+        string lowerName = prefab.name.ToLowerInvariant();
+        return lowerName.Contains("blood") ||
+               lowerName.Contains("gore") ||
+               lowerName.Contains("splatter") ||
+               lowerName.Contains("bleed");
     }
 
     private void SetDirection(string direction)

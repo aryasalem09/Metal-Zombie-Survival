@@ -137,6 +137,11 @@ public class RegionWaveManager : MonoBehaviour
         }
 
         currentRegionIndex = -1;
+        if (player != null)
+        {
+            CleanVfxFactory.SpawnAbilityBurstGlow(player.transform.position + Vector3.up * 0.22f);
+        }
+
         AllRegionsCompleted?.Invoke();
         regionRoutine = null;
     }
@@ -152,6 +157,7 @@ public class RegionWaveManager : MonoBehaviour
         {
             RegionWaveDefinition wave = region.waves[waveIndex];
             int totalToSpawn = Mathf.Max(1, wave.enemyCount);
+            int waveStartHealth = GetPlayerHealthSnapshot();
 
             for (int i = 0; i < totalToSpawn; i++)
             {
@@ -169,11 +175,56 @@ public class RegionWaveManager : MonoBehaviour
                 yield return null;
             }
 
+            HealPlayerForWaveLoss(waveStartHealth);
+
+            if (player != null)
+            {
+                CleanVfxFactory.SpawnPickupBurst(player.transform.position + Vector3.up * 0.22f);
+            }
+
             if (waveIndex < region.waves.Count - 1)
             {
                 yield return new WaitForSeconds(waveIntermissionSeconds);
             }
         }
+    }
+
+    private int GetPlayerHealthSnapshot()
+    {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player == null)
+        {
+            return 0;
+        }
+
+        return Mathf.Clamp(player.currentHealth, 0, player.maxHealth);
+    }
+
+    private void HealPlayerForWaveLoss(int waveStartHealth)
+    {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player == null || player.isDead)
+        {
+            return;
+        }
+
+        int waveEndHealth = Mathf.Clamp(player.currentHealth, 0, player.maxHealth);
+        int healthLostThisWave = Mathf.Max(0, waveStartHealth - waveEndHealth);
+        if (healthLostThisWave <= 0)
+        {
+            return;
+        }
+
+        int healAmount = Mathf.CeilToInt(healthLostThisWave * 0.5f);
+        player.Heal(healAmount);
     }
 
     private void SpawnZombie(
@@ -199,6 +250,7 @@ public class RegionWaveManager : MonoBehaviour
             spawnPosition,
             Quaternion.identity,
             zombieContainer != null ? zombieContainer : null);
+        CleanVfxFactory.SpawnEnemySpawnPoof(spawnPosition);
 
         zombie.player = player != null ? player.transform : null;
         zombie.playerController = player;

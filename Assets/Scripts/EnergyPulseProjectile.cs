@@ -143,8 +143,9 @@ public class EnergyPulseProjectile : MonoBehaviour
 
         if (zombie != null && !zombie.isDead)
         {
+            Vector3 impactPosition = ResolveZombieImpactPosition(zombie, other);
             zombie.TakeDamage(damage);
-            Impact();
+            Impact(impactPosition);
             return;
         }
 
@@ -164,17 +165,49 @@ public class EnergyPulseProjectile : MonoBehaviour
         }
     }
 
-    private void Impact()
+    private Vector3 ResolveZombieImpactPosition(ZombieAI zombie, Collider2D hitCollider)
+    {
+        Vector3 impactPosition = transform.position;
+
+        if (hitCollider != null)
+        {
+            Vector2 closestPoint = hitCollider.ClosestPoint(transform.position);
+            if ((closestPoint - (Vector2)transform.position).sqrMagnitude > 0.000001f)
+            {
+                impactPosition = closestPoint;
+            }
+            else
+            {
+                impactPosition = hitCollider.bounds.center;
+            }
+        }
+
+        if (zombie != null)
+        {
+            Vector3 zombieCenter = zombie.transform.position;
+            impactPosition.z = zombieCenter.z;
+
+            if ((impactPosition - zombieCenter).sqrMagnitude > 4f)
+            {
+                impactPosition = zombieCenter;
+            }
+        }
+
+        return impactPosition + Vector3.up * 0.08f;
+    }
+
+    private void Impact(Vector3? overridePosition = null)
     {
         impacted = true;
+        Vector3 impactPosition = overridePosition ?? transform.position;
 
         if (impactVfxPrefab != null)
         {
-            Instantiate(impactVfxPrefab, transform.position, Quaternion.identity);
+            Instantiate(impactVfxPrefab, impactPosition, Quaternion.identity);
         }
         else
         {
-            CleanVfxFactory.SpawnImpactSpark(transform.position);
+            CleanVfxFactory.SpawnImpactSpark(impactPosition);
         }
 
         if (impactSfx != null)

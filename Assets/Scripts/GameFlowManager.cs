@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,12 +23,22 @@ public class GameFlowManager : MonoBehaviour
     public bool pauseGameplayOnPanelOpen = true;
     public bool autoCreatePanelsIfMissing = true;
 
+    [Header("End State Timing")]
+    [Min(0f)] public float endStateTransitionSeconds = 0.35f;
+    public bool useUnscaledEndStateTransition = true;
+
+    [Header("Debug Controls")]
+    public bool enableSkipLevelHotkey = true;
+    public KeyCode skipLevelKey = KeyCode.N;
+    public bool skipLevelWrapToFirstScene = true;
+
     [Header("Runtime")]
     public PlayerController player;
     public RegionWaveManager regionWaveManager;
     public WaveManager waveManager;
 
     private bool gameEnded;
+    private Coroutine endStateCoroutine;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void EnsureRuntimeInstance()
@@ -69,6 +80,11 @@ public class GameFlowManager : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         UnhookRuntimeReferences();
+        if (endStateCoroutine != null)
+        {
+            StopCoroutine(endStateCoroutine);
+            endStateCoroutine = null;
+        }
     }
 
     private void Start()
@@ -81,10 +97,25 @@ public class GameFlowManager : MonoBehaviour
         InitializeForCurrentScene();
     }
 
+    private void Update()
+    {
+        if (!enableSkipLevelHotkey || !Input.GetKeyDown(skipLevelKey))
+        {
+            return;
+        }
+
+        SkipToNextBuildScene();
+    }
+
     private void InitializeForCurrentScene()
     {
         gameEnded = false;
         Time.timeScale = 1f;
+        if (endStateCoroutine != null)
+        {
+            StopCoroutine(endStateCoroutine);
+            endStateCoroutine = null;
+        }
 
         HookRuntimeReferences();
         EnsurePanelReferences();
@@ -187,7 +218,7 @@ public class GameFlowManager : MonoBehaviour
             gameOverPanel = CreateRuntimePanel(
                 "GameOverScreen",
                 "YOU DIED",
-                new Color(0.18f, 0.05f, 0.05f, 0.95f));
+                new Color(0.08f, 0.1f, 0.14f, 0.95f));
         }
 
         if (retryButton == null)
@@ -198,7 +229,7 @@ public class GameFlowManager : MonoBehaviour
                 "Retry",
                 new Vector2(0.18f, 0.12f),
                 new Vector2(0.45f, 0.28f),
-                new Color(0.72f, 0.27f, 0.2f, 1f));
+                new Color(0.2f, 0.46f, 0.72f, 1f));
         }
 
         if (quitButton == null)
@@ -294,6 +325,43 @@ public class GameFlowManager : MonoBehaviour
         LoadScene(mainMenuSceneName);
     }
 
+    public void SkipToNextBuildScene()
+    {
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+        if (sceneCount <= 0)
+        {
+            return;
+        }
+
+        Scene activeScene = SceneManager.GetActiveScene();
+        int currentBuildIndex = activeScene.buildIndex;
+        if (currentBuildIndex < 0)
+        {
+            return;
+        }
+
+        int nextBuildIndex = currentBuildIndex + 1;
+        if (nextBuildIndex >= sceneCount)
+        {
+            if (!skipLevelWrapToFirstScene)
+            {
+                return;
+            }
+
+            nextBuildIndex = 0;
+        }
+
+        if (endStateCoroutine != null)
+        {
+            StopCoroutine(endStateCoroutine);
+            endStateCoroutine = null;
+        }
+
+        gameEnded = false;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(nextBuildIndex);
+    }
+
     public void HandlePlayerDefeated()
     {
         if (gameEnded)
@@ -301,16 +369,7 @@ public class GameFlowManager : MonoBehaviour
             return;
         }
 
-        gameEnded = true;
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(true);
-        }
-
-        if (pauseGameplayOnPanelOpen)
-        {
-            Time.timeScale = 0f;
-        }
+        BeginEndStateSequence(victory: false);
     }
 
     private void HandleGameplayVictory()
@@ -320,16 +379,7 @@ public class GameFlowManager : MonoBehaviour
             return;
         }
 
-        gameEnded = true;
-        if (victoryPanel != null)
-        {
-            victoryPanel.SetActive(true);
-        }
-
-        if (pauseGameplayOnPanelOpen)
-        {
-            Time.timeScale = 0f;
-        }
+        BeginEndStateSequence(victory: true);
     }
 
     private void HandleVictoryContinuePressed()
@@ -345,6 +395,104 @@ public class GameFlowManager : MonoBehaviour
         }
 
         QuitToMainMenu();
+    }
+
+    private void BeginEndStateSequence(bool victory)
+    {
+        if (gameEnded)
+        {
+            return;
+        }
+
+        gameEnded = true;
+        if (endStateCoroutine != null)
+        {
+            StopCoroutine(endStateCoroutine);
+        }
+
+        endStateCoroutine = StartCoroutine(ShowEndStateAfterDelay(victory));
+    }
+
+    private IEnumerator ShowEndStateAfterDelay(bool victory)
+    {
+        SpawnEndStateVfx(victory);
+
+        float delay = Mathf.Max(0f, endStateTransitionSeconds);
+        if (delay > 0f)
+        {
+            if (useUnscaledEndStateTransition)
+            {
+                yield return new WaitForSecondsRealtime(delay);
+            }
+            else
+            {
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
+        if (victory)
+        {
+            if (victoryPanel != null)
+            {
+                victoryPanel.SetActive(true);
+            }
+
+            FocusDefaultEndButton(victoryContinueButton);
+        }
+        else
+        {
+            if (gameOverPanel != null)
+            {
+                gameOverPanel.SetActive(true);
+            }
+
+            FocusDefaultEndButton(retryButton != null ? retryButton : quitButton);
+        }
+
+        if (pauseGameplayOnPanelOpen)
+        {
+            Time.timeScale = 0f;
+        }
+
+        endStateCoroutine = null;
+    }
+
+    private void SpawnEndStateVfx(bool victory)
+    {
+        if (player == null || !player.HasInputAuthority)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player == null)
+        {
+            return;
+        }
+
+        Vector3 vfxPosition = player.transform.position + Vector3.up * 0.18f;
+        if (victory)
+        {
+            CleanVfxFactory.SpawnAbilityBurstGlow(vfxPosition);
+            return;
+        }
+
+        CleanVfxFactory.SpawnImpactSpark(vfxPosition);
+    }
+
+    private static void FocusDefaultEndButton(Button preferredButton)
+    {
+        if (EventSystem.current == null)
+        {
+            return;
+        }
+
+        if (preferredButton != null &&
+            preferredButton.isActiveAndEnabled &&
+            preferredButton.gameObject.activeInHierarchy &&
+            preferredButton.interactable)
+        {
+            EventSystem.current.SetSelectedGameObject(preferredButton.gameObject);
+        }
     }
 
     private static GameObject FindPanelByName(params string[] candidates)

@@ -262,6 +262,15 @@ public class TutorialFlowController : MonoBehaviour
 
     private void HandleNextPressed()
     {
+        if (player != null &&
+            steps != null &&
+            currentStepIndex >= 0 &&
+            currentStepIndex < steps.Count &&
+            steps[currentStepIndex].objective != TutorialObjective.None)
+        {
+            CleanVfxFactory.SpawnPickupBurst(player.transform.position + Vector3.up * 0.2f);
+        }
+
         currentStepIndex++;
         ShowCurrentStep();
     }
@@ -270,6 +279,10 @@ public class TutorialFlowController : MonoBehaviour
     {
         tutorialCompleted = true;
         SetEnemyState(true);
+        if (player != null)
+        {
+            CleanVfxFactory.SpawnAbilityBurstGlow(player.transform.position + Vector3.up * 0.15f);
+        }
 
         if (dialoguePanel != null)
         {

@@ -1,9 +1,22 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class CleanVfxFactory
 {
     private const int MaxPoolPerEffect = 24;
+    private const string ImportedResourcesRoot = "ImportedParticles/";
+    private const string ImportedAbilityBurst = "AbilityBurst";
+    private const string ImportedProjectileMuzzle = "ProjectileMuzzle";
+    private const string ImportedPickupBurst = "PickupBurst";
+    private const string ImportedPickupIdleLoop = "PickupIdleLoop";
+    private const string ImportedChestOpen = "ChestOpen";
+    private const string ImportedGateLock = "GateLock";
+    private const string ImportedGateUnlock = "GateUnlock";
+    private const string ImportedEnemySpawnPoof = "EnemySpawnPoof";
+    private const float ImportedOneShotScaleMultiplier = 0.78f;
+    private const float ImportedOneShotLifetimeMultiplier = 0.8f;
+    private const float ImportedIdleLoopScaleMultiplier = 0.72f;
+    private const int BurstSortingOrder = 13;
 
     private sealed class FactoryHost : MonoBehaviour
     {
@@ -24,29 +37,35 @@ public static class CleanVfxFactory
     private static FactoryHost host;
     private static readonly Dictionary<string, Queue<PooledBurst>> Pool = new Dictionary<string, Queue<PooledBurst>>();
     private static readonly List<PooledBurst> Active = new List<PooledBurst>();
+    private static readonly Dictionary<string, GameObject> ImportedPrefabCache = new Dictionary<string, GameObject>();
 
     public static void SpawnImpactSpark(Vector3 position)
     {
         SpawnBurst(
             name: "ImpactSparkVFX",
             position: position,
-            startColor: new Color(1f, 0.88f, 0.35f, 1f),
-            startSize: 0.08f,
-            startSpeed: 2.25f,
-            lifetime: 0.25f,
-            particleCount: 16);
+            startColor: new Color(0.58f, 0.92f, 1f, 0.92f),
+            startSize: 0.055f,
+            startSpeed: 1.7f,
+            lifetime: 0.18f,
+            particleCount: 9);
     }
 
     public static void SpawnAbilityBurstGlow(Vector3 position)
     {
+        if (SpawnImportedOneShot(ImportedAbilityBurst, position, Quaternion.identity, 0.76f, 1.35f))
+        {
+            return;
+        }
+
         SpawnBurst(
             name: "AbilityBurstGlowVFX",
             position: position,
-            startColor: new Color(0.3f, 0.95f, 1f, 1f),
-            startSize: 0.2f,
-            startSpeed: 2.8f,
-            lifetime: 0.45f,
-            particleCount: 28);
+            startColor: new Color(0.3f, 0.95f, 1f, 0.9f),
+            startSize: 0.12f,
+            startSpeed: 2.05f,
+            lifetime: 0.28f,
+            particleCount: 12);
     }
 
     public static void SpawnZombieDeathPoof(Vector3 position)
@@ -54,11 +73,164 @@ public static class CleanVfxFactory
         SpawnBurst(
             name: "ZombieDeathPoofVFX",
             position: position,
-            startColor: new Color(0.7f, 0.7f, 0.75f, 1f),
-            startSize: 0.14f,
-            startSpeed: 1.5f,
-            lifetime: 0.55f,
-            particleCount: 20);
+            startColor: new Color(0.68f, 0.84f, 0.95f, 0.86f),
+            startSize: 0.09f,
+            startSpeed: 1.05f,
+            lifetime: 0.32f,
+            particleCount: 12);
+    }
+
+    public static void SpawnProjectileMuzzleFlash(Vector3 position, Vector2 direction)
+    {
+        float zAngle = direction.sqrMagnitude > 0.0001f
+            ? Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg
+            : 0f;
+        Quaternion rotation = Quaternion.Euler(0f, 0f, zAngle);
+
+        if (SpawnImportedOneShot(ImportedProjectileMuzzle, position, rotation, 0.55f, 0.9f))
+        {
+            return;
+        }
+
+        SpawnBurst(
+            name: "ProjectileMuzzleFlashVFX",
+            position: position,
+            startColor: new Color(0.45f, 0.98f, 1f, 0.9f),
+            startSize: 0.045f,
+            startSpeed: 0.95f,
+            lifetime: 0.1f,
+            particleCount: 6);
+    }
+
+    public static void SpawnPickupBurst(Vector3 position)
+    {
+        if (SpawnImportedOneShot(ImportedPickupBurst, position, Quaternion.identity, 0.68f, 1.25f))
+        {
+            return;
+        }
+
+        SpawnBurst(
+            name: "PickupBurstVFX",
+            position: position,
+            startColor: new Color(1f, 0.95f, 0.5f, 0.9f),
+            startSize: 0.07f,
+            startSpeed: 1.2f,
+            lifetime: 0.22f,
+            particleCount: 8);
+    }
+
+    public static GameObject AttachPickupIdleLoop(Transform parent, Vector3 localOffset, float scale = 1f)
+    {
+        if (parent == null)
+        {
+            return null;
+        }
+
+        GameObject prefab = LoadImportedPrefab(ImportedPickupIdleLoop);
+        if (prefab == null)
+        {
+            return null;
+        }
+
+        GameObject instance = Object.Instantiate(prefab, parent);
+        instance.name = "PickupIdleLoopVFX";
+        instance.transform.localPosition = localOffset;
+        instance.transform.localRotation = Quaternion.identity;
+        float adjustedScale = Mathf.Max(0.01f, scale) * ImportedIdleLoopScaleMultiplier;
+        instance.transform.localScale *= adjustedScale;
+
+        return instance;
+    }
+
+    public static void SpawnChestOpenBurst(Vector3 position)
+    {
+        if (SpawnImportedOneShot(ImportedChestOpen, position, Quaternion.identity, 0.75f, 1.2f))
+        {
+            return;
+        }
+
+        SpawnBurst(
+            name: "ChestOpenBurstVFX",
+            position: position,
+            startColor: new Color(0.5f, 1f, 0.65f, 0.9f),
+            startSize: 0.085f,
+            startSpeed: 1.25f,
+            lifetime: 0.24f,
+            particleCount: 12);
+    }
+
+    public static void SpawnGateToggle(Vector3 position, bool locked)
+    {
+        string key = locked ? ImportedGateLock : ImportedGateUnlock;
+        if (SpawnImportedOneShot(key, position, Quaternion.identity, 0.72f, 1.15f))
+        {
+            return;
+        }
+
+        SpawnBurst(
+            name: locked ? "GateLockVFX" : "GateUnlockVFX",
+            position: position,
+            startColor: locked ? new Color(0.35f, 0.8f, 1f, 0.9f) : new Color(1f, 0.94f, 0.4f, 0.9f),
+            startSize: 0.075f,
+            startSpeed: 1.05f,
+            lifetime: 0.2f,
+            particleCount: 10);
+    }
+
+    public static void SpawnEnemySpawnPoof(Vector3 position)
+    {
+        if (SpawnImportedOneShot(ImportedEnemySpawnPoof, position, Quaternion.identity, 0.75f, 1.2f))
+        {
+            return;
+        }
+
+        SpawnBurst(
+            name: "EnemySpawnPoofVFX",
+            position: position,
+            startColor: new Color(0.75f, 0.75f, 0.82f, 0.86f),
+            startSize: 0.08f,
+            startSpeed: 0.9f,
+            lifetime: 0.24f,
+            particleCount: 10);
+    }
+
+    private static bool SpawnImportedOneShot(
+        string resourceName,
+        Vector3 position,
+        Quaternion rotation,
+        float scaleMultiplier,
+        float fallbackLifetime)
+    {
+        GameObject prefab = LoadImportedPrefab(resourceName);
+        if (prefab == null)
+        {
+            return false;
+        }
+
+        GameObject instance = Object.Instantiate(prefab, position, rotation);
+        float adjustedScale = Mathf.Max(0.01f, scaleMultiplier) * ImportedOneShotScaleMultiplier;
+        instance.transform.localScale *= adjustedScale;
+
+        float lifetime = Mathf.Max(0.35f, fallbackLifetime * ImportedOneShotLifetimeMultiplier);
+        Object.Destroy(instance, lifetime);
+        return true;
+    }
+
+    private static GameObject LoadImportedPrefab(string resourceName)
+    {
+        if (string.IsNullOrWhiteSpace(resourceName))
+        {
+            return null;
+        }
+
+        if (ImportedPrefabCache.TryGetValue(resourceName, out GameObject cached))
+        {
+            return cached;
+        }
+
+        GameObject prefab = Resources.Load<GameObject>(ImportedResourcesRoot + resourceName);
+        ImportedPrefabCache[resourceName] = prefab;
+        return prefab;
     }
 
     private static void SpawnBurst(
@@ -94,7 +266,7 @@ public static class CleanVfxFactory
 
         ParticleSystem.ShapeModule shape = particles.shape;
         shape.shapeType = ParticleSystemShapeType.Circle;
-        shape.radius = 0.06f;
+        shape.radius = 0.045f;
 
         ParticleSystem.ColorOverLifetimeModule colorOverLifetime = particles.colorOverLifetime;
         colorOverLifetime.enabled = true;
@@ -113,12 +285,12 @@ public static class CleanVfxFactory
         colorOverLifetime.color = gradient;
 
         ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
-        renderer.sortingOrder = 15;
+        renderer.sortingOrder = BurstSortingOrder;
 
         particles.Clear(true);
         particles.Play();
 
-        burst.releaseAt = Time.unscaledTime + lifetime + 0.5f;
+        burst.releaseAt = Time.unscaledTime + lifetime + 0.35f;
         Active.Add(burst);
     }
 

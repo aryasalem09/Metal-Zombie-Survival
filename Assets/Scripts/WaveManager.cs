@@ -99,6 +99,7 @@ public class WaveManager : MonoBehaviour
             currentWaveIsBoss = IsBossWave(currentWave);
             int zombiesThisWave = GetZombieCountForWave(currentWave, currentWaveIsBoss);
             zombiesRemainingInWave = Mathf.Max(0, zombiesThisWave);
+            int waveStartHealth = GetPlayerHealthSnapshot();
 
             isSpawning = true;
             RefreshWaveStatusUi();
@@ -119,6 +120,13 @@ public class WaveManager : MonoBehaviour
             // wait until everything from this wave is dead
             while (GetAliveZombieCount() > 0)
                 yield return null;
+
+            HealPlayerForWaveLoss(waveStartHealth);
+
+            if (player != null)
+            {
+                CleanVfxFactory.SpawnPickupBurst(player.transform.position + Vector3.up * 0.22f);
+            }
 
             yield return new WaitForSeconds(config.timeBetweenWaves);
         }
@@ -145,6 +153,44 @@ public class WaveManager : MonoBehaviour
         }
 
         return waveNumber == configuredWave;
+    }
+
+    private int GetPlayerHealthSnapshot()
+    {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player == null)
+        {
+            return 0;
+        }
+
+        return Mathf.Clamp(player.currentHealth, 0, player.maxHealth);
+    }
+
+    private void HealPlayerForWaveLoss(int waveStartHealth)
+    {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player == null || player.isDead)
+        {
+            return;
+        }
+
+        int waveEndHealth = Mathf.Clamp(player.currentHealth, 0, player.maxHealth);
+        int healthLostThisWave = Mathf.Max(0, waveStartHealth - waveEndHealth);
+        if (healthLostThisWave <= 0)
+        {
+            return;
+        }
+
+        int healAmount = Mathf.CeilToInt(healthLostThisWave * 0.5f);
+        player.Heal(healAmount);
     }
 
     private int GetZombieCountForWave(int waveNumber, bool isBossWave)
@@ -206,6 +252,18 @@ public class WaveManager : MonoBehaviour
 
     private void ShowCompletionStatus()
     {
+        if (player == null)
+        {
+            player = PlayerController.FindPrimary();
+        }
+
+        if (player != null)
+        {
+            Vector3 completionVfxPosition = player.transform.position + Vector3.up * 0.22f;
+            CleanVfxFactory.SpawnAbilityBurstGlow(completionVfxPosition);
+            CleanVfxFactory.SpawnPickupBurst(completionVfxPosition);
+        }
+
         if (waveStatusText == null)
         {
             return;
@@ -360,6 +418,7 @@ public class WaveManager : MonoBehaviour
 
         Vector3 pos = GetSpawnPosition();
         GameObject zObj = Instantiate(config.zombiePrefab, pos, Quaternion.identity);
+        CleanVfxFactory.SpawnEnemySpawnPoof(pos);
 
         var z = zObj.GetComponent<ZombieAI>();
         if (z == null)

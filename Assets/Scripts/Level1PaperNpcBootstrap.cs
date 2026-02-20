@@ -14,9 +14,9 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
     public Vector3 playerRelativeOffset = new Vector3(2.1f, 1.2f, 0f);
     public Vector3 cameraRelativeOffset = new Vector3(1.8f, 1.1f, 0f);
     public bool spawnNearCameraWhenPlayerMissing = true;
-    public float desiredMinNpcSize = 0.24f;
-    public float desiredMaxNpcSize = 0.32f;
-    public float maxRelocationDistance = 18f;
+    public float desiredMinNpcSize = 0.3f;
+    public float desiredMaxNpcSize = 0.42f;
+    public float maxRelocationDistance = 8f;
     [Min(0.05f)] public float spawnClearanceRadius = 0.45f;
     public bool avoidBlockedSpawnPositions = true;
     public bool logNpcSpawnPosition = true;
@@ -24,23 +24,26 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
     [Header("Guaranteed Visibility")]
     public bool forceRuntimeBillboardMarker = true;
-    public Vector2 runtimeBillboardWorldSize = new Vector2(1.35f, 1.35f);
+    public Vector2 runtimeBillboardWorldSize = new Vector2(1.55f, 1.55f);
     public float runtimeBillboardHeightOffset = 0.56f;
     public int runtimeBillboardSortingOrder = 980;
     public Color runtimeBillboardColor = new Color(1f, 0.93f, 0.2f, 0.92f);
 
     [Header("Interaction")]
-    public float interactionDistance = 1f;
+    public float interactionDistance = 2.4f;
 
     [Header("Runtime Recovery")]
     public bool keepNpcNearPlayer = true;
     [Min(0.1f)] public float npcRecoveryInterval = 0.75f;
-    [Min(1f)] public float maxNpcDistanceFromPlayer = 12f;
+    [Min(1f)] public float maxNpcDistanceFromPlayer = 7f;
+    [Min(0.5f)] public float maxNpcDistanceFromPlayerSpawn = 5f;
     public bool repositionWhenOffScreen = true;
 
     private float nextRecoveryTime;
     private PaperNpcInteractable runtimePaperNpc;
     private bool hasCollectedDiaryThisScene;
+    private bool hasSpawnAnchorPosition;
+    private Vector3 spawnAnchorPosition;
     private static Sprite runtimeBillboardSprite;
 
     private static readonly Vector3[] TutorialCandidateOffsets =
@@ -131,12 +134,17 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
             return;
         }
 
-        if (FindObjectOfType<Level1PaperNpcBootstrap>() != null)
+        Level1PaperNpcBootstrap[] existingBootstraps = FindObjectsOfType<Level1PaperNpcBootstrap>(true);
+        for (int i = 0; i < existingBootstraps.Length; i++)
         {
-            return;
+            Level1PaperNpcBootstrap existing = existingBootstraps[i];
+            if (existing != null && existing.IsSceneTarget(activeScene.name))
+            {
+                return;
+            }
         }
 
-        GameObject bootstrap = new GameObject("Level1PaperNpcBootstrap");
+        GameObject bootstrap = new GameObject("LevelPaperNpcBootstrap");
         Level1PaperNpcBootstrap bootstrapComponent = bootstrap.AddComponent<Level1PaperNpcBootstrap>();
         bootstrapComponent.levelSceneName = activeScene.name;
     }
@@ -151,7 +159,9 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
         hasCollectedDiaryThisScene = false;
         PlayerController player = EnsurePlayerInteractor();
+        TryCaptureSpawnAnchor(player);
         runtimePaperNpc = EnsurePaperNpcExists(player);
+        nextRecoveryTime = Time.time + 0.15f;
     }
 
     private void OnEnable()
@@ -213,6 +223,8 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
             return null;
         }
 
+        TryCaptureSpawnAnchor(player);
+
         PaperNpcInteractable existingNpc = FindObjectOfType<PaperNpcInteractable>();
         if (existingNpc != null)
         {
@@ -226,7 +238,9 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
             Vector3 nearbyPosition = ResolvePreferredSpawnPosition(player);
             if (Vector2.Distance(existingNpc.transform.position, nearbyPosition) > maxRelocationDistance ||
-                !IsSpawnPositionClear(existingNpc.transform.position, existingNpc.transform, player != null ? player.transform : null))
+                IsOutsideSpawnRadius(existingNpc.transform.position, player) ||
+                !IsSpawnPositionClear(existingNpc.transform.position, existingNpc.transform, player != null ? player.transform : null) ||
+                !IsInCameraView(existingNpc.transform.position))
             {
                 existingNpc.transform.position = nearbyPosition;
             }
@@ -247,6 +261,7 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
         }
 
         ConfigureNpc(paperNpc);
+        RecoverNpcPositionIfNeeded(paperNpc, player);
         return paperNpc;
     }
 
@@ -308,7 +323,7 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
         }
 
         string sceneName = SceneManager.GetActiveScene().name;
-        paperNpc.interactionDistance = interactionDistance;
+        paperNpc.interactionDistance = Mathf.Max(2.2f, interactionDistance);
         paperNpc.diaryTitle = GetDiaryTitleForScene(sceneName);
         paperNpc.diaryStoryText = GetDiaryStoryForScene(sceneName);
         paperNpc.interactionActionText = "open the survivor diary";
@@ -543,6 +558,65 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
                MatchesSceneName(sceneName, "TutorialGame");
     }
 
+    private void TryCaptureSpawnAnchor(PlayerController player)
+    {
+        if (hasSpawnAnchorPosition || player == null)
+        {
+            return;
+        }
+
+        spawnAnchorPosition = player.transform.position;
+        spawnAnchorPosition.z = npcWorldDepth;
+        hasSpawnAnchorPosition = true;
+    }
+
+    private bool TryGetSpawnAnchorPosition(PlayerController player, out Vector3 anchorPosition)
+    {
+        TryCaptureSpawnAnchor(player);
+
+        if (hasSpawnAnchorPosition)
+        {
+            anchorPosition = spawnAnchorPosition;
+            anchorPosition.z = npcWorldDepth;
+            return true;
+        }
+
+        anchorPosition = Vector3.zero;
+        return false;
+    }
+
+    private float GetMaxSpawnDistance()
+    {
+        return Mathf.Max(0.5f, maxNpcDistanceFromPlayerSpawn);
+    }
+
+    private Vector3 ClampToSpawnAnchorRadius(Vector3 worldPosition, Vector3 anchorPosition)
+    {
+        float maxDistance = GetMaxSpawnDistance();
+        Vector2 delta = (Vector2)(worldPosition - anchorPosition);
+        if (delta.sqrMagnitude <= maxDistance * maxDistance)
+        {
+            worldPosition.z = npcWorldDepth;
+            return worldPosition;
+        }
+
+        Vector2 clampedDelta = delta.normalized * maxDistance;
+        return new Vector3(
+            anchorPosition.x + clampedDelta.x,
+            anchorPosition.y + clampedDelta.y,
+            npcWorldDepth);
+    }
+
+    private bool IsOutsideSpawnRadius(Vector3 worldPosition, PlayerController player)
+    {
+        if (!TryGetSpawnAnchorPosition(player, out Vector3 anchorPosition))
+        {
+            return false;
+        }
+
+        return Vector2.Distance(worldPosition, anchorPosition) > GetMaxSpawnDistance();
+    }
+
     private void RecoverNpcPositionIfNeeded(PaperNpcInteractable npc, PlayerController player)
     {
         if (npc == null)
@@ -557,15 +631,24 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
 
         ForceNpcVisibility(npc.gameObject, player);
 
-        if (player == null)
+        Vector2 npcPosition2D = npc.transform.position;
+        bool hasAnchor = TryGetSpawnAnchorPosition(player, out Vector3 anchorPosition);
+
+        bool tooFar;
+        if (hasAnchor)
         {
-            return;
+            tooFar = Vector2.Distance(npcPosition2D, anchorPosition) > GetMaxSpawnDistance();
+        }
+        else if (player != null)
+        {
+            tooFar = Vector2.Distance(npcPosition2D, player.transform.position) > Mathf.Max(1f, maxNpcDistanceFromPlayer);
+        }
+        else
+        {
+            tooFar = false;
         }
 
-        Vector2 npcPosition2D = npc.transform.position;
-        Vector2 playerPosition2D = player.transform.position;
-        bool tooFar = Vector2.Distance(npcPosition2D, playerPosition2D) > Mathf.Max(1f, maxNpcDistanceFromPlayer);
-        bool blocked = !IsSpawnPositionClear(npc.transform.position, npc.transform, player.transform);
+        bool blocked = !IsSpawnPositionClear(npc.transform.position, npc.transform, player != null ? player.transform : null);
         bool offScreen = repositionWhenOffScreen && !IsInCameraView(npc.transform.position);
 
         if (!tooFar && !blocked && !offScreen)
@@ -574,6 +657,11 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
         }
 
         Vector3 replacementPosition = ResolvePreferredSpawnPosition(player);
+        if (hasAnchor)
+        {
+            replacementPosition = ClampToSpawnAnchorRadius(replacementPosition, anchorPosition);
+        }
+
         npc.transform.position = replacementPosition;
 
         if (logNpcSpawnPosition)
@@ -609,36 +697,57 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
         Vector3 scenePrimaryOffset = candidateOffsets.Length > 0
             ? candidateOffsets[0]
             : playerRelativeOffset;
+        bool hasAnchor = TryGetSpawnAnchorPosition(player, out Vector3 anchorPosition);
 
-        Vector3 position;
-        if (player != null)
+        Vector3 originPosition;
+        Transform ignoreTransform = player != null ? player.transform : null;
+
+        if (hasAnchor)
         {
-            Vector3 playerPosition = player.transform.position;
+            originPosition = anchorPosition;
+        }
+        else if (player != null)
+        {
+            originPosition = player.transform.position;
+        }
+        else if (spawnNearCameraWhenPlayerMissing && Camera.main != null)
+        {
+            originPosition = Camera.main.transform.position + cameraRelativeOffset;
+        }
+        else
+        {
+            originPosition = GetFallbackWorldPositionForScene(sceneName);
+        }
 
-            for (int i = 0; i < candidateOffsets.Length; i++)
+        originPosition.z = npcWorldDepth;
+        Vector3 position;
+        for (int i = 0; i < candidateOffsets.Length; i++)
+        {
+            position = originPosition + candidateOffsets[i];
+            position.z = npcWorldDepth;
+            if (hasAnchor)
             {
-                position = playerPosition + candidateOffsets[i];
-                position.z = npcWorldDepth;
-                if (IsSpawnPositionClear(position, player.transform))
-                {
-                    return position;
-                }
+                position = ClampToSpawnAnchorRadius(position, anchorPosition);
             }
 
-            position = playerPosition + scenePrimaryOffset;
-            position.z = npcWorldDepth;
-            return position;
+            if (IsSpawnPositionClear(position, ignoreTransform))
+            {
+                return position;
+            }
         }
 
-        if (spawnNearCameraWhenPlayerMissing && Camera.main != null)
-        {
-            position = Camera.main.transform.position + cameraRelativeOffset;
-            position.z = npcWorldDepth;
-            return position;
-        }
-
-        position = GetFallbackWorldPositionForScene(sceneName);
+        position = originPosition + scenePrimaryOffset;
         position.z = npcWorldDepth;
+        if (hasAnchor)
+        {
+            position = ClampToSpawnAnchorRadius(position, anchorPosition);
+        }
+
+        if (TryFindNearbyClearPosition(originPosition, ignoreTransform, out Vector3 fallbackNearbyPosition))
+        {
+            return fallbackNearbyPosition;
+        }
+
         return position;
     }
 
@@ -680,6 +789,38 @@ public class Level1PaperNpcBootstrap : MonoBehaviour
         }
 
         return fallbackWorldPosition;
+    }
+
+    private bool TryFindNearbyClearPosition(Vector3 originPosition, Transform ignoreTransform, out Vector3 result)
+    {
+        bool hasAnchor = hasSpawnAnchorPosition;
+        Vector3 anchorPosition = spawnAnchorPosition;
+        float maxRadius = hasAnchor
+            ? GetMaxSpawnDistance()
+            : Mathf.Max(2f, maxNpcDistanceFromPlayer * 0.65f);
+        const int attempts = 18;
+        for (int i = 0; i < attempts; i++)
+        {
+            float t = (i + 1f) / attempts;
+            float radius = Mathf.Lerp(0.9f, maxRadius, t);
+            float angle = i * Mathf.PI * 2f / attempts;
+            Vector3 candidate = originPosition + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * radius;
+            candidate.z = npcWorldDepth;
+
+            if (hasAnchor)
+            {
+                candidate = ClampToSpawnAnchorRadius(candidate, anchorPosition);
+            }
+
+            if (IsSpawnPositionClear(candidate, ignoreTransform))
+            {
+                result = candidate;
+                return true;
+            }
+        }
+
+        result = Vector3.zero;
+        return false;
     }
 
     private static string GetDiaryTitleForScene(string sceneName)

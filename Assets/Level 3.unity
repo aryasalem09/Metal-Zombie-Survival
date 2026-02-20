@@ -10521,8 +10521,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.3519, y: -48.3802}
-  m_SizeDelta: {x: 210.1368, y: 210.1368}
+  m_AnchoredPosition: {x: 25.158, y: -25.186}
+  m_SizeDelta: {x: 163.75, y: 163.748}
   m_Pivot: {x: 0.49999994, y: 0.49999985}
 --- !u!114 &96681222
 MonoBehaviour:
@@ -204623,6 +204623,8 @@ MonoBehaviour:
   isDying: 0
   hitEffectPrefabs: []
   radiatedPrefabs: []
+  allowConfiguredHitEffects: 0
+  blockBloodLikeConfiguredHitEffects: 1
   isRadiated: 0
   rollTime: 0.5
   isRunning: 0
@@ -204630,6 +204632,7 @@ MonoBehaviour:
   isStrafingLeft: 0
   isStrafingRight: 0
   isAttacking: 0
+  isTakingDamage: 0
 --- !u!114 &645137715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204688,8 +204691,12 @@ MonoBehaviour:
   burstCharges: 0
   nextBurstUnlockAt: 10
   burstEffectPrefab: {fileID: 0}
-  maxHealth: 5
-  currentHealth: 5
+  killsPerDoubleShotUnlock: 5
+  extraProjectiles: 0
+  nextDoubleShotUnlockAt: 5
+  doubleShotSpreadAngle: 10
+  maxHealth: 10
+  currentHealth: 10
   isDead: 0
   healthSlider: {fileID: 1345263714}
   gameOver: {fileID: 1121877961}
@@ -204886,6 +204893,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee5df2300d0cb241a8572bb70619500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openVfxPrefab: {fileID: 0}
+  addIdleLoopVfx: 1
+  vfxOffset: {x: 0, y: 0.32, z: 0}
+  idleLoopScale: 0.9
 --- !u!1 &798659728
 GameObject:
   m_ObjectHideFlags: 0
@@ -362634,8 +362645,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.3519, y: -48.3802}
-  m_SizeDelta: {x: 210.1447, y: 210.1447}
+  m_AnchoredPosition: {x: 23.411, y: -23.439}
+  m_SizeDelta: {x: 160.26, y: 160.263}
   m_Pivot: {x: 0.49999994, y: 0.49999985}
 --- !u!114 &1276378975
 MonoBehaviour:
@@ -362846,8 +362857,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1744.4209, y: 898.0526}
-  m_SizeDelta: {x: 237.1583, y: 241.8896}
+  m_AnchoredPosition: {x: -1832.1, y: 870.8}
+  m_SizeDelta: {x: 175.887, y: 173.559}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1345263712
 GameObject:
@@ -364149,8 +364160,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.3519, y: -48.3802}
-  m_SizeDelta: {x: 185.3292, y: 185.3292}
+  m_AnchoredPosition: {x: 23.402, y: -23.43}
+  m_SizeDelta: {x: 135.429, y: 135.429}
   m_Pivot: {x: 0.49999994, y: 0.49999985}
 --- !u!114 &1691813825
 MonoBehaviour:
@@ -364891,6 +364902,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee5df2300d0cb241a8572bb70619500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openVfxPrefab: {fileID: 0}
+  addIdleLoopVfx: 1
+  vfxOffset: {x: 0, y: 0.32, z: 0}
+  idleLoopScale: 0.9
 --- !u!1 &2090841204
 GameObject:
   m_ObjectHideFlags: 0
